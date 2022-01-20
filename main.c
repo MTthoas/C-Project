@@ -1,35 +1,61 @@
 #include <stdio.h>
 #include <curl/curl.h>
 #include <stdlib.h>
+#include <string.h>
 #include <gtk-3.0/gtk/gtk.h>
+#include <unistd.h>
 
-// #include <gdk/gdk.h>
-
-
-
-GtkWidget *create_main     ( GtkWidget *stack );
-GtkWidget *create_login_grid    ( GtkWidget *stack );
-GtkWidget *create_register_grid ( GtkWidget *stack );
+GtkWidget *create_main      ( GtkWidget *stack );
+GtkWidget *Login_page       ( GtkWidget *stack );
+GtkWidget *Register_page    ( GtkWidget *stack );
+GtkWidget *create_hubby ( GtkWidget *stack );
+GtkWidget *object;
 
 void login_clbk    ( GtkButton *button, GtkStack *stack );
 void main_clbk     ( GtkButton *button, GtkStack *stack );
 void register_clbk ( GtkButton *button, GtkStack *stack );
 
-void clicked_clbk ( GtkButton *button, GtkStack *stack );
-void quit_clbk    ( void );
+void database       (int proc, char *user, char *password);
+void clicked_clbk   ( GtkButton *button, GtkStack *stack );
+void quit_clbk      ( void );
+
+
+    GtkWidget *entry_username;
+    GtkWidget *entry_password;
+
+
+
+void verification_login(GtkButton *button, gpointer data,GtkStack *stack);
+
+
+struct login_data
+{
+
+    gchar *username;
+    gchar *password;
+
+};
+
+
+// Fetching DATA
+
+
 
 int main ( void )
 {
 
-    system("open http://google.fr");
 
-    
+
+    // system("open http://google.fr");
+
+
     GtkWidget *window;
     GtkWidget *main;
     GtkWidget *login_grid;
     GtkWidget *register_grid;
     GtkWidget *stack;
     GtkWidget *box;
+    GtkWidget *hubby;
 
     // Initialisation
 
@@ -49,9 +75,6 @@ int main ( void )
         gtk_window_set_default_size ( GTK_WINDOW ( window ), 300, 300 );
         gtk_container_set_border_width ( GTK_CONTAINER ( window ), 50 );
 
-    /// *** Create the Stack Box
-
-
     /// *** Create the Box
     box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 5 );
 
@@ -64,10 +87,10 @@ int main ( void )
 
     /// ***
     main     = create_main     ( stack );
-    login_grid    = create_login_grid    ( stack );
-    register_grid = create_register_grid ( stack );
+    login_grid    = Login_page    ( stack );
+    register_grid = Register_page ( stack );
 
-    /// ***
+    /// **
     gtk_stack_add_named  ( GTK_STACK ( stack ), main,     "Main" );
     gtk_stack_add_named  ( GTK_STACK ( stack ), login_grid,    "Login" );
     gtk_stack_add_named  ( GTK_STACK ( stack ), register_grid, "Register" );
@@ -106,17 +129,15 @@ GtkWidget *create_main ( GtkWidget *stack )
     return box;
 }
 
-GtkWidget *create_login_grid ( GtkWidget *stack )
+GtkWidget *Login_page ( GtkWidget *stack )
 {
     GtkWidget *grid;
     GtkWidget *login_button;
     GtkWidget *back_button;
 
     GtkWidget *label_username;
-    GtkWidget *entry_username;
-
     GtkWidget *label_password;
-    GtkWidget *entry_password;
+
 
     /// *** Create the Grid
     grid = gtk_grid_new();
@@ -142,13 +163,51 @@ GtkWidget *create_login_grid ( GtkWidget *stack )
     gtk_grid_attach ( GTK_GRID ( grid ), login_button,   1, 2, 1, 1 );
 
     /// ***
+
+
+
+
+     g_signal_connect (G_OBJECT(login_button), "clicked", G_CALLBACK(verification_login), NULL);
+
+
     g_signal_connect ( back_button, "clicked", G_CALLBACK ( main_clbk ), stack );
 
     /// ***
     return grid;
 }
 
-GtkWidget *create_register_grid ( GtkWidget *stack )
+
+void verification_login(GtkButton *button, gpointer data,GtkStack *stack){
+
+    const gchar *user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar *pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+
+    g_print("%s \n",user);
+    g_print("%s \n",pass);
+
+
+    G_CALLBACK ( create_hubby );
+    //  gtk_stack_set_visible_child_full ( stack, "Hubby", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+    
+ 
+}
+
+GtkWidget *create_hubby ( GtkWidget *stack ){
+
+    GtkWidget *grid;
+    GtkWidget *label_description;
+
+
+    grid = gtk_grid_new();
+
+    label_description = gtk_label_new ("Description");
+
+    return grid;
+}
+
+
+
+GtkWidget *Register_page ( GtkWidget *stack )
 {
     GtkWidget *grid;
     GtkWidget *register_button;
@@ -178,18 +237,12 @@ GtkWidget *create_register_grid ( GtkWidget *stack )
 
     /// ***
     label_firstName = gtk_label_new ( "First Name:" );
-    label_lastName  = gtk_label_new ( "Last Name" );
     label_password  = gtk_label_new ( "Password:" );
-    label_street    = gtk_label_new ( "Street:" );
-    label_number    = gtk_label_new ( "Number:" );
     label_email     = gtk_label_new ( "Email:" );
 
     /// ***
     entry_firstName = gtk_entry_new();
-    entry_lastName  = gtk_entry_new();
     entry_password  = gtk_entry_new();
-    entry_street    = gtk_entry_new();
-    entry_number    = gtk_entry_new();
     entry_email     = gtk_entry_new();
 
     /// ***
@@ -200,17 +253,8 @@ GtkWidget *create_register_grid ( GtkWidget *stack )
     gtk_grid_attach ( GTK_GRID ( grid ), label_firstName, 0, 0, 1, 1 );
     gtk_grid_attach ( GTK_GRID ( grid ), entry_firstName, 1, 0, 1, 1 );
 
-    gtk_grid_attach ( GTK_GRID ( grid ), label_lastName,  0, 1, 1, 1 );
-    gtk_grid_attach ( GTK_GRID ( grid ), entry_lastName,  1, 1, 1, 1 );
-
     gtk_grid_attach ( GTK_GRID ( grid ), label_password,  0, 2, 1, 1 );
     gtk_grid_attach ( GTK_GRID ( grid ), entry_password,  1, 2, 1, 1 );
-
-    gtk_grid_attach ( GTK_GRID ( grid ), label_street,    0, 3, 1, 1 );
-    gtk_grid_attach ( GTK_GRID ( grid ), entry_street,    1, 3, 1, 1 );
-
-    gtk_grid_attach ( GTK_GRID ( grid ), label_number,    0, 4, 1, 1 );
-    gtk_grid_attach ( GTK_GRID ( grid ), entry_number,    1, 4, 1, 1 );
 
     gtk_grid_attach ( GTK_GRID ( grid ), label_email,     0, 5, 1, 1 );
     gtk_grid_attach ( GTK_GRID ( grid ), entry_email,     1, 5, 1, 1 );
@@ -225,6 +269,7 @@ GtkWidget *create_register_grid ( GtkWidget *stack )
     return grid;
 }
 
+
 void main_clbk ( GtkButton *button, GtkStack *stack )
 {
     g_return_if_fail ( GTK_IS_BUTTON ( button ) );
@@ -235,8 +280,8 @@ void main_clbk ( GtkButton *button, GtkStack *stack )
 
 void login_clbk ( GtkButton *button, GtkStack *stack )
 {
-    g_return_if_fail ( GTK_IS_BUTTON ( button ) );
-    g_return_if_fail ( GTK_IS_STACK ( stack ) );
+    // g_return_if_fail ( GTK_IS_BUTTON ( button ) );
+    // g_return_if_fail ( GTK_IS_STACK ( stack ) );
 
 
     gtk_stack_set_visible_child_full ( stack, "Login", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
@@ -244,8 +289,8 @@ void login_clbk ( GtkButton *button, GtkStack *stack )
 
 void register_clbk ( GtkButton *button, GtkStack *stack )
 {
-    g_return_if_fail ( GTK_IS_BUTTON ( button ) );
-    g_return_if_fail ( GTK_IS_STACK ( stack ) );
+    // g_return_if_fail ( GTK_IS_BUTTON ( button ) );
+    // g_return_if_fail ( GTK_IS_STACK ( stack ) );
 
     gtk_stack_set_visible_child_full ( stack, "Register", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
 }
