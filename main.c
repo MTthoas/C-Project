@@ -20,25 +20,10 @@ void clicked_clbk   ( GtkButton *button, GtkStack *stack );
 void quit_clbk      ( void );
 
 
-    GtkWidget *entry_username;
-    GtkWidget *entry_password;
+GtkWidget *entry_username;
+GtkWidget *entry_password;
 
-
-
-void verification_login(GtkButton *button, gpointer data,GtkStack *stack);
-
-
-struct login_data
-{
-
-    gchar *username;
-    gchar *password;
-
-};
-
-
-// Fetching DATA
-
+void verification_login(GtkButton *button,GtkStack *stack, gpointer data);
 
 
 int main ( void )
@@ -55,7 +40,7 @@ int main ( void )
     GtkWidget *register_grid;
     GtkWidget *stack;
     GtkWidget *box;
-    GtkWidget *hubby;
+    GtkWidget *hubby_grid;
 
     // Initialisation
 
@@ -89,11 +74,13 @@ int main ( void )
     main  = create_main  ( stack );
     login_grid    = Login_page  ( stack );
     register_grid = Register_page ( stack );
+    hubby_grid = create_hubby ( stack );
 
     /// **
     gtk_stack_add_named  ( GTK_STACK ( stack ), main,     "Main" );
     gtk_stack_add_named  ( GTK_STACK ( stack ), login_grid,    "Login" );
     gtk_stack_add_named  ( GTK_STACK ( stack ), register_grid, "Register" );
+    gtk_stack_add_named  ( GTK_STACK ( stack ), hubby_grid, "HUBBY" );
 
     /// ***
     gtk_widget_show_all ( window );
@@ -175,7 +162,7 @@ GtkWidget *Login_page ( GtkWidget *stack )
 
 
 
-     g_signal_connect (G_OBJECT(login_button), "clicked", G_CALLBACK(verification_login), NULL);
+     g_signal_connect (G_OBJECT(login_button), "clicked", G_CALLBACK(verification_login), stack);
 
 
     g_signal_connect ( back_button, "clicked", G_CALLBACK ( main_clbk ), stack );
@@ -185,7 +172,7 @@ GtkWidget *Login_page ( GtkWidget *stack )
 }
 
 
-void verification_login(GtkButton *button, gpointer data,GtkStack *stack){
+void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
 
     const gchar *user = gtk_entry_get_text(GTK_ENTRY(entry_username));
     const gchar *pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
@@ -193,9 +180,7 @@ void verification_login(GtkButton *button, gpointer data,GtkStack *stack){
     g_print("%s \n",user);
     g_print("%s \n",pass);
 
-
-    G_CALLBACK ( create_hubby );
-    //  gtk_stack_set_visible_child_full ( stack, "Hubby", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+     gtk_stack_set_visible_child_full ( stack, "HUBBY", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
     
  
 }
@@ -290,8 +275,6 @@ GtkWidget *Register_page ( GtkWidget *stack )
 
 void main_clbk ( GtkButton *button, GtkStack *stack )
 {
-    g_return_if_fail ( GTK_IS_BUTTON ( button ) );
-    g_return_if_fail ( GTK_IS_STACK ( stack ) );
 
     gtk_stack_set_visible_child_full ( stack, "Main", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
 }
