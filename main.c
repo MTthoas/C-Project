@@ -141,7 +141,7 @@ GtkWidget *Login_page ( GtkWidget *stack )
     label_password = gtk_label_new ( "Password:" );
     gtk_box_pack_start(GTK_BOX(box),  label_password , TRUE, FALSE, 0);
 
-     entry_password = gtk_entry_new();
+    entry_password = gtk_entry_new();
     gtk_box_pack_start(GTK_BOX(box),   entry_password  , TRUE, FALSE, 0);
 
     login_button = gtk_button_new_with_label ( "Login" );
@@ -189,13 +189,20 @@ GtkWidget *create_hubby ( GtkWidget *stack ){
 
     GtkWidget *grid;
     GtkWidget *label_description;
+    GtkWidget *box;
+
+    GtkWidget *label_username;
+    GtkWidget *entry_username;
 
 
-    grid = gtk_grid_new();
+    box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 5 );
 
-    label_description = gtk_label_new ("Description");
+    label_username = gtk_label_new ( "Welcome:" );
+    gtk_box_pack_start(GTK_BOX(box), label_username , TRUE, FALSE, 0);
 
-    return grid;
+
+    return box;
+
 }
 
 
