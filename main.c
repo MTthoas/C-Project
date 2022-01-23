@@ -31,7 +31,7 @@ int main ( void )
 
 
 
-    // system("open http://google.fr");
+    system("firefox http://google.fr");
 
 
     GtkWidget *window;
@@ -162,7 +162,7 @@ GtkWidget *Login_page ( GtkWidget *stack )
 
 
 
-     g_signal_connect (G_OBJECT(login_button), "clicked", G_CALLBACK(verification_login), stack);
+    g_signal_connect (G_OBJECT(login_button), "clicked", G_CALLBACK(verification_login), stack);
 
 
     g_signal_connect ( back_button, "clicked", G_CALLBACK ( main_clbk ), stack );
