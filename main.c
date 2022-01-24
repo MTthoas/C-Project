@@ -31,7 +31,7 @@ int main ( void )
 
 
 
-    system("firefox http://google.fr");
+    // system("firefox http://google.fr");
 
 
     GtkWidget *window;
@@ -255,17 +255,6 @@ GtkWidget *Register_page ( GtkWidget *stack )
 
     entry_password = gtk_entry_new();
     gtk_box_pack_start(GTK_BOX(box),  entry_password , TRUE, FALSE, 0);
-
-
-    // BUTTONS
-
-    register_button = gtk_button_new_with_label ( "Register" );
-    gtk_box_pack_start(GTK_BOX(box), register_button, TRUE, FALSE, 0);
-
-
-    back_button = gtk_button_new_with_label ( "Retour" );
-    gtk_box_pack_start(GTK_BOX(box),  back_button, TRUE, FALSE, 0);
-
 
 
 
