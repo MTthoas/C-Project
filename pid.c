@@ -5,6 +5,8 @@
 #include <time.h>
 #include <unistd.h>
 
+// char MozillaTime(const char *MYIDTXT){};
+
 
 bool ExistingFile(const char *MYIDTXT){
 
@@ -30,8 +32,10 @@ return 0;
 
 }
 
-int main(void) {
-  FILE *p,*p2;
+
+char MozillaTime(const char *MYIDTXT){
+
+  FILE *p;
   char ligne[1024];
   char data[1024];
   double time_diff;
@@ -42,23 +46,12 @@ int main(void) {
   bool block_time = false;
   int index_time;
   
-
-  char *myID = "3500";
   bool exist_file_for_this_id;
   double data_from_file;
 
     time_t debut;
     time_t end;
 
-      // MY ID.TXT
-
-      char *MYIDTXT = "3000.txt";
-
-
-
-    // Voir si le fichier existe
-
-    ExistingFile(MYIDTXT);
 
 
   for(i=0; block == false; i++ ){
@@ -74,8 +67,6 @@ int main(void) {
        index++;
 
        if(index == 1){
-
-               printf("%s",ligne);
 
                if(strstr(ligne, needed) != NULL ){
 
@@ -117,11 +108,11 @@ int main(void) {
 
                       // INSERT TO MYIDTXT
 
-                    p2 = fopen(MYIDTXT, "w");
+                    p = fopen(MYIDTXT, "w");
                     
-                    fprintf(p2,"Durée = %lf",time_diff);
+                    fprintf(p,"Durée = %lf",time_diff);
 
-                    fclose(p2);
+                    fclose(p);
                     // printf("End of program");
 
                     // block = true;
@@ -137,5 +128,23 @@ int main(void) {
 
 
   }
+
+
+
+
+
+
+  
+};
+
+
+int main(void) {
+  
+      char *MYIDTXT = "3000.txt";
+
+    ExistingFile(MYIDTXT);
+
+    MozillaTime(MYIDTXT);
+  
 
 }
