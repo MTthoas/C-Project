@@ -3,20 +3,62 @@
 #include <string.h>
 #include <stdbool.h> 
 #include <time.h>
+#include <unistd.h>
 
-int main() {
+
+bool ExistingFile(const char *MYIDTXT){
+
   FILE *p;
+
+  if( access (MYIDTXT, F_OK) != -1){
+
+    return true;
+
+  }else{
+
+
+    p = fopen(MYIDTXT, "w");
+                    
+    fprintf(p,"Durée = 0");
+
+    fclose(p);
+
+return false;
+  }
+
+return 0;
+
+}
+
+int main(void) {
+  FILE *p,*p2;
   char ligne[1024];
+  char data[1024];
+  double time_diff;
   int index = 0;
   char *needed = "/usr/lib/firefox-esr/firefox-esr";
   int i;
   bool block = false;
   bool block_time = false;
-  int index_time = 0;
-  int myID = 3200;
+  int index_time;
+  
+
+  char *myID = "3500";
+  bool exist_file_for_this_id;
+  double data_from_file;
 
     time_t debut;
     time_t end;
+
+      // MY ID.TXT
+
+      char *MYIDTXT = "3000.txt";
+
+
+
+    // Voir si le fichier existe
+
+    ExistingFile(MYIDTXT);
 
 
   for(i=0; block == false; i++ ){
@@ -46,15 +88,40 @@ int main() {
                    block_time = true;
                    
 
-
                }else{
 
                     if(index_time == 0){
 
                       end = time(NULL);
-                    double time_diff = difftime(end,debut);
 
-                    printf("Durée = %lf s\n",time_diff);
+        
+                      time_diff = difftime(end,debut);
+                  
+                    printf("OUUUUUUUUUUUUUUUUI");
+
+                    // Fetch some data..
+
+                      p = fopen(MYIDTXT, "r");
+
+                      while(fgets(data, sizeof data, p)){
+
+                        sscanf(data, "Durée = %lf", &data_from_file);
+                        printf("%s", data_from_file);
+
+                      }
+
+                      fclose(p);
+
+                      
+                      time_diff = time_diff + data_from_file;
+
+                      // INSERT TO MYIDTXT
+
+                    p2 = fopen(MYIDTXT, "w");
+                    
+                    fprintf(p2,"Durée = %lf",time_diff);
+
+                    fclose(p2);
                     // printf("End of program");
 
                     // block = true;
