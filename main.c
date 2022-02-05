@@ -87,9 +87,6 @@ int main ( void )
     gtk_main ();
 }
 
-
-
-
 GtkWidget *create_main ( GtkWidget *stack )
 {
     GtkWidget *box;
@@ -204,8 +201,6 @@ GtkWidget *create_hubby ( GtkWidget *stack ){
     return box;
 
 }
-
-
 
 GtkWidget *Register_page ( GtkWidget *stack )
 {

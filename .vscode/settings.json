@@ -3,6 +3,11 @@
     "files.associations": {
         "unistd.h": "c",
         "time.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "pthread.h": "c",
+        "stdio.h": "c",
+        "types.h": "c",
+        "signal.h": "c",
+        "wait.h": "c"
     }
 }
