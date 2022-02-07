@@ -28,11 +28,7 @@ void verification_login(GtkButton *button,GtkStack *stack, gpointer data);
 
 int main ( void )
 {
-
-
-
     // system("firefox http://google.fr");
-
 
     GtkWidget *window;
     GtkWidget *main;
@@ -59,6 +55,7 @@ int main ( void )
 
         gtk_window_set_default_size ( GTK_WINDOW ( window ), 300, 300 );
         gtk_container_set_border_width ( GTK_CONTAINER ( window ), 50 );
+        gtk_window_set_resizable(GTK_WINDOW(window),FALSE);
 
     /// *** Create the Box
     box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 5 );
@@ -86,6 +83,9 @@ int main ( void )
     gtk_widget_show_all ( window );
     gtk_main ();
 }
+
+
+
 
 GtkWidget *create_main ( GtkWidget *stack )
 {
@@ -169,6 +169,9 @@ GtkWidget *Login_page ( GtkWidget *stack )
 }
 
 
+
+
+
 void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
 
     const gchar *user = gtk_entry_get_text(GTK_ENTRY(entry_username));
@@ -182,39 +185,111 @@ void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
  
 }
 
+
+
+
+
 GtkWidget *create_hubby ( GtkWidget *stack ){
 
     GtkWidget *grid;
     GtkWidget *label_description;
     GtkWidget *box;
+    GtkWidget *box2;
+    GtkWidget *box3;
+    
 
-    GtkWidget *label_username;
-    GtkWidget *entry_username;
+    GtkWidget *label_three;
+    GtkWidget *label_two;
+    GtkWidget *label_one;
+
+    GtkWidget *label_one_id;
+    GtkWidget *label_one_mdp;
+
+    GtkWidget *label_two_id;
+    GtkWidget *label_two_mdp;
+
+    GtkWidget *label_three_id;
+    GtkWidget *label_three_mdp;
 
 
-    box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 5 );
 
-    label_username = gtk_label_new ( "Welcome:" );
-    gtk_box_pack_start(GTK_BOX(box), label_username , TRUE, FALSE, 0);
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3); 
+    box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 
+    label_description = gtk_label_new("GESTIONNAIRE DE MOT DE PASSE");
+
+
+    label_one = gtk_label_new("Amazon" );
+    label_one_id = gtk_label_new("exemple@gmail.com");
+    label_one_mdp = gtk_label_new("TryingSome");
+
+
+    label_two = gtk_label_new("Youtube" );
+    label_two_id = gtk_label_new("exemple@gmail.com");
+    label_two_mdp = gtk_label_new("TryingSome");
+
+    label_three = gtk_label_new("Youtube" );
+    label_three_id = gtk_label_new("exemple@gmail.com");
+    label_three_mdp = gtk_label_new("TryingSome");
+
+
+
+    // label_three = gtk_label_new("U.GG");
+
+    gtk_box_pack_start(GTK_BOX(box),label_description, TRUE, TRUE, 0);
+
+    gtk_box_pack_start(GTK_BOX(box),box2, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box2), box3, TRUE, TRUE, 0);
+
+    gtk_box_pack_start(GTK_BOX(box3), label_one , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_one_id , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_one_mdp , TRUE, TRUE, 0);
+
+    gtk_box_pack_start(GTK_BOX(box3), label_two , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_two_id , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_two_mdp , TRUE, TRUE, 0);
+
+      gtk_box_pack_start(GTK_BOX(box3), label_three , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_three_id , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_three_mdp , TRUE, TRUE, 0);
+
+     GtkWidget *scrolled_window ;
+
+    
+    scrolled_window=gtk_scrolled_window_new(NULL, NULL);
+
+
+
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
+    gtk_widget_set_size_request(scrolled_window,1, 1);
+
+    gtk_box_pack_start(GTK_BOX(box2), scrolled_window , FALSE, FALSE, 0);
+
+    gtk_widget_show(scrolled_window);
+   
 
     return box;
 
 }
 
+
+
+
+
 GtkWidget *Register_page ( GtkWidget *stack )
 {
     GtkWidget *box;
-    GtkWidget *register_button;
-    GtkWidget *back_button;
 
     GtkWidget *label_username;
     GtkWidget *entry_username;
 
-
     GtkWidget *label_password;
     GtkWidget *entry_password;
 
+
+    GtkWidget *register_button;
+    GtkWidget *back_button;
 
     GtkWidget *label_email;
     GtkWidget *entry_email;
@@ -251,6 +326,15 @@ GtkWidget *Register_page ( GtkWidget *stack )
     entry_password = gtk_entry_new();
     gtk_box_pack_start(GTK_BOX(box),  entry_password , TRUE, FALSE, 0);
 
+    // FOR LOGIN
+
+    register_button = gtk_button_new_with_label ( "S'inscrire" );
+    gtk_box_pack_start(GTK_BOX(box),  register_button , TRUE, FALSE, 0);
+
+    // FOR RETOUR
+
+    back_button = gtk_button_new_with_label ( "Retour" );
+    gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
 
 
 
