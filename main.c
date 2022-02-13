@@ -124,6 +124,7 @@ GtkWidget *create_main ( GtkWidget *stack )
     gtk_box_pack_start ( GTK_BOX ( box ), login_button,    TRUE, TRUE, 0 );
     gtk_box_pack_start ( GTK_BOX ( box ), register_button, TRUE, TRUE, 0 );
 
+
     /// ***
     g_signal_connect ( login_button,    "clicked", G_CALLBACK ( login_clbk ),    stack );
     g_signal_connect ( register_button, "clicked", G_CALLBACK ( register_clbk ), stack );
@@ -209,6 +210,7 @@ GtkWidget *choice_menu( GtkWidget *stack ){
     GtkWidget *hubby_button;
     GtkWidget *time_apps_button;
     GtkWidget *close_button;
+    GtkWidget *back_button;
 
     /// *** Create the Box
     box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 10 );
@@ -224,6 +226,16 @@ GtkWidget *choice_menu( GtkWidget *stack ){
     /// ***
     g_signal_connect ( hubby_button,  "clicked", G_CALLBACK ( hubby_clbk ),    stack );
     g_signal_connect ( time_apps_button, "clicked", G_CALLBACK ( time_clbk ), stack );
+
+
+
+    back_button = gtk_button_new_with_label ( "Retour" );
+    gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
+
+    g_signal_connect ( back_button, "clicked", G_CALLBACK ( main_clbk ), stack );
+
+
+        gtk_widget_set_size_request(back_button, 10, 4);
 
     /// *** Return the Box
     return box;
