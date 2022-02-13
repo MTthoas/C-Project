@@ -10,6 +10,8 @@ GtkWidget *Login_page       ( GtkWidget *stack );
 GtkWidget *Register_page    ( GtkWidget *stack );
 GtkWidget *create_hubby     ( GtkWidget *stack );
 GtkWidget *choice_menu      ( GtkWidget *stack );
+GtkWidget *time_menu      ( GtkWidget *stack );
+
 
 GtkWidget *object;
 
@@ -17,6 +19,7 @@ void login_clbk    ( GtkButton *button, GtkStack *stack );
 void main_clbk     ( GtkButton *button, GtkStack *stack );
 void register_clbk ( GtkButton *button, GtkStack *stack );
 void hubby_clbk ( GtkButton *button, GtkStack *stack);
+void time_clbk ( GtkButton *button, GtkStack *stack  );
 void choice_clbk ( GtkButton *button, GtkStack *stack  );
 
 void database       (int proc, char *user, char *password);
@@ -43,6 +46,8 @@ int main ( void )
     GtkWidget *box;
     GtkWidget *hubby_grid;
     GtkWidget *choice_grid;
+    GtkWidget *time_grid;
+    
 
     // Initialisation
 
@@ -83,13 +88,15 @@ int main ( void )
         register_grid = Register_page ( stack );
         hubby_grid    = create_hubby  ( stack );
         choice_grid   = choice_menu   ( stack );
+        time_grid     = time_menu     ( stack );
 
     /// **
     gtk_stack_add_named  ( GTK_STACK ( stack ), main,          "Main"     );
     gtk_stack_add_named  ( GTK_STACK ( stack ), login_grid,    "Login"    );
     gtk_stack_add_named  ( GTK_STACK ( stack ), register_grid, "Register" );
     gtk_stack_add_named  ( GTK_STACK ( stack ), hubby_grid,    "HUBBY"    );
-    gtk_stack_add_named  ( GTK_STACK ( stack ), choice_grid,   "CHOICE"     );
+    gtk_stack_add_named  ( GTK_STACK ( stack ), choice_grid,   "CHOICE"   );
+    gtk_stack_add_named  ( GTK_STACK ( stack ), time_grid,    "TIME"     );
 
     /// ***
     gtk_widget_show_all ( window );
@@ -216,9 +223,32 @@ GtkWidget *choice_menu( GtkWidget *stack ){
 
     /// ***
     g_signal_connect ( hubby_button,  "clicked", G_CALLBACK ( hubby_clbk ),    stack );
-    // g_signal_connect ( time_apps_button, "clicked", G_CALLBACK ( register_clbk ), stack );
+    g_signal_connect ( time_apps_button, "clicked", G_CALLBACK ( time_clbk ), stack );
 
     /// *** Return the Box
+    return box;
+
+
+
+}
+
+GtkWidget *time_menu( GtkWidget *stack ){
+
+      GtkWidget *box;
+
+
+    /// *** Create the Box
+    box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 10 );
+
+    GtkWidget *back_button;
+
+
+    back_button = gtk_button_new_with_label ( "Retour" );
+    gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
+
+    g_signal_connect ( back_button, "clicked", G_CALLBACK ( choice_clbk ), stack );
+
+
     return box;
 
 
@@ -448,4 +478,11 @@ void register_clbk ( GtkButton *button, GtkStack *stack )
 void choice_clbk ( GtkButton *button, GtkStack *stack  ){
 
     gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+}
+
+
+void time_clbk ( GtkButton *button, GtkStack *stack  ){
+
+    gtk_stack_set_visible_child_full ( stack, "TIME", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+
 }
