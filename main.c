@@ -8,12 +8,16 @@
 GtkWidget *create_main      ( GtkWidget *stack );
 GtkWidget *Login_page       ( GtkWidget *stack );
 GtkWidget *Register_page    ( GtkWidget *stack );
-GtkWidget *create_hubby ( GtkWidget *stack );
+GtkWidget *create_hubby     ( GtkWidget *stack );
+GtkWidget *choice_menu      ( GtkWidget *stack );
+
 GtkWidget *object;
 
 void login_clbk    ( GtkButton *button, GtkStack *stack );
 void main_clbk     ( GtkButton *button, GtkStack *stack );
 void register_clbk ( GtkButton *button, GtkStack *stack );
+void hubby_clbk ( GtkButton *button, GtkStack *stack);
+void choice_clbk ( GtkButton *button, GtkStack *stack  );
 
 void database       (int proc, char *user, char *password);
 void clicked_clbk   ( GtkButton *button, GtkStack *stack );
@@ -28,6 +32,7 @@ void verification_login(GtkButton *button,GtkStack *stack, gpointer data);
 
 int main ( void )
 {
+
     // system("firefox http://google.fr");
 
     GtkWidget *window;
@@ -37,12 +42,14 @@ int main ( void )
     GtkWidget *stack;
     GtkWidget *box;
     GtkWidget *hubby_grid;
+    GtkWidget *choice_grid;
 
     // Initialisation
 
         gtk_init ( NULL, NULL );
 
     // CREATION FENETRE
+
 
         window = gtk_window_new ( GTK_WINDOW_TOPLEVEL );
     
@@ -53,31 +60,36 @@ int main ( void )
 
     // PARAMETRES DE LA FENETRE 
 
-        gtk_window_set_default_size ( GTK_WINDOW ( window ), 300, 300 );
-        gtk_container_set_border_width ( GTK_CONTAINER ( window ), 50 );
+        gtk_window_set_default_size ( GTK_WINDOW ( window ), 400, 200 );
+        gtk_container_set_border_width ( GTK_CONTAINER ( window ), 30 );
         gtk_window_set_resizable(GTK_WINDOW(window),FALSE);
 
     /// *** Create the Box
-    box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 5 );
+
+        box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 5 );
 
     /// *** Create a Stack
-    stack = gtk_stack_new ();
-    gtk_widget_set_halign ( stack, GTK_ALIGN_CENTER );
-    gtk_box_set_center_widget ( GTK_BOX ( box ), stack );
 
-    gtk_container_add ( GTK_CONTAINER ( window ), box );
+        stack = gtk_stack_new ();
+        gtk_widget_set_halign ( stack, GTK_ALIGN_CENTER );
+        gtk_box_set_center_widget ( GTK_BOX ( box ), stack );
+
+        gtk_container_add ( GTK_CONTAINER ( window ), box );
 
     /// ***
-    main  = create_main  ( stack );
-    login_grid    = Login_page  ( stack );
-    register_grid = Register_page ( stack );
-    hubby_grid = create_hubby ( stack );
+
+        main          = create_main   ( stack );
+        login_grid    = Login_page    ( stack );
+        register_grid = Register_page ( stack );
+        hubby_grid    = create_hubby  ( stack );
+        choice_grid   = choice_menu   ( stack );
 
     /// **
-    gtk_stack_add_named  ( GTK_STACK ( stack ), main,     "Main" );
-    gtk_stack_add_named  ( GTK_STACK ( stack ), login_grid,    "Login" );
+    gtk_stack_add_named  ( GTK_STACK ( stack ), main,          "Main"     );
+    gtk_stack_add_named  ( GTK_STACK ( stack ), login_grid,    "Login"    );
     gtk_stack_add_named  ( GTK_STACK ( stack ), register_grid, "Register" );
-    gtk_stack_add_named  ( GTK_STACK ( stack ), hubby_grid, "HUBBY" );
+    gtk_stack_add_named  ( GTK_STACK ( stack ), hubby_grid,    "HUBBY"    );
+    gtk_stack_add_named  ( GTK_STACK ( stack ), choice_grid,   "CHOICE"     );
 
     /// ***
     gtk_widget_show_all ( window );
@@ -180,11 +192,38 @@ void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
     g_print("%s \n",user);
     g_print("%s \n",pass);
 
-     gtk_stack_set_visible_child_full ( stack, "HUBBY", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
-    
- 
+     gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
 }
 
+
+GtkWidget *choice_menu( GtkWidget *stack ){
+
+      GtkWidget *box;
+    GtkWidget *hubby_button;
+    GtkWidget *time_apps_button;
+    GtkWidget *close_button;
+
+    /// *** Create the Box
+    box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 10 );
+
+    /// *** Create the Buttons
+    hubby_button    = gtk_button_new_with_label ( "HUBBY" );
+    time_apps_button = gtk_button_new_with_label ( "TIME SPENT ON APPS" );
+
+    /// *** Add them to the Box
+    gtk_box_pack_start ( GTK_BOX ( box ), hubby_button,    TRUE, TRUE, 0 );
+    gtk_box_pack_start ( GTK_BOX ( box ), time_apps_button, TRUE, TRUE, 0 );
+
+    /// ***
+    g_signal_connect ( hubby_button,  "clicked", G_CALLBACK ( hubby_clbk ),    stack );
+    // g_signal_connect ( time_apps_button, "clicked", G_CALLBACK ( register_clbk ), stack );
+
+    /// *** Return the Box
+    return box;
+
+
+
+}
 
 
 
@@ -196,11 +235,15 @@ GtkWidget *create_hubby ( GtkWidget *stack ){
     GtkWidget *box;
     GtkWidget *box2;
     GtkWidget *box3;
+    GtkWidget *pSeparator;
     
 
     GtkWidget *label_three;
     GtkWidget *label_two;
     GtkWidget *label_one;
+    GtkWidget *label_four;
+    GtkWidget *label_five;
+
 
     GtkWidget *label_one_id;
     GtkWidget *label_one_mdp;
@@ -211,14 +254,23 @@ GtkWidget *create_hubby ( GtkWidget *stack ){
     GtkWidget *label_three_id;
     GtkWidget *label_three_mdp;
 
+    GtkWidget *label_four_id;
+    GtkWidget *label_four_mdp;
 
 
-    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3); 
-    box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
+    GtkWidget *label_five_id;
+    GtkWidget *label_five_mdp;
+        GtkWidget *back_button;
+
+
+
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2); 
+    box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 
     label_description = gtk_label_new("GESTIONNAIRE DE MOT DE PASSE");
-
+    pSeparator = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
+    
 
     label_one = gtk_label_new("Amazon" );
     label_one_id = gtk_label_new("exemple@gmail.com");
@@ -233,42 +285,61 @@ GtkWidget *create_hubby ( GtkWidget *stack ){
     label_three_id = gtk_label_new("exemple@gmail.com");
     label_three_mdp = gtk_label_new("TryingSome");
 
+   label_four = gtk_label_new("Youtube" );
+    label_four_id = gtk_label_new("exemple@gmail.com");
+    label_four_mdp = gtk_label_new("TryingSome");
 
+    label_five = gtk_label_new("Youtube" );
+    label_five_id = gtk_label_new("exemple@gmail.com");
+     label_five_mdp = gtk_label_new("TryingSome");
+
+    
 
     // label_three = gtk_label_new("U.GG");
 
     gtk_box_pack_start(GTK_BOX(box),label_description, TRUE, TRUE, 0);
 
-    gtk_box_pack_start(GTK_BOX(box),box2, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(box2), box3, TRUE, TRUE, 0);
-
     gtk_box_pack_start(GTK_BOX(box3), label_one , TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(box3), label_one_id , TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(box3), label_one_mdp , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), pSeparator, TRUE, FALSE, 0);
+
+
 
     gtk_box_pack_start(GTK_BOX(box3), label_two , TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(box3), label_two_id , TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(box3), label_two_mdp , TRUE, TRUE, 0);
+    
 
-      gtk_box_pack_start(GTK_BOX(box3), label_three , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_three , TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(box3), label_three_id , TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(box3), label_three_mdp , TRUE, TRUE, 0);
 
-     GtkWidget *scrolled_window ;
+    gtk_box_pack_start(GTK_BOX(box3), label_four , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_four_id , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_four_mdp , TRUE, TRUE, 0);
 
-    
-    scrolled_window=gtk_scrolled_window_new(NULL, NULL);
+    gtk_box_pack_start(GTK_BOX(box3), label_five , TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), label_five_id , TRUE, TRUE, 0);
 
-
-
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
-    gtk_widget_set_size_request(scrolled_window,1, 1);
-
-    gtk_box_pack_start(GTK_BOX(box2), scrolled_window , FALSE, FALSE, 0);
-
-    gtk_widget_show(scrolled_window);
    
+         GtkWidget *scrolled_window ;
 
+        scrolled_window=gtk_scrolled_window_new(NULL, NULL);
+        gtk_box_pack_start(GTK_BOX(box),scrolled_window,TRUE,TRUE, 0);
+
+        gtk_container_add(GTK_CONTAINER(scrolled_window),box2);
+
+        gtk_box_pack_start(GTK_BOX(box2), box3, TRUE,TRUE, 0);
+
+
+
+    back_button = gtk_button_new_with_label ( "Retour" );
+    gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
+
+    g_signal_connect ( back_button, "clicked", G_CALLBACK ( choice_clbk ), stack );
+
+   
     return box;
 
 }
@@ -347,6 +418,10 @@ GtkWidget *Register_page ( GtkWidget *stack )
     return box;
 }
 
+void hubby_clbk ( GtkButton *button, GtkStack *stack){
+    
+      gtk_stack_set_visible_child_full ( stack, "HUBBY", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+}
 
 void main_clbk ( GtkButton *button, GtkStack *stack )
 {
@@ -356,8 +431,7 @@ void main_clbk ( GtkButton *button, GtkStack *stack )
 
 void login_clbk ( GtkButton *button, GtkStack *stack )
 {
-    // g_return_if_fail ( GTK_IS_BUTTON ( button ) );
-    // g_return_if_fail ( GTK_IS_STACK ( stack ) );
+
 
 
     gtk_stack_set_visible_child_full ( stack, "Login", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
@@ -365,8 +439,13 @@ void login_clbk ( GtkButton *button, GtkStack *stack )
 
 void register_clbk ( GtkButton *button, GtkStack *stack )
 {
-    // g_return_if_fail ( GTK_IS_BUTTON ( button ) );
-    // g_return_if_fail ( GTK_IS_STACK ( stack ) );
+    
 
     gtk_stack_set_visible_child_full ( stack, "Register", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+}
+
+
+void choice_clbk ( GtkButton *button, GtkStack *stack  ){
+
+    gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
 }

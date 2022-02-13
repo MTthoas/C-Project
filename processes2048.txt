@@ -1,3 +1,0 @@
-matthias  109428  0.0  0.0   2420   576 pts/0    S+   20:04   0:00 sh -c ps aux | grep 2048 | tee processes2048.txt
-matthias  109430  0.0  0.0   6196  2400 pts/0    S+   20:04   0:00 grep 2048
-matthias  109431  0.0  0.0   5712   576 pts/0    S+   20:04   0:00 tee processes2048.txt
