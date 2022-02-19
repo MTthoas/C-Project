@@ -8,6 +8,8 @@
         "stdio.h": "c",
         "types.h": "c",
         "signal.h": "c",
-        "wait.h": "c"
+        "wait.h": "c",
+        "curlpages.h": "c",
+        "gtk.h": "c"
     }
 }

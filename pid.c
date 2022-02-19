@@ -14,7 +14,7 @@ bool Exit = false;
 char ExistingFile(){
 
   FILE *p;  
-  char *MYIDTXT = "3100.txt";
+  char *MYIDTXT = "./txt/3100.txt";
 
   if( access (MYIDTXT, F_OK) != -1){
 
@@ -52,7 +52,7 @@ int threadMain(void * needed) {
     bool block = false;
     bool block_time = false;
     int index_time = 0;
-    char *MYIDTXT = "3100.txt";
+    char *MYIDTXT = "./txt/3100.txt";
     char *Environnement;
 
 
@@ -75,13 +75,13 @@ int threadMain(void * needed) {
 
             if(needed == "/usr/lib/firefox-esr/firefox-esr" ){
 
-                p = popen("ps aux | grep firefox | tee processes.txt", "r");
+                p = popen("ps aux | grep firefox | tee ./txt/processes.txt", "r");
                 Environnement = "Mozilla";
             }
 
             if(needed == "gnome-2048"){
 
-                p = popen("ps aux | grep 2048 | tee processes2048.txt", "r");
+                p = popen("ps aux | grep 2048 | tee ./txt/processes2048.txt", "r");
                 Environnement = "2048";
                 
             }
