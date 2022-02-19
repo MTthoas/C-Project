@@ -6,17 +6,15 @@
 #include "curlPages.h"
 
 
-void fonction_curl(char *site){
+int fonction_curl(char * site){
 
-
-printf("yeees");
 
 CURL *curl = curl_easy_init();
+CURLcode response;
  
     if (!curl)
     {
-        fprintf(stderr,"[-] Failed Initializing Curl\n");
-        exit(-1);
+        // fprintf(stderr,"[-] Failed Initializing Curl\n");
     }
  
     CURLcode res;
@@ -25,14 +23,13 @@ CURL *curl = curl_easy_init();
      
     if (res != CURLE_OK)
     {
-        fprintf(stderr,"[-] Could Not Fetch Webpage\n[+] Error : %s\n",curl_easy_strerror(res));
-        exit(-2);
+        // fprintf(stderr,"[-] Could Not Fetch Webpage\n[+] Error : %s\n",curl_easy_strerror(res));
     }
  
     curl_easy_cleanup(curl);
 
-}
+    return(response == CURLE_OK) ? 1 : 0;
 
-int main(); 
+}
 
 

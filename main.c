@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include <curl/curl.h>
 #include <stdlib.h>
 #include <string.h>
 #include <gtk-3.0/gtk/gtk.h>
 #include <unistd.h>
+#include <curl/curl.h>
+#include <curl/easy.h>
 
 #include "curlPages.h"
 
@@ -38,10 +39,6 @@ void verification_login(GtkButton *button,GtkStack *stack, gpointer data);
 int main ( void )
 {
 
-
-    char *exemple = "exemple.com";
-
-    void fonction_curl(char *exemple);
 
     // system("firefox http://google.fr");
 
@@ -139,6 +136,8 @@ GtkWidget *create_main ( GtkWidget *stack )
     /// *** Return the Box
     return box;
 }
+
+
 
 GtkWidget *Login_page ( GtkWidget *stack )
 {
@@ -313,6 +312,9 @@ GtkWidget *create_hubby ( GtkWidget *stack ){
 
 
 
+
+
+
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
     box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2); 
     box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
@@ -470,6 +472,16 @@ GtkWidget *Register_page ( GtkWidget *stack )
 void hubby_clbk ( GtkButton *button, GtkStack *stack){
     
       gtk_stack_set_visible_child_full ( stack, "HUBBY", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+
+
+    char *exemple = "youtube.com";
+    
+    int result = fonction_curl(exemple);
+
+     if (result)
+        printf("Success!\n");
+    else
+        printf("Failed...\n");
 }
 
 void main_clbk ( GtkButton *button, GtkStack *stack )

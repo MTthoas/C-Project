@@ -3,6 +3,6 @@
 
 // extern void fonction_curl(char site);
 
-void fonction_curl(char *site);
+int fonction_curl(char * site);
 
 #endif
