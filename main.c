@@ -312,7 +312,7 @@ GtkWidget *create_hubby ( GtkWidget *stack ){
 
 
 
-
+    printf("coucou");
 
 
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
@@ -434,6 +434,7 @@ GtkWidget *Register_page ( GtkWidget *stack )
     // FOR EMAIL
 
     label_email = gtk_label_new ( "Email:" );
+  
     gtk_box_pack_start(GTK_BOX(box), label_email, TRUE, FALSE, 0);
 
     entry_email = gtk_entry_new();
