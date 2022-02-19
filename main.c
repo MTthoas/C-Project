@@ -478,7 +478,7 @@ void verification_register(GtkButton *button, GtkStack *stack, gpointer data){
 
     if (enter == 1){  
          gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
-     }
+     } 
 }
 
 
