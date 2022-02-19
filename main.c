@@ -5,6 +5,8 @@
 #include <gtk-3.0/gtk/gtk.h>
 #include <unistd.h>
 
+#include "curlPages.h"
+
 GtkWidget *create_main      ( GtkWidget *stack );
 GtkWidget *Login_page       ( GtkWidget *stack );
 GtkWidget *Register_page    ( GtkWidget *stack );
@@ -35,6 +37,11 @@ void verification_login(GtkButton *button,GtkStack *stack, gpointer data);
 
 int main ( void )
 {
+
+
+    char *exemple = "exemple.com";
+
+    void fonction_curl(char *exemple);
 
     // system("firefox http://google.fr");
 
