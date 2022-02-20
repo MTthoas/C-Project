@@ -8,10 +8,10 @@
 
 #include "curlPages.h"
 
-GtkWidget *create_main      ( GtkWidget *stack );
+void *create_main      ( GtkWidget *stack );
 GtkWidget *Login_page       ( GtkWidget *stack );
 GtkWidget *Register_page    ( GtkWidget *stack );
-GtkWidget *create_hubby     ( GtkWidget *stack );
+void *create_hubby     ( GtkWidget *stack );
 GtkWidget *choice_menu      ( GtkWidget *stack );
 GtkWidget *time_menu      ( GtkWidget *stack );
 
@@ -110,7 +110,7 @@ int main ( void )
 
 
 
-GtkWidget *create_main ( GtkWidget *stack )
+void *create_main ( GtkWidget *stack )
 {
     GtkWidget *box;
     GtkWidget *login_button;
@@ -276,7 +276,7 @@ GtkWidget *time_menu( GtkWidget *stack ){
 
 
 
-GtkWidget *create_hubby ( GtkWidget *stack ){
+void *create_hubby ( GtkWidget *stack ){
 
     GtkWidget *grid;
     GtkWidget *label_description;
@@ -311,7 +311,7 @@ GtkWidget *create_hubby ( GtkWidget *stack ){
         GtkWidget *back_button;
 
 
-
+    int exit = 0;
 
 
 
@@ -323,7 +323,17 @@ GtkWidget *create_hubby ( GtkWidget *stack ){
     pSeparator = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
     
 
+    // while(exit != -1 ){
+
+    //     printf("oue");
+
+    // }
+
+
+
     label_one = gtk_label_new("Amazon" );
+
+
     label_one_id = gtk_label_new("exemple@gmail.com");
     label_one_mdp = gtk_label_new("TryingSome");
 
