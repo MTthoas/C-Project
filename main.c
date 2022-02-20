@@ -34,6 +34,9 @@ void quit_clbk      ( void );
 GtkWidget *entry_username;
 GtkWidget *entry_password;
 
+GtkWidget *entry_username2;
+GtkWidget *entry_password2;
+
 void verification_login(GtkButton *button,GtkStack *stack, gpointer data);
 void verification_register(GtkButton *button,GtkStack *stack, gpointer data);
 
@@ -144,23 +147,23 @@ GtkWidget *Login_page ( GtkWidget *stack )
     GtkWidget *login_button;
     GtkWidget *back_button;
 
-    GtkWidget *label_username;
-    GtkWidget *label_password;
+    GtkWidget *label_username2;
+    GtkWidget *label_password2;
 
 
     box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 5 );
 
     
-    label_username = gtk_label_new ( "Username:" );
-    gtk_box_pack_start(GTK_BOX(box), label_username , TRUE, FALSE, 0);
+    label_username2 = gtk_label_new ( "Username:" );
+    gtk_box_pack_start(GTK_BOX(box), label_username2 , TRUE, FALSE, 0);
 
     entry_username = gtk_entry_new();
     gtk_box_pack_start(GTK_BOX(box),   entry_username , TRUE, FALSE, 0);
 
 
 
-    label_password = gtk_label_new ( "Password:" );
-    gtk_box_pack_start(GTK_BOX(box),  label_password , TRUE, FALSE, 0);
+    label_password2= gtk_label_new ( "Password:" );
+    gtk_box_pack_start(GTK_BOX(box),  label_password2 , TRUE, FALSE, 0);
 
     entry_password = gtk_entry_new();
     gtk_box_pack_start(GTK_BOX(box),   entry_password  , TRUE, FALSE, 0);
@@ -192,25 +195,6 @@ GtkWidget *Login_page ( GtkWidget *stack )
     return box;
 }
 
-
-
-
-
-void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
-    
-    int enter;
-    const gchar *user = gtk_entry_get_text(GTK_ENTRY(entry_username));
-    const gchar *pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
-    fflush(stdin);
-    enter = database(2,user, pass);
-    g_print("%d \n", enter);
-    g_print("user : %s \n",user);
-    g_print("password :%s \n",pass);
-
-    if (enter == 1){  
-         gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
-     }
-}
 
 
 GtkWidget *choice_menu( GtkWidget *stack ){
@@ -403,18 +387,15 @@ GtkWidget *Register_page ( GtkWidget *stack )
 {
     GtkWidget *box;
 
-    GtkWidget *label_username;
-    GtkWidget *entry_username;
-
-    GtkWidget *label_password;
-    GtkWidget *entry_password;
-
+    GtkWidget *label_username2;
+ 
+    GtkWidget *label_password2;
 
     GtkWidget *register_button;
     GtkWidget *back_button;
 
-    GtkWidget *label_email;
-    GtkWidget *entry_email;
+    GtkWidget *label_email2;
+    GtkWidget *entry_email2;
 
 
     /// *** Create the BOX
@@ -424,11 +405,11 @@ GtkWidget *Register_page ( GtkWidget *stack )
     // FOR USERNAME 
 
 
-    label_username = gtk_label_new ( "Username:" );
-    gtk_box_pack_start(GTK_BOX(box), label_username , TRUE, FALSE, 0);
+    label_username2 = gtk_label_new ( "Username:" );
+    gtk_box_pack_start(GTK_BOX(box), label_username2, TRUE, FALSE, 0);
 
-    entry_username = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(box),  entry_username  , TRUE, FALSE, 0);
+    entry_username2 = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box),  entry_username2  , TRUE, FALSE, 0);
 
 
     
@@ -436,11 +417,11 @@ GtkWidget *Register_page ( GtkWidget *stack )
 
     // FOR PASSWORD
 
-    label_password = gtk_label_new ( "Password:" );
-    gtk_box_pack_start(GTK_BOX(box), label_password, TRUE, FALSE, 0);
+    label_password2= gtk_label_new ( "Password:" );
+    gtk_box_pack_start(GTK_BOX(box), label_password2, TRUE, FALSE, 0);
 
-    entry_password = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(box),  entry_password , TRUE, FALSE, 0);
+    entry_password2 = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box),  entry_password2 , TRUE, FALSE, 0);
 
     // FOR REGISTER
 
@@ -468,8 +449,8 @@ GtkWidget *Register_page ( GtkWidget *stack )
 void verification_register(GtkButton *button, GtkStack *stack, gpointer data){
     
     int enter;
-    const gchar *userR = gtk_entry_get_text(GTK_ENTRY(entry_username));
-    const gchar *passR = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    const gchar *userR = gtk_entry_get_text(GTK_ENTRY(entry_username2));
+    const gchar *passR = gtk_entry_get_text(GTK_ENTRY(entry_password2));
     fflush(stdin);
     enter = database(1,userR, passR);
     g_print("%d \n", enter);
@@ -483,9 +464,29 @@ void verification_register(GtkButton *button, GtkStack *stack, gpointer data){
 
 
 
+void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
+    
+    int enter2;
+
+    const gchar *user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar *pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fflush(stdin);
+    enter2 = database(2,user, pass);
+    g_print("%d \n", enter2);
+    g_print("user : %s \n",user);
+    g_print("password :%s \n",pass);
+
+    if (enter2 == 1){  
+         gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+     }
+}
+
+
+
 void hubby_clbk ( GtkButton *button, GtkStack *stack){
     
       gtk_stack_set_visible_child_full ( stack, "HUBBY", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+
 }
 
 void main_clbk ( GtkButton *button, GtkStack *stack )
@@ -530,7 +531,7 @@ int database(int proc, const gchar *user, const gchar *password){
     MYSQL_ROW row;
     
     char *Server = "blindly.fr";
-    char *Utilisateur = "yuki"; // yuki
+    char *Utilisateur = "matthias"; // yuki
     char *MotDePasse = "azerty"; // azerty
     char *BaseDeDonnee = "projet"; // projet
     char requete[300];
