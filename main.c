@@ -11,7 +11,7 @@
 void *create_main      ( GtkWidget *stack );
 GtkWidget *Login_page       ( GtkWidget *stack );
 GtkWidget *Register_page    ( GtkWidget *stack );
-void *create_hubby     ( GtkWidget *stack );
+void create_hubby     ( GtkWidget *stack );
 GtkWidget *choice_menu      ( GtkWidget *stack );
 GtkWidget *time_menu      ( GtkWidget *stack );
 
@@ -90,7 +90,7 @@ int main ( void )
         main          = create_main   ( stack );
         login_grid    = Login_page    ( stack );
         register_grid = Register_page ( stack );
-        hubby_grid    = create_hubby  ( stack );
+        // hubby_grid    = create_hubby  ( stack );
         choice_grid   = choice_menu   ( stack );
         time_grid     = time_menu     ( stack );
 
@@ -98,7 +98,7 @@ int main ( void )
     gtk_stack_add_named  ( GTK_STACK ( stack ), main,          "Main"     );
     gtk_stack_add_named  ( GTK_STACK ( stack ), login_grid,    "Login"    );
     gtk_stack_add_named  ( GTK_STACK ( stack ), register_grid, "Register" );
-    gtk_stack_add_named  ( GTK_STACK ( stack ), hubby_grid,    "HUBBY"    );
+    // gtk_stack_add_named  ( GTK_STACK ( stack ), hubby_grid,    "HUBBY"    );
     gtk_stack_add_named  ( GTK_STACK ( stack ), choice_grid,   "CHOICE"   );
     gtk_stack_add_named  ( GTK_STACK ( stack ), time_grid,    "TIME"     );
 
@@ -230,7 +230,7 @@ GtkWidget *choice_menu( GtkWidget *stack ){
     gtk_box_pack_start ( GTK_BOX ( box ), time_apps_button, TRUE, TRUE, 0 );
 
     /// ***
-    g_signal_connect ( hubby_button,  "clicked", G_CALLBACK ( hubby_clbk ),    stack );
+    g_signal_connect ( hubby_button,  "clicked", G_CALLBACK (create_hubby),    stack );
     g_signal_connect ( time_apps_button, "clicked", G_CALLBACK ( time_clbk ), stack );
 
 
@@ -276,7 +276,7 @@ GtkWidget *time_menu( GtkWidget *stack ){
 
 
 
-void *create_hubby ( GtkWidget *stack ){
+void create_hubby ( GtkWidget *stack ){
 
     GtkWidget *grid;
     GtkWidget *label_description;
@@ -314,10 +314,20 @@ void *create_hubby ( GtkWidget *stack ){
     int exit = 0;
 
 
+    GtkWidget *window;
 
-    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
-    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2); 
-    box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window), "HUBBY");
+    gtk_window_set_default_size(GTK_WINDOW(window), 300, 500);
+     gtk_container_set_border_width ( GTK_CONTAINER ( window ), 30 );
+    gtk_window_set_resizable(GTK_WINDOW(window),FALSE);
+
+
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0); 
+    box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+
+     gtk_container_add(GTK_CONTAINER(window), box);
 
     label_description = gtk_label_new("GESTIONNAIRE DE MOT DE PASSE");
     pSeparator = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
@@ -395,13 +405,13 @@ void *create_hubby ( GtkWidget *stack ){
 
 
 
-    back_button = gtk_button_new_with_label ( "Retour" );
-    gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
+    // back_button = gtk_button_new_with_label ( "Retour" );
+    // gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
 
-    g_signal_connect ( back_button, "clicked", G_CALLBACK ( choice_clbk ), stack );
+    // g_signal_connect ( back_button, "clicked", G_CALLBACK ( choice_clbk ), stack );
 
    
-    return box;
+   gtk_widget_show_all(window);
 
 }
 
