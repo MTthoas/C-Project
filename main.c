@@ -471,7 +471,7 @@ GtkWidget *Register_page ( GtkWidget *stack )
 
 void verification_register(GtkButton *button, GtkStack *stack, gpointer data){
     
-    int enter;
+      int enter;
     const gchar *userR = gtk_entry_get_text(GTK_ENTRY(entry_username2));
     const gchar *passR = gtk_entry_get_text(GTK_ENTRY(entry_password2));
     fflush(stdin);
@@ -482,7 +482,14 @@ void verification_register(GtkButton *button, GtkStack *stack, gpointer data){
 
     if (enter == 1){  
          gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
-     } 
+     } else if (enter == 0) {
+        printf("Champ vide ou pas assez long");
+
+     }  else if (enter== 3){
+         //Entrer invalide
+        printf("Mot de passe incorrecte");
+
+     }
 }
 
 
@@ -548,8 +555,7 @@ void time_clbk ( GtkButton *button, GtkStack *stack  ){
 
 int database(int proc, const gchar *user, const gchar *password){
     
-
-    MYSQL *mysql;
+ MYSQL *mysql;
     MYSQL_RES *result = NULL;
     MYSQL_ROW row;
     
@@ -558,10 +564,12 @@ int database(int proc, const gchar *user, const gchar *password){
     char *MotDePasse = "azerty"; // azerty
     char *BaseDeDonnee = "projet"; // projet
     char requete[300];
+
     int temp;
     int chose;
     int *id;
     int good = 1;
+    int error =0;
 
     char website[200];
     char mail[200];
@@ -584,11 +592,16 @@ int database(int proc, const gchar *user, const gchar *password){
                 break;
             case 1: /* Inscription */
                 printf("inscription");
-                sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');",user,password);
-                mysql_query(mysql, requete);
+                if (strlen(user) > 5 && strlen(password) > 5){
+                    sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');",user,password);
+                    mysql_query(mysql, requete);
+                    return good;
+                } else {
+                    return error;
+                }
                 break;
+
             case 2: /*Connexion*/
-               
                 sprintf(requete, "SELECT* FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
