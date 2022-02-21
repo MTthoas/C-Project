@@ -1,12 +1,13 @@
 #include <stdio.h>
+#include <curl/curl.h>
 #include <stdlib.h>
 #include <string.h>
 #include <gtk-3.0/gtk/gtk.h>
 #include <unistd.h>
-#include <curl/curl.h>
-#include <curl/easy.h>
+#include <mysql.h>
+#include <crypt.h>
+#include <stddef.h>
 
-#include "curlPages.h"
 
 void *create_main      ( GtkWidget *stack );
 GtkWidget *Login_page       ( GtkWidget *stack );
@@ -18,6 +19,7 @@ GtkWidget *time_menu      ( GtkWidget *stack );
 
 GtkWidget *object;
 
+int database      (int proc, const gchar *user, const gchar *password);
 void login_clbk    ( GtkButton *button, GtkStack *stack );
 void main_clbk     ( GtkButton *button, GtkStack *stack );
 void register_clbk ( GtkButton *button, GtkStack *stack );
@@ -25,7 +27,6 @@ void hubby_clbk ( GtkButton *button, GtkStack *stack);
 void time_clbk ( GtkButton *button, GtkStack *stack  );
 void choice_clbk ( GtkButton *button, GtkStack *stack  );
 
-void database       (int proc, char *user, char *password);
 void clicked_clbk   ( GtkButton *button, GtkStack *stack );
 void quit_clbk      ( void );
 
@@ -33,12 +34,14 @@ void quit_clbk      ( void );
 GtkWidget *entry_username;
 GtkWidget *entry_password;
 
-void verification_login(GtkButton *button,GtkStack *stack, gpointer data);
+GtkWidget *entry_username2;
+GtkWidget *entry_password2;
 
+void verification_login(GtkButton *button,GtkStack *stack, gpointer data);
+void verification_register(GtkButton *button,GtkStack *stack, gpointer data);
 
 int main ( void )
 {
-
 
     // system("firefox http://google.fr");
 
@@ -137,8 +140,6 @@ void *create_main ( GtkWidget *stack )
     return box;
 }
 
-
-
 GtkWidget *Login_page ( GtkWidget *stack )
 {
     GtkWidget *box;
@@ -146,23 +147,23 @@ GtkWidget *Login_page ( GtkWidget *stack )
     GtkWidget *login_button;
     GtkWidget *back_button;
 
-    GtkWidget *label_username;
-    GtkWidget *label_password;
+    GtkWidget *label_username2;
+    GtkWidget *label_password2;
 
 
     box = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 5 );
 
     
-    label_username = gtk_label_new ( "Username:" );
-    gtk_box_pack_start(GTK_BOX(box), label_username , TRUE, FALSE, 0);
+    label_username2 = gtk_label_new ( "Username:" );
+    gtk_box_pack_start(GTK_BOX(box), label_username2 , TRUE, FALSE, 0);
 
     entry_username = gtk_entry_new();
     gtk_box_pack_start(GTK_BOX(box),   entry_username , TRUE, FALSE, 0);
 
 
 
-    label_password = gtk_label_new ( "Password:" );
-    gtk_box_pack_start(GTK_BOX(box),  label_password , TRUE, FALSE, 0);
+    label_password2= gtk_label_new ( "Password:" );
+    gtk_box_pack_start(GTK_BOX(box),  label_password2 , TRUE, FALSE, 0);
 
     entry_password = gtk_entry_new();
     gtk_box_pack_start(GTK_BOX(box),   entry_password  , TRUE, FALSE, 0);
@@ -194,20 +195,6 @@ GtkWidget *Login_page ( GtkWidget *stack )
     return box;
 }
 
-
-
-
-
-void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
-
-    const gchar *user = gtk_entry_get_text(GTK_ENTRY(entry_username));
-    const gchar *pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
-
-    g_print("%s \n",user);
-    g_print("%s \n",pass);
-
-     gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
-}
 
 
 GtkWidget *choice_menu( GtkWidget *stack ){
@@ -423,18 +410,15 @@ GtkWidget *Register_page ( GtkWidget *stack )
 {
     GtkWidget *box;
 
-    GtkWidget *label_username;
-    GtkWidget *entry_username;
-
-    GtkWidget *label_password;
-    GtkWidget *entry_password;
-
+    GtkWidget *label_username2;
+ 
+    GtkWidget *label_password2;
 
     GtkWidget *register_button;
     GtkWidget *back_button;
 
-    GtkWidget *label_email;
-    GtkWidget *entry_email;
+    GtkWidget *label_email2;
+    GtkWidget *entry_email2;
 
 
     /// *** Create the BOX
@@ -444,31 +428,25 @@ GtkWidget *Register_page ( GtkWidget *stack )
     // FOR USERNAME 
 
 
-    label_username = gtk_label_new ( "Username:" );
-    gtk_box_pack_start(GTK_BOX(box), label_username , TRUE, FALSE, 0);
+    label_username2 = gtk_label_new ( "Username:" );
+    gtk_box_pack_start(GTK_BOX(box), label_username2, TRUE, FALSE, 0);
 
-    entry_username = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(box),  entry_username  , TRUE, FALSE, 0);
+    entry_username2 = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box),  entry_username2  , TRUE, FALSE, 0);
 
 
-    // FOR EMAIL
-
-    label_email = gtk_label_new ( "Email:" );
-    gtk_box_pack_start(GTK_BOX(box), label_email, TRUE, FALSE, 0);
-
-    entry_email = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(box),  entry_email  , TRUE, FALSE, 0);
+    
 
 
     // FOR PASSWORD
 
-    label_password = gtk_label_new ( "Password:" );
-    gtk_box_pack_start(GTK_BOX(box), label_password, TRUE, FALSE, 0);
+    label_password2= gtk_label_new ( "Password:" );
+    gtk_box_pack_start(GTK_BOX(box), label_password2, TRUE, FALSE, 0);
 
-    entry_password = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(box),  entry_password , TRUE, FALSE, 0);
+    entry_password2 = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box),  entry_password2 , TRUE, FALSE, 0);
 
-    // FOR LOGIN
+    // FOR REGISTER
 
     register_button = gtk_button_new_with_label ( "S'inscrire" );
     gtk_box_pack_start(GTK_BOX(box),  register_button , TRUE, FALSE, 0);
@@ -483,25 +461,55 @@ GtkWidget *Register_page ( GtkWidget *stack )
 
 
     /// ***
+
+    g_signal_connect (G_OBJECT(register_button), "clicked", G_CALLBACK(verification_register), stack);
     g_signal_connect ( back_button, "clicked", G_CALLBACK ( main_clbk ), stack );
 
     /// ***
     return box;
 }
 
+void verification_register(GtkButton *button, GtkStack *stack, gpointer data){
+    
+    int enter;
+    const gchar *userR = gtk_entry_get_text(GTK_ENTRY(entry_username2));
+    const gchar *passR = gtk_entry_get_text(GTK_ENTRY(entry_password2));
+    fflush(stdin);
+    enter = database(1,userR, passR);
+    g_print("%d \n", enter);
+    g_print("user : %s \n",userR);
+    g_print("password :%s \n",passR);
+
+    if (enter == 1){  
+         gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+     } 
+}
+
+
+
+void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
+    
+    int enter2;
+
+    const gchar *user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar *pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fflush(stdin);
+    enter2 = database(2,user, pass);
+    g_print("%d \n", enter2);
+    g_print("user : %s \n",user);
+    g_print("password :%s \n",pass);
+
+    if (enter2 == 1){  
+         gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
+     }
+}
+
+
+
 void hubby_clbk ( GtkButton *button, GtkStack *stack){
     
       gtk_stack_set_visible_child_full ( stack, "HUBBY", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
 
-
-    char *exemple = "youtube.com";
-    
-    int result = fonction_curl(exemple);
-
-     if (result)
-        printf("Success!\n");
-    else
-        printf("Failed...\n");
 }
 
 void main_clbk ( GtkButton *button, GtkStack *stack )
@@ -537,3 +545,126 @@ void time_clbk ( GtkButton *button, GtkStack *stack  ){
     gtk_stack_set_visible_child_full ( stack, "TIME", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
 
 }
+
+int database(int proc, const gchar *user, const gchar *password){
+    
+
+    MYSQL *mysql;
+    MYSQL_RES *result = NULL;
+    MYSQL_ROW row;
+    
+    char *Server = "blindly.fr";
+    char *Utilisateur = "matthias"; // yuki
+    char *MotDePasse = "azerty"; // azerty
+    char *BaseDeDonnee = "projet"; // projet
+    char requete[300];
+    int temp;
+    int chose;
+    int *id;
+    int good = 1;
+
+    char website[200];
+    char mail[200];
+    char nocrypt[200];
+    char *passwordCrypt[200];
+    unsigned int i = 1;
+    unsigned int num_champs = 0;
+
+    mysql = mysql_init(NULL);
+    /*Connexion a la base de donnée*/
+
+    if(!mysql_real_connect(mysql,Server,Utilisateur,MotDePasse,BaseDeDonnee,0,NULL,0)){
+        g_print("Connexion error : %s" , mysql_error(mysql));
+    } else{
+                /* Utilisation du proc pour définir quel requete*/
+        switch (proc){
+
+            case 0: // Aucune requete
+                printf("Ping");
+                break;
+            case 1: /* Inscription */
+                printf("inscription");
+                sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');",user,password);
+                mysql_query(mysql, requete);
+                break;
+            case 2: /*Connexion*/
+               
+                sprintf(requete, "SELECT* FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
+                mysql_query(mysql, requete);
+                result = mysql_use_result(mysql);
+                num_champs = mysql_num_fields(result);
+                while((row = mysql_fetch_row(result)))
+                {
+                    unsigned long *lengths;
+                    lengths = mysql_fetch_lengths(result);
+                    for(i = 2; i < num_champs; i++)
+                        {
+                            if(row[i] != NULL){
+                                printf("It's good\n");
+                                return good;
+                            } else{
+                            } 
+                        }
+                    
+                    }
+                break;
+            case 3: /*List des mot de passe*/
+                sprintf(requete, "SELECT * FROM Compte WHERE pseudo = '%s';", user);
+                mysql_query(mysql, requete);
+                result = mysql_use_result(mysql);
+                num_champs = mysql_num_fields(result);
+                while((row = mysql_fetch_row(result)))
+                {
+                    unsigned long *lengths;
+                    lengths = mysql_fetch_lengths(result);
+                    for(i = 0; i < num_champs; i++)
+                        {
+                            if(row[i] != NULL){
+                                printf("[%.*s] ", (int) lengths[i], row[i] ? row[i] : "NULL");
+                                
+                            }
+                        }
+                    printf("\n");
+                }
+                mysql_free_result(result);
+                printf("Souhaitez vous choisir un mot de passe ?\n1-Oui\n2-Non");
+                scanf("%d",&chose);
+                
+                if(chose == 1){ // Choix du mot de passe a décrypter
+                    printf("Quel est le numéro ? ");
+                    scanf("%s", id);
+                    sprintf(requete,"SELECT * FROM Compte WHERE id = '%s' AND pseudo = '%s';", id,user);
+                    mysql_query(mysql, requete);
+                    result = mysql_use_result(mysql);
+                    
+                } else{
+                    
+                }
+                
+                
+                break;
+            case 4: /* Ajout d'un mot de passe */
+                fflush(stdin);
+                printf("Veuillez renseigner le nom du sites\n");
+                scanf("%s",&website[0]);
+                printf("Veuillez renseigner votre mail\n");
+                scanf("%s",&mail[0]);
+                printf("Et votre mot de passe\n");
+                scanf("%d",&temp);
+                scanf("%s",&nocrypt[0]);
+               // passwordCrypt[0] = crypt(nocrypt, "AAA");
+                                
+                
+                sprintf(requete, "INSERT INTO   Compte(pseudo,nameWeb,mail,passwordsite)VALUES('%s','%s','%s','%s');",user,website,mail,passwordCrypt[0]);
+                mysql_query(mysql, requete);
+            
+               // home(user, password);
+                break;
+            case 99:
+                printf("Connexion réussi");
+                }
+    
+                
+        
+        }
+    }
