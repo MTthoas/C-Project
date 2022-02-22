@@ -471,7 +471,7 @@ GtkWidget *Register_page ( GtkWidget *stack )
 
 void verification_register(GtkButton *button, GtkStack *stack, gpointer data){
     
-      int enter;
+   int enter;
     const gchar *userR = gtk_entry_get_text(GTK_ENTRY(entry_username2));
     const gchar *passR = gtk_entry_get_text(GTK_ENTRY(entry_password2));
     fflush(stdin);
@@ -479,6 +479,7 @@ void verification_register(GtkButton *button, GtkStack *stack, gpointer data){
     g_print("%d \n", enter);
     g_print("user : %s \n",userR);
     g_print("password :%s \n",passR);
+
 
     if (enter == 1){  
          gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
@@ -496,6 +497,7 @@ void verification_register(GtkButton *button, GtkStack *stack, gpointer data){
 
 void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
     
+     
     int enter2;
 
     const gchar *user = gtk_entry_get_text(GTK_ENTRY(entry_username));
@@ -508,7 +510,11 @@ void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
 
     if (enter2 == 1){  
          gtk_stack_set_visible_child_full ( stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
-     }
+    } else if(enter2 == 0) {
+        printf("User/Mot de passe incorrecter");
+    }
+
+
 }
 
 
@@ -555,12 +561,12 @@ void time_clbk ( GtkButton *button, GtkStack *stack  ){
 
 int database(int proc, const gchar *user, const gchar *password){
     
- MYSQL *mysql;
+  MYSQL *mysql;
     MYSQL_RES *result = NULL;
     MYSQL_ROW row;
     
     char *Server = "blindly.fr";
-    char *Utilisateur = "matthias"; // yuki
+    char *Utilisateur = "yuki"; // yuki
     char *MotDePasse = "azerty"; // azerty
     char *BaseDeDonnee = "projet"; // projet
     char requete[300];
