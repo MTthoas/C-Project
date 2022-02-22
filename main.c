@@ -518,7 +518,6 @@ void verification_login(GtkButton *button, GtkStack *stack, gpointer data){
 }
 
 
-
 void hubby_clbk ( GtkButton *button, GtkStack *stack){
     
       gtk_stack_set_visible_child_full ( stack, "HUBBY", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN );
