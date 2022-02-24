@@ -27,6 +27,8 @@ GtkWidget * time_menu(GtkWidget * stack);
 
 GtkWidget * object;
 
+
+unsigned char * fetch_database(const gchar *user,const gchar *password);
 int data_entry_hubby(const gint * userID,
     const gchar * title,
         const gchar * email,
@@ -436,16 +438,25 @@ void start_box(void) {
         // GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
         NULL);
 
-    printf("ok");
     fflush(stdin);
+
+    // Fetch id 
+
+    unsigned char * fetch_id;
+
+    fetch_id = fetch_database("matthias", "matthias");
+    g_print("ID : %s \n", fetch_id);
+
+    g_print("\n");
+
+
 
 
     // Fetching data
 
     int enter;
 
-    enter = database(5, "4", "matthias");
-    g_print("%d \n", enter);
+    enter = database(5, fetch_id, "matthias");
 
 
 
@@ -603,10 +614,8 @@ void time_clbk(GtkButton * button, GtkStack * stack) {
 
 }
 
-int data_entry_hubby(const gint * userID,
-    const gchar * title,
-        const gchar * email,
-            const gchar * mdp) {
+int data_entry_hubby(const gint * userID,const gchar * title,const gchar * email,const gchar * mdp){
+
 
     MYSQL * mysql;
     MYSQL_RES * result = NULL;
@@ -653,6 +662,72 @@ int data_entry_hubby(const gint * userID,
 }
 
 
+unsigned char * fetch_database(const gchar *user,const gchar *password){
+
+    MYSQL * mysql;
+    MYSQL_RES * result = NULL;
+    MYSQL_ROW row;
+
+    char * Server = "blindly.fr";
+    char * Utilisateur = "matthias"; // yuki
+    char * MotDePasse = "azerty"; // azerty
+    char * BaseDeDonnee = "projet"; // projet
+    char requete[300];
+
+    int temp;
+    int chose;
+    int * id;
+    int good = 1;
+    int error = 0;
+
+    char website[200];
+    char mail[200];
+    char nocrypt[200];
+    char * passwordCrypt[200];
+    unsigned int i = 1;
+    unsigned int num_champs = 0;
+
+     unsigned char * valeur;
+
+    mysql = mysql_init(NULL);
+    /*Connexion a la base de donnée*/
+
+    if (!mysql_real_connect(mysql, Server, Utilisateur, MotDePasse, BaseDeDonnee, 0, NULL, 0)) {
+        g_print("Connexion error : %s", mysql_error(mysql));
+    } else {
+
+        sprintf(requete, "SELECT id FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
+                mysql_query(mysql, requete);
+                result = mysql_use_result(mysql);
+
+                //On récupère le nombre de champs
+                num_champs = mysql_num_fields(result);
+
+                //Tant qu'il y a encore un résultat ...
+                while ((row = mysql_fetch_row(result))) {
+                    //On déclare un pointeur long non signé pour y stocker la taille des valeurs
+                    unsigned long * lengths;
+
+                    //On stocke ces tailles dans le pointeur
+                    lengths = mysql_fetch_lengths(result);
+
+                    //On fait une boucle pour avoir la valeur de chaque champs
+                    for (i = 0; i < num_champs; i++) {
+                        //On ecrit toutes les valeurs
+                        // printf("[%.*s] ", (int) lengths[i], row[i] ? row[i] : "NULL");
+                         return valeur = row[i];
+                         
+                    }
+                    printf("\n");
+
+                }
+
+
+                mysql_free_result(result);
+                mysql_close(mysql);
+
+    }
+}
 
 
 
@@ -684,6 +759,8 @@ int database(int proc,
     char * passwordCrypt[200];
     unsigned int i = 1;
     unsigned int num_champs = 0;
+
+    int resultat;
 
     mysql = mysql_init(NULL);
     /*Connexion a la base de donnée*/
@@ -728,10 +805,6 @@ int database(int proc,
 
                 }
 
-
-                break;
-            case 3:
-                /*List des mot de passe*/
                 sprintf(requete, "SELECT * FROM Compte WHERE pseudo = '%s';", user);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
@@ -792,7 +865,6 @@ int database(int proc,
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
 
-                //On récupère le nombre de champs
                 num_champs = mysql_num_fields(result);
 
                 //Tant qu'il y a encore un résultat ...
@@ -811,13 +883,10 @@ int database(int proc,
                     printf("\n");
                 }
 
+                mysql_free_result(result);
+                mysql_close(mysql);
+
                 break;
-
-            case 6:
-
-
-            break;
-
 
 
             case 99:
