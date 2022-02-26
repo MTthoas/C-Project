@@ -28,10 +28,11 @@ GtkWidget * time_menu(GtkWidget * stack);
 GtkWidget * object;
 
 
-unsigned char * fetch_database_id(const gchar *user,const gchar *password);
-int data_entry_hubby(const gint * userID, const gchar * title, const gchar * email, const gchar * mdp);
-int database(int proc, const gchar * user, const gchar * password);
-unsigned char * fetch_data(const gchar *userID);
+unsigned char * fetch_database_data(int proc,const gchar *user,const gchar *password);
+// int data_entry_hubby(const gint * userID, const gchar * title, const gchar * email, const gchar * mdp);
+
+int database(int proc, const gchar * user, const gchar * password, const gchar * email, const gchar * title);
+// unsigned char * fetch_data(const gchar *userID);
 
 
 void login_clbk(GtkButton * button, GtkStack * stack);
@@ -55,8 +56,15 @@ GtkWidget * entry_password2;
 void verification_login(GtkButton * button, GtkStack * stack, gpointer data);
 void verification_register(GtkButton * button, GtkStack * stack, gpointer data);
 
-
 static GtkWidget * window;
+
+
+
+unsigned int mysql_result_nb = 0;
+
+
+
+
 
 int main(void) {
 
@@ -316,7 +324,7 @@ void create_hubby(GtkWidget * stack) {
 
        unsigned char * fetch_id;
 
-    fetch_id = fetch_database_id("matthias", "matthias");
+    fetch_id = fetch_database_data(0,"matthias", "matthias");
     g_print("ID : %s \n", fetch_id);
 
     g_print("\n");
@@ -326,9 +334,9 @@ void create_hubby(GtkWidget * stack) {
 
     // Fetching data
 
-    int enter;
+    unsigned char * enter;
 
-    enter = database(5, fetch_id, "matthias");
+    enter = fetch_database_data(5, fetch_id, "matthias");
 
 
 
@@ -450,28 +458,34 @@ void start_box(void) {
 
     fflush(stdin);
 
-    // Fetch id 
+// Fetch id 
 
     unsigned char * fetch_id;
+    fetch_id = fetch_database_data(0,"matthias", "matthias");
 
-    fetch_id = fetch_database_id("matthias", "matthias");
-    g_print("ID : %s \n", fetch_id);
+    // g_print("ID : %s \n", fetch_id);
+    // g_print("\n");
 
-    g_print("\n");
+// Fetching data
+
+    char **fetch_data_array;
+    fetch_data_array = (char**)fetch_database_data(1,fetch_id,"NULL");
+
+     for (unsigned int i = 0; i < mysql_result_nb; i++)
+     {
+        
+       puts(fetch_data_array[i]);
+
+       free(fetch_data_array[i]);
+
+     }
+
+   free(fetch_data_array);
 
 
 
+    
 
-    // Fetching data
-
-    unsigned char * fetch_data_array;
-
-    fetch_data_array = fetch_data(fetch_id);
-
-    // for (int i = 0; i <5; i++)
-    // {
-    //     printf("%s\n", fetch_data_array[i]);
-    // }
 
 
 }
@@ -544,7 +558,7 @@ void verification_register(GtkButton * button, GtkStack * stack, gpointer data) 
     const gchar * userR = gtk_entry_get_text(GTK_ENTRY(entry_username2));
     const gchar * passR = gtk_entry_get_text(GTK_ENTRY(entry_password2));
     fflush(stdin);
-    enter = database(1, userR, passR);
+    enter = database(1, userR, passR,"NULL","NULL");
     g_print("%d \n", enter);
     g_print("user : %s \n", userR);
     g_print("password :%s \n", passR);
@@ -571,7 +585,7 @@ void verification_login(GtkButton * button, GtkStack * stack, gpointer data) {
     const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
     const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
     fflush(stdin);
-    enter2 = database(2, user, pass);
+    enter2 = database(2, user, pass, "NULL", "NULL");
     g_print("%d \n", enter2);
     g_print("user : %s \n", user);
     g_print("password :%s \n", pass);
@@ -627,9 +641,7 @@ void time_clbk(GtkButton * button, GtkStack * stack) {
 
 
 
-
-int data_entry_hubby(const gint * userID,const gchar * title,const gchar * email,const gchar * mdp){
-
+unsigned char * fetch_database_data(int proc,const gchar *user,const gchar *password){
 
     MYSQL * mysql;
     MYSQL_RES * result = NULL;
@@ -654,54 +666,20 @@ int data_entry_hubby(const gint * userID,const gchar * title,const gchar * email
     unsigned int i = 1;
     unsigned int num_champs = 0;
 
-    mysql = mysql_init(NULL);
-    /*Connexion a la base de donnée*/
-
-    if (!mysql_real_connect(mysql, Server, Utilisateur, MotDePasse, BaseDeDonnee, 0, NULL, 0)) {
-        g_print("Connexion error : %s", mysql_error(mysql));
-    } else {
-
-        sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');", userID, title, email, email);
-        g_print("Connexion error : %s", mysql_error(mysql));
-        mysql_query(mysql, requete);
-        return good;
+    unsigned char * valeur;
+    unsigned char * fetch_userID;
+    unsigned char * fetch_data;
+    unsigned char * fetch_email;
+    unsigned char * fetch_mdp;
 
 
+    unsigned char  valeur_original;
+    unsigned char  fetch_userID_original;
+    unsigned char  fetch_data_original;
+    unsigned char  fetch_email_original;
+    unsigned char  fetch_mdp_original;
 
-    }
-
-
-
-
-}
-
-
-unsigned char * fetch_data(const gchar *userID){
-
-     MYSQL * mysql;
-    MYSQL_RES * result = NULL;
-    MYSQL_ROW row;
-
-    char * Server = "blindly.fr";
-    char * Utilisateur = "matthias"; // yuki
-    char * MotDePasse = "azerty"; // azerty
-    char * BaseDeDonnee = "projet"; // projet
-    char requete[300];
-
-    int temp;
-    int chose;
-    int * id;
-    int good = 1;
-    int error = 0;
-
-    char website[200];
-    char mail[200];
-    char nocrypt[200];
-    char * passwordCrypt[200];
-    unsigned int i = 1;
-    unsigned int num_champs = 0;
-
-   char resultat_table[20][20];
+    char* result_table[20];
 
     mysql = mysql_init(NULL);
     /*Connexion a la base de donnée*/
@@ -710,80 +688,15 @@ unsigned char * fetch_data(const gchar *userID){
         g_print("Connexion error : %s", mysql_error(mysql));
     } else {
 
-        
-                sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s'", userID);
-                mysql_query(mysql, requete);
-                result = mysql_use_result(mysql);
+        switch (proc) {
 
-                num_champs = mysql_num_fields(result);
+            case 0:
 
-                //Tant qu'il y a encore un résultat ...
-                while ((row = mysql_fetch_row(result))) {
-                    //On déclare un pointeur long non signé pour y stocker la taille des valeurs
-                    unsigned long * lengths;
+            // ---------- //
+            //  FETCH ID  //
+            // ---------- //
 
-                    //On stocke ces tailles dans le pointeur
-                    lengths = mysql_fetch_lengths(result);
-
-                    //On fait une boucle pour avoir la valeur de chaque champs
-                    for (i = 0; i < num_champs; i++) {
-                        //On ecrit toutes les valeurs
-                        // printf("[%.*s] ", (int) lengths[i], row[i] ? row[i] : "NULL");
-                        sprintf(resultat_table[i],"%s",row[i]);
-                    }
-                    printf("\n");
-                }
-
-                mysql_free_result(result);
-                mysql_close(mysql);
-
-                for (int i = 0; i <5; i++)
-                {
-                    printf("%s\n", resultat_table[i]);
-                }
-
-
-    }
-
-
-}
-
-
-unsigned char * fetch_database_id(const gchar *user,const gchar *password){
-
-    MYSQL * mysql;
-    MYSQL_RES * result = NULL;
-    MYSQL_ROW row;
-
-    char * Server = "blindly.fr";
-    char * Utilisateur = "matthias"; // yuki
-    char * MotDePasse = "azerty"; // azerty
-    char * BaseDeDonnee = "projet"; // projet
-    char requete[300];
-
-    int temp;
-    int chose;
-    int * id;
-    int good = 1;
-    int error = 0;
-
-    char website[200];
-    char mail[200];
-    char nocrypt[200];
-    char * passwordCrypt[200];
-    unsigned int i = 1;
-    unsigned int num_champs = 0;
-
-     unsigned char * valeur;
-
-    mysql = mysql_init(NULL);
-    /*Connexion a la base de donnée*/
-
-    if (!mysql_real_connect(mysql, Server, Utilisateur, MotDePasse, BaseDeDonnee, 0, NULL, 0)) {
-        g_print("Connexion error : %s", mysql_error(mysql));
-    } else {
-
-        sprintf(requete, "SELECT id FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
+                sprintf(requete, "SELECT id FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
 
@@ -813,16 +726,104 @@ unsigned char * fetch_database_id(const gchar *user,const gchar *password){
                 mysql_free_result(result);
                 mysql_close(mysql);
 
+            break;
+
+            case 1:
+
+            // ---------- //
+            // FETCH data //
+            // ---------- //
+
+                sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s'", user);
+                mysql_query(mysql, requete);
+                result = mysql_use_result(mysql);
+
+                mysql_result_nb = mysql_num_fields(result);
+
+                // char *data[20] = malloc(sizeof(char) * 400);
+                char **data = malloc(sizeof(char*) * 5);
+                
+                if (data == NULL)
+                {
+                    puts("data null");
+                    exit(1);
+                }
+
+
+
+                    for (int c = 0; c < 5; c++ )
+                    {
+
+                        data[c] = malloc(sizeof(char) * 51 );
+
+                        if (data[c] == NULL)
+                        {
+                            puts("exemple null");
+                            exit(1);
+
+                        }
+
+                    }
+
+
+                for (int k = 0; k < 20; k++)
+
+              
+                while ((row = mysql_fetch_row(result))) {
+                    
+                    unsigned long * lengths;
+        
+                    lengths = mysql_fetch_lengths(result);
+
+                    for (i = 0; i < mysql_result_nb; i++) {
+                 
+                        printf("[%.*s] ", (int) lengths[i],row[i] ? row[i] : "NULL");
+
+                        strcpy(data[i], row[i]);
+            
+                    }
+
+                    // puts(result_table[0]);
+
+                    printf("\n");
+                }
+
+
+        
+                mysql_free_result(result);
+                mysql_close(mysql);
+
+
+                return (unsigned char*) data;
+            
+
+                // for (int i = 0; i <5; i++)
+                // {
+                //     printf("%s\n", result_table[i]);
+                // }
+
+
+
+                // char* arrayReturnData = malloc(sizeof(int)*size);
+                 
+
+
+                // strcpy(result_table,result_table_returned);
+
+
+
+
+
+
+
+            break;
+
+        }
+
     }
 }
 
-
-
-
-
-int database(int proc,
-    const gchar * user,
-        const gchar * password) {
+int database(int proc, const gchar * user, const gchar * password, const gchar * email, const gchar * title){
 
     MYSQL * mysql;
     MYSQL_RES * result = NULL;
@@ -839,7 +840,6 @@ int database(int proc,
     int * id;
     int good = 1;
     int error = 0;
-
     char website[200];
     char mail[200];
     char nocrypt[200];
@@ -890,12 +890,8 @@ int database(int proc,
                         } else {}
                     }
 
-                  
 
-             
-
-                break;
-      lengths = mysql_fetch_lengths(result);
+                    lengths = mysql_fetch_lengths(result);
                     for (i = 0; i < num_champs; i++) {
                         if (row[i] != NULL) {
 
@@ -915,6 +911,7 @@ int database(int proc,
                     sprintf(requete, "SELECT * FROM Compte WHERE id = '%s' AND pseudo = '%s';", id, user);
                     mysql_query(mysql, requete);
                     result = mysql_use_result(mysql);
+                    
 
                 } else {
 
@@ -938,7 +935,19 @@ int database(int proc,
                 sprintf(requete, "INSERT INTO   Compte(pseudo,nameWeb,mail,passwordsite)VALUES('%s','%s','%s','%s');", user, website, mail, passwordCrypt[0]);
                 mysql_query(mysql, requete);
 
+                    mysql_close(mysql);
+
                 // home(user, password);
+                break;
+
+
+                case 5:
+
+                   sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');", user, title, email, email);
+                    g_print("Connexion error : %s", mysql_error(mysql));
+                    mysql_query(mysql, requete);
+                    return good;
+
                 break;
 
             case 99:
