@@ -16,6 +16,8 @@
 
 #include <stddef.h>
 
+#include "curlPages.h"
+
 
 void * create_main(GtkWidget * stack);
 GtkWidget * Login_page(GtkWidget * stack);
@@ -30,17 +32,13 @@ GtkWidget * object;
  GtkWidget *window_hubby;
 GtkWidget *window_enable_data;
 
+char buffer[100];
 
-unsigned char * fetch_database_data(int proc,
-    const gchar * user,
-        const gchar * password);
+
+unsigned char * fetch_database_data(int proc,const gchar * user, const gchar * password);
 // int data_entry_hubby(const gint * userID, const gchar * title, const gchar * email, const gchar * mdp);
 
-int database(int proc,
-    const gchar * user,
-        const gchar * password,
-            const gchar * email,
-                const gchar * title);
+int database(int proc,const gchar * user,const gchar * password,const gchar * email, const gchar * title);
 // unsigned char * fetch_data(const gchar *userID);
 
 
@@ -151,9 +149,6 @@ int main(void) {
     gtk_main();
 }
 
-
-
-
 void * create_main(GtkWidget * stack) {
 
 
@@ -165,6 +160,7 @@ void * create_main(GtkWidget * stack) {
     /// *** Create the Box
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
+  
     /// *** Create the Buttons
     login_button = gtk_button_new_with_label("Login");
     register_button = gtk_button_new_with_label("Register");
@@ -231,8 +227,6 @@ GtkWidget * Login_page(GtkWidget * stack) {
     /// ***
     return box;
 }
-
-
 
 GtkWidget * choice_menu(GtkWidget * stack) {
 
@@ -319,6 +313,8 @@ void create_hubby(GtkWidget * stack) {
     GtkWidget * label_email[50];
     GtkWidget * label_mdp[50];
     GtkWidget * Separator[50];
+     GtkWidget * label_state[50];
+     GtkWidget * label_title_gchar[50];
 
 
     MYSQL * mysql;
@@ -359,6 +355,8 @@ void create_hubby(GtkWidget * stack) {
 
 
     unsigned char * fetch_id;
+    const gchar *label_title_gchar;
+    
     fetch_id = fetch_database_data(0, "matthias", "matthias");
 
 
@@ -377,12 +375,30 @@ void create_hubby(GtkWidget * stack) {
 
         for (int i = 0; i < mysql_result_nb; i++) {
 
-             Separator[index] = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
-            label_id[index] = gtk_label_new(row[0]);
-            label_title[index] = gtk_label_new(row[1]);
-            label_email[index] = gtk_label_new(row[2]);
-            label_mdp[index] = gtk_label_new(row[3]);   
-                        
+            Separator[index] = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
+
+
+
+            label_title[index] = gtk_label_new(row[2]);
+
+
+      if(i == 1){
+
+            int checking_curl = fonction_curl(row[2]);
+
+            if(checking_curl == 1)
+            {
+                label_state[index] = gtk_label_new("Site ON");
+
+            }else{
+
+                label_state[index] = gtk_label_new("Site OFF");
+            }
+
+    }
+
+            label_email[index] = gtk_label_new(row[3]);
+            label_mdp[index] = gtk_label_new(row[4]);   
 
         }
 
@@ -393,8 +409,8 @@ void create_hubby(GtkWidget * stack) {
      for (int v = 0; v < index; v++) {
 
         gtk_box_pack_start(GTK_BOX(box3), Separator[v], TRUE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(box3), label_id[v], TRUE, TRUE, 0);
         gtk_box_pack_start(GTK_BOX(box3), label_title[v], TRUE, TRUE, 0);
+         gtk_box_pack_start(GTK_BOX(box3), label_state[v], TRUE, FALSE, 0);
         gtk_box_pack_start(GTK_BOX(box3), label_email[v], TRUE, TRUE, 0);
         gtk_box_pack_start(GTK_BOX(box3), label_mdp[v], TRUE, TRUE, 0);
 
@@ -410,10 +426,7 @@ void create_hubby(GtkWidget * stack) {
 
     // label_three = gtk_label_new("U.GG");
 
-    gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
-
-
-
+        gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
 
 
     GtkWidget * scrolled_window;
@@ -444,7 +457,6 @@ void create_hubby(GtkWidget * stack) {
     }
 }
 
-
 void start_box_clbk(GtkWidget *w){
 
     gtk_widget_destroy(w);
@@ -453,7 +465,6 @@ void start_box_clbk(GtkWidget *w){
 
 
 }
-
 
 void start_box(void) {
 
@@ -902,6 +913,10 @@ unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar *
 
 
                 break;
+
+
+
+
 
         }
 
