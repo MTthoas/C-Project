@@ -1,15 +1,44 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled",
-    "files.associations": {
-        "unistd.h": "c",
-        "time.h": "c",
-        "stdbool.h": "c",
-        "pthread.h": "c",
-        "stdio.h": "c",
-        "types.h": "c",
-        "signal.h": "c",
-        "wait.h": "c",
-        "curlpages.h": "c",
-        "gtk.h": "c"
-    }
+  "C_Cpp.errorSquiggles": "Disabled",
+  "files.associations": {
+    "unistd.h": "c",
+    "time.h": "c",
+    "stdbool.h": "c",
+    "pthread.h": "c",
+    "stdio.h": "c",
+    "types.h": "c",
+    "signal.h": "c",
+    "wait.h": "c",
+    "curlpages.h": "c",
+    "gtk.h": "c",
+    "functional": "c"
+  },
+  "C_Cpp_Runner.cCompilerPath": "gcc",
+  "C_Cpp_Runner.cppCompilerPath": "/usr/bin/g++",
+  "C_Cpp_Runner.debuggerPath": "/usr/bin/gdb",
+  "C_Cpp_Runner.cStandard": "",
+  "C_Cpp_Runner.cppStandard": "",
+  "C_Cpp_Runner.msvcBatchPath": "",
+  "C_Cpp_Runner.warnings": [
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic"
+  ],
+  "C_Cpp_Runner.enableWarnings": true,
+  "C_Cpp_Runner.warningsAsError": false,
+  "C_Cpp_Runner.compilerArgs": [],
+  "C_Cpp_Runner.linkerArgs": [],
+  "C_Cpp_Runner.includePaths": [],
+  "C_Cpp_Runner.includeSearch": [
+    "*",
+    "**/*"
+  ],
+  "C_Cpp_Runner.excludeSearch": [
+    "**/build",
+    "**/build/**",
+    "**/.*",
+    "**/.*/**",
+    "**/.vscode",
+    "**/.vscode/**"
+  ]
 }
