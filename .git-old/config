@@ -1,0 +1,22 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/MTthoas/C-Project.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "Matthias_On_Linux"]
+	remote = origin
+	merge = refs/heads/Matthias_On_Linux
+[user]
+	email = matthias.pecquery@gmail.com
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+[branch "Matthias"]
+	remote = origin
+	merge = refs/heads/Matthias
+[branch "Val-linux"]
+	remote = origin
+	merge = refs/heads/Val-linux
