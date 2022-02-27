@@ -27,6 +27,9 @@ GtkWidget * time_menu(GtkWidget * stack);
 
 GtkWidget * object;
 
+ GtkWidget *window_hubby;
+GtkWidget *window_enable_data;
+
 
 unsigned char * fetch_database_data(int proc,
     const gchar * user,
@@ -41,6 +44,8 @@ int database(int proc,
 // unsigned char * fetch_data(const gchar *userID);
 
 
+void verification_add_data(GtkWidget *w);
+void start_box_clbk(GtkWidget *w);
 void login_clbk(GtkButton * button, GtkStack * stack);
 void main_clbk(GtkButton * button, GtkStack * stack);
 void register_clbk(GtkButton * button, GtkStack * stack);
@@ -59,10 +64,15 @@ GtkWidget * entry_password;
 GtkWidget * entry_username2;
 GtkWidget * entry_password2;
 
+    GtkWidget * entry_title;
+    GtkWidget * entry_email;
+    GtkWidget * entry_mdp;
+
+
 void verification_login(GtkButton * button, GtkStack * stack, gpointer data);
 void verification_register(GtkButton * button, GtkStack * stack, gpointer data);
 
-static GtkWidget * window;
+static GtkWidget *pLabel;
 
 
 
@@ -145,6 +155,8 @@ int main(void) {
 
 
 void * create_main(GtkWidget * stack) {
+
+
     GtkWidget * box;
     GtkWidget * login_button;
     GtkWidget * register_button;
@@ -210,10 +222,6 @@ GtkWidget * Login_page(GtkWidget * stack) {
 
     /// ***
 
-    /// ***
-
-
-
 
     g_signal_connect(G_OBJECT(login_button), "clicked", G_CALLBACK(verification_login), stack);
 
@@ -227,6 +235,9 @@ GtkWidget * Login_page(GtkWidget * stack) {
 
 
 GtkWidget * choice_menu(GtkWidget * stack) {
+
+
+    static GtkWidget *window;
 
     GtkWidget * box;
     GtkWidget * hubby_button;
@@ -330,18 +341,18 @@ void create_hubby(GtkWidget * stack) {
         g_print("Connexion error : %s", mysql_error(mysql));
     } else {
 
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "HUBBY");
-    gtk_window_set_default_size(GTK_WINDOW(window), 300, 500);
-    gtk_container_set_border_width(GTK_CONTAINER(window), 30);
-    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+    window_hubby = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window_hubby), "HUBBY");
+    gtk_window_set_default_size(GTK_WINDOW(window_hubby), 300, 500);
+    gtk_container_set_border_width(GTK_CONTAINER(window_hubby), 30);
+    gtk_window_set_resizable(GTK_WINDOW(window_hubby), FALSE);
 
 
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
-    gtk_container_add(GTK_CONTAINER(window), box);
+    gtk_container_add(GTK_CONTAINER(window_hubby), box);
 
     label_description = gtk_label_new("GESTIONNAIRE DE MOT DE PASSE");
 
@@ -356,8 +367,6 @@ void create_hubby(GtkWidget * stack) {
     result = mysql_use_result(mysql);
 
     mysql_result_nb = mysql_num_fields(result);
-
-    puts("coucou");
 
     while ((row = mysql_fetch_row(result))) {
 
@@ -403,6 +412,10 @@ void create_hubby(GtkWidget * stack) {
 
     gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
 
+
+
+
+
     GtkWidget * scrolled_window;
 
     scrolled_window = gtk_scrolled_window_new(NULL, NULL);
@@ -417,7 +430,7 @@ void create_hubby(GtkWidget * stack) {
     gtk_box_pack_start(GTK_BOX(box), add_button, TRUE, FALSE, 0);
 
 
-    g_signal_connect(G_OBJECT(add_button), "clicked", G_CALLBACK(start_box), NULL);
+      g_signal_connect_swapped (add_button, "clicked", G_CALLBACK(start_box_clbk), window_hubby);
 
     // back_button = gtk_button_new_with_label ( "Retour" );
     // gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
@@ -425,51 +438,142 @@ void create_hubby(GtkWidget * stack) {
     // g_signal_connect ( back_button, "clicked", G_CALLBACK ( choice_clbk ), stack );
 
 
-    gtk_widget_show_all(window);
+    gtk_widget_show_all(window_hubby);
+
+
     }
 }
 
+
+void start_box_clbk(GtkWidget *w){
+
+    gtk_widget_destroy(w);
+    start_box();
+
+
+
+}
+
+
 void start_box(void) {
 
-    GtkWidget * Boite;
 
-    Boite = gtk_dialog_new_with_buttons("Saisie du nom",
-        GTK_WINDOW(window),
-        GTK_DIALOG_MODAL,
-        // GTK_STOCK_OK,GTK_RESPONSE_OK,
-        // GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
-        NULL);
+    GtkWidget * box;
+
+    window_enable_data = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
+    // TITRE DE LA FENETRE
+
+    gtk_window_set_title(GTK_WINDOW(window_enable_data), "HUBBY");
+
+    // PARAMETRES DE LA FENETRE 
+
+    gtk_window_set_default_size(GTK_WINDOW(window_enable_data), 400, 200);
+    gtk_container_set_border_width(GTK_CONTAINER(window_enable_data), 30);
+    gtk_window_set_resizable(GTK_WINDOW(window_enable_data), FALSE);
+
+
+
+    GtkWidget * add_button;
+    GtkWidget * back_button;
+
+    GtkWidget * label_title;
+    GtkWidget * label_email;
+    GtkWidget * label_mdp;
+
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+
+     gtk_container_add(GTK_CONTAINER(window_enable_data), box);
+
+
+    label_title = gtk_label_new("Titre :");
+    gtk_box_pack_start(GTK_BOX(box), label_title, TRUE, FALSE, 0);
+    entry_title = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), entry_title, TRUE, FALSE, 0);
+
+
+    label_email = gtk_label_new("Email / Username :");
+    gtk_box_pack_start(GTK_BOX(box), label_email, TRUE, FALSE, 0);
+
+    entry_email = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), entry_email, TRUE, FALSE, 0);
+
+    
+    label_mdp = gtk_label_new("Mot de passe :");
+    gtk_box_pack_start(GTK_BOX(box), label_mdp, TRUE, FALSE, 0);
+
+
+    entry_mdp = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), entry_mdp, TRUE, FALSE, 0);
+
+
+    add_button = gtk_button_new_with_label("Valider");
+    gtk_box_pack_start(GTK_BOX(box), add_button, TRUE, FALSE, 0);
+
+    back_button = gtk_button_new_with_label("Retour");
+    gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
+
+
+    unsigned char * fetch_id;
+    fetch_id = fetch_database_data(0, "matthias", "matthias");
+
+
+    // int enter = database(5, fetch_id, title, email, mdp);
+
+
+    int verif_index = 0;
+
+
+    g_signal_connect_swapped (add_button, "clicked", G_CALLBACK(verification_add_data), window_enable_data);
+
+    printf("%d",verif_index);
+
+    // g_signal_connect(back_button, "clicked", G_CALLBACK(main_clbk), stack);
+
+    /// ***
+    // return box;
+
+       gtk_widget_show_all(window_enable_data);
+
+}
+
+void verification_add_data(GtkWidget *w){
+
+    const gchar * title = gtk_entry_get_text(GTK_ENTRY(entry_title));
+    const gchar * email = gtk_entry_get_text(GTK_ENTRY(entry_email));
+    const gchar * mdp = gtk_entry_get_text(GTK_ENTRY(entry_mdp));
 
     fflush(stdin);
 
-    // Fetch id 
+
+    int length_email = strlen(email);
+    int length_mdp = strlen(mdp);
 
 
-    // g_print("ID : %s \n", fetch_id);
-    // g_print("\n");
+    if(title[0] != '\0' && email[0] != '\0' && mdp[0] != '\0'){
 
-    // Fetching data
+        if( title[0] != ' ' && email[0] != ' ' && mdp[0] != ' ' ){
 
-    // char **fetch_data_array;
-    // // fetch_data_array = (char**)fetch_database_data(1,fetch_id,"NULL");
-
-    // fetch_database_data(1, fetch_id, "NULL");
-
-    //  for (unsigned int i = 0; i < mysql_result_nb; i++)
-    //  {
-
-    //    puts(fetch_data_array[i]);
-
-    //    free(fetch_data_array[i]);
-
-    //  }
-
-    //    free(fetch_data_array);
+            if(length_email > 5 && length_mdp > 5){
 
 
+        unsigned char * fetch_id;
+        fetch_id = fetch_database_data(0, "matthias", "matthias");
 
+        int enter2 = database(5, fetch_id, mdp, email, title);
+         
 
+        gtk_widget_destroy(w);
+        create_hubby(NULL);
 
+                }
+
+               
+            }
+
+    }else{
+        puts("Error on insertion, + de 6 insertions pour email & mdp");
+    }
 
 
 
@@ -524,10 +628,6 @@ GtkWidget * Register_page(GtkWidget * stack) {
     back_button = gtk_button_new_with_label("Retour");
     gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
 
-
-
-
-
     /// ***
 
     g_signal_connect(G_OBJECT(register_button), "clicked", G_CALLBACK(verification_register), stack);
@@ -542,11 +642,9 @@ void verification_register(GtkButton * button, GtkStack * stack, gpointer data) 
     int enter;
     const gchar * userR = gtk_entry_get_text(GTK_ENTRY(entry_username2));
     const gchar * passR = gtk_entry_get_text(GTK_ENTRY(entry_password2));
-    fflush(stdin);
+    
     enter = database(1, userR, passR, "NULL", "NULL");
-    g_print("%d \n", enter);
-    g_print("user : %s \n", userR);
-    g_print("password :%s \n", passR);
+
     fflush(stdin);
 
 
@@ -578,13 +676,11 @@ void verification_login(GtkButton * button, GtkStack * stack, gpointer data) {
     if (enter2 == 1) {
         gtk_stack_set_visible_child_full(stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN);
     } else if (enter2 == 0) {
-        printf("User/Mot de passe incorrecter");
+        printf("User/Mot de passe incorrecte");
     }
 
 
 }
-
-
 
 void hubby_clbk(GtkButton * button, GtkStack * stack) {
 
@@ -610,12 +706,10 @@ void register_clbk(GtkButton * button, GtkStack * stack) {
     gtk_stack_set_visible_child_full(stack, "Register", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN);
 }
 
-
 void choice_clbk(GtkButton * button, GtkStack * stack) {
 
     gtk_stack_set_visible_child_full(stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN);
 }
-
 
 void time_clbk(GtkButton * button, GtkStack * stack) {
 
@@ -623,12 +717,7 @@ void time_clbk(GtkButton * button, GtkStack * stack) {
 
 }
 
-
-
-
-unsigned char * fetch_database_data(int proc,
-    const gchar * user,
-        const gchar * password) {
+unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar * password) {
 
     MYSQL * mysql;
     MYSQL_RES * result = NULL;
@@ -819,11 +908,7 @@ unsigned char * fetch_database_data(int proc,
     }
 }
 
-int database(int proc,
-    const gchar * user,
-        const gchar * password,
-            const gchar * email,
-                const gchar * title) {
+int database(int proc, const gchar * user, const gchar * password, const gchar * email, const gchar * title) {
 
     MYSQL * mysql;
     MYSQL_RES * result = NULL;
@@ -866,7 +951,6 @@ int database(int proc,
                 printf("inscription");
                 if (strlen(user) > 5 && strlen(password) > 5) {
                     sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');", user, password);
-                    g_print("Connexion error : %s", mysql_error(mysql));
                     mysql_query(mysql, requete);
                     return good;
                 } else {
@@ -932,7 +1016,7 @@ int database(int proc,
                 // passwordCrypt[0] = crypt(nocrypt, "AAA");
 
 
-                sprintf(requete, "INSERT INTO   Compte(pseudo,nameWeb,mail,passwordsite)VALUES('%s','%s','%s','%s');", user, website, mail, passwordCrypt[0]);
+                sprintf(requete, "INSERT INTO Compte(pseudo,nameWeb,mail,passwordsite)VALUES('%s','%s','%s','%s');", user, website, mail, passwordCrypt[0]);
                 mysql_query(mysql, requete);
 
                 mysql_close(mysql);
@@ -943,9 +1027,9 @@ int database(int proc,
 
             case 5:
 
-                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');", user, title, email, email);
-                g_print("Connexion error : %s", mysql_error(mysql));
+                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');", user, title, email, password);
                 mysql_query(mysql, requete);
+                mysql_close(mysql);
                 return good;
 
                 break;
