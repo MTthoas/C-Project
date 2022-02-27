@@ -1,0 +1,59 @@
+0000000000000000000000000000000000000000 0f81c044d610b3c200bc2009cbc8a24817aaa933 MTthoas <matthias.pecquery@gmail.com> 1642865400 +0100	clone: from https://github.com/MTthoas/C-Project.git
+0f81c044d610b3c200bc2009cbc8a24817aaa933 b9b4f60e2281093d3a41c4cc2331d18cd7ab6d0d MTthoas <matthias.pecquery@gmail.com> 1642870523 +0100	commit: my css now
+b9b4f60e2281093d3a41c4cc2331d18cd7ab6d0d 54501530a0f7214a6c4562b262045e23083ee0bc MTthoas <matthias.pecquery@gmail.com> 1642871258 +0100	commit: New window insertion done
+54501530a0f7214a6c4562b262045e23083ee0bc 5110396c1548c62af69e46d3147a883c35e1fe84 MTthoas <matthias.pecquery@gmail.com> 1642947374 +0100	commit: Update for master
+5110396c1548c62af69e46d3147a883c35e1fe84 3cb0319e9284859fdaf2de45666e879c461c94fe MTthoas <matthias.pecquery@gmail.com> 1642947392 +0100	checkout: moving from Matthias_On_Linux to main
+3cb0319e9284859fdaf2de45666e879c461c94fe 5110396c1548c62af69e46d3147a883c35e1fe84 MTthoas <matthias.pecquery@gmail.com> 1642947422 +0100	checkout: moving from main to Matthias_On_Linux
+5110396c1548c62af69e46d3147a883c35e1fe84 5110396c1548c62af69e46d3147a883c35e1fe84 MTthoas <matthias.pecquery@gmail.com> 1642947782 +0100	checkout: moving from Matthias_On_Linux to Matthias_On_Linux
+5110396c1548c62af69e46d3147a883c35e1fe84 9202d7ff2fc27f8502e5e29f913caa233a9057b5 MTthoas <matthias.pecquery@gmail.com> 1642948505 +0100	commit (merge): Fusion + push on main
+9202d7ff2fc27f8502e5e29f913caa233a9057b5 b9edcabc749f02627eb7fae403c4242c1c12dd0e MTthoas <matthias.pecquery@gmail.com> 1642952516 +0100	commit: manipulation pid + txt
+b9edcabc749f02627eb7fae403c4242c1c12dd0e 58530dfd3c0c846003e8f5008124a598b1978d4c MTthoas <matthias.pecquery@gmail.com> 1642952565 +0100	commit: pid + txt + fgets good line
+58530dfd3c0c846003e8f5008124a598b1978d4c 2e22367ac5859a393998e3abe1727d80d50ea9cf MTthoas <matthias.pecquery@gmail.com> 1642983117 +0100	commit: pid & calcul en secondes temps passés sur firefox
+2e22367ac5859a393998e3abe1727d80d50ea9cf 7b2aade7de98a8751d420e67e7632c83d7e4cb2c MTthoas <matthias.pecquery@gmail.com> 1643504597 +0100	commit: add time calculator for mozilla & auto-insert a in a .txt
+7b2aade7de98a8751d420e67e7632c83d7e4cb2c 22950d6779bd10b9bbb8f85e2d902736918f35c4 MTthoas <matthias.pecquery@gmail.com> 1643566623 +0100	commit: segmentation
+22950d6779bd10b9bbb8f85e2d902736918f35c4 85e348d2fc86a722a42d4bc0ad966115d2b0f935 MTthoas <matthias.pecquery@gmail.com> 1644087367 +0100	commit: Thread codes in One
+85e348d2fc86a722a42d4bc0ad966115d2b0f935 134cca27a4520ea1f8e963221bdb392d14c8814b MTthoas <matthias.pecquery@gmail.com> 1644194980 +0100	commit: 07/22
+134cca27a4520ea1f8e963221bdb392d14c8814b e54cfec8e059d803b9195cb4126aaacb8798e364 MTthoas <matthias.pecquery@gmail.com> 1644763365 +0100	commit: adding some apps
+e54cfec8e059d803b9195cb4126aaacb8798e364 a38c2149e44f9ffae6e904cf203ee1ef2ace5a37 MTthoas <matthias.pecquery@gmail.com> 1644763881 +0100	commit: adding apps Time_spent
+a38c2149e44f9ffae6e904cf203ee1ef2ace5a37 3cb0319e9284859fdaf2de45666e879c461c94fe MTthoas <matthias.pecquery@gmail.com> 1644775805 +0100	checkout: moving from Matthias_On_Linux to main
+3cb0319e9284859fdaf2de45666e879c461c94fe 9202d7ff2fc27f8502e5e29f913caa233a9057b5 MTthoas <matthias.pecquery@gmail.com> 1644775826 +0100	pull: Fast-forward
+9202d7ff2fc27f8502e5e29f913caa233a9057b5 a38c2149e44f9ffae6e904cf203ee1ef2ace5a37 MTthoas <matthias.pecquery@gmail.com> 1644775832 +0100	merge Matthias_On_Linux: Fast-forward
+a38c2149e44f9ffae6e904cf203ee1ef2ace5a37 a38c2149e44f9ffae6e904cf203ee1ef2ace5a37 MTthoas <matthias.pecquery@gmail.com> 1644775944 +0100	checkout: moving from main to Matthias_On_Linux
+a38c2149e44f9ffae6e904cf203ee1ef2ace5a37 c470308b725be48ee3dd0de289ee30a524c2e6b3 MTthoas <matthias.pecquery@gmail.com> 1644776380 +0100	commit: adding back button main
+c470308b725be48ee3dd0de289ee30a524c2e6b3 a38c2149e44f9ffae6e904cf203ee1ef2ace5a37 MTthoas <matthias.pecquery@gmail.com> 1644776402 +0100	checkout: moving from Matthias_On_Linux to main
+a38c2149e44f9ffae6e904cf203ee1ef2ace5a37 c470308b725be48ee3dd0de289ee30a524c2e6b3 MTthoas <matthias.pecquery@gmail.com> 1644776405 +0100	merge Matthias_On_Linux: Fast-forward
+c470308b725be48ee3dd0de289ee30a524c2e6b3 c470308b725be48ee3dd0de289ee30a524c2e6b3 MTthoas <matthias.pecquery@gmail.com> 1645287386 +0100	checkout: moving from main to Matthias_On_Linux
+c470308b725be48ee3dd0de289ee30a524c2e6b3 c470308b725be48ee3dd0de289ee30a524c2e6b3 MTthoas <matthias.pecquery@gmail.com> 1645287427 +0100	reset: moving to HEAD
+c470308b725be48ee3dd0de289ee30a524c2e6b3 fef2679fef1ac98e9ac906f16acc5c08caae9f81 MTthoas <matthias.pecquery@gmail.com> 1645304350 +0100	commit: Imagine pushing & this code doesn't give you, what u want
+fef2679fef1ac98e9ac906f16acc5c08caae9f81 c470308b725be48ee3dd0de289ee30a524c2e6b3 MTthoas <matthias.pecquery@gmail.com> 1645304370 +0100	checkout: moving from Matthias_On_Linux to main
+c470308b725be48ee3dd0de289ee30a524c2e6b3 fef2679fef1ac98e9ac906f16acc5c08caae9f81 MTthoas <matthias.pecquery@gmail.com> 1645304374 +0100	merge Matthias_On_Linux: Fast-forward
+fef2679fef1ac98e9ac906f16acc5c08caae9f81 fef2679fef1ac98e9ac906f16acc5c08caae9f81 MTthoas <matthias.pecquery@gmail.com> 1645304394 +0100	checkout: moving from main to Matthias_On_Linux
+fef2679fef1ac98e9ac906f16acc5c08caae9f81 fef2679fef1ac98e9ac906f16acc5c08caae9f81 MTthoas <matthias.pecquery@gmail.com> 1645304421 +0100	checkout: moving from Matthias_On_Linux to main
+fef2679fef1ac98e9ac906f16acc5c08caae9f81 a73aaec8077aafbaed0fed96caadc2e9521a3c6c MTthoas <matthias.pecquery@gmail.com> 1645307497 +0100	commit: Curling working
+a73aaec8077aafbaed0fed96caadc2e9521a3c6c 06b427957c284ace7b0a120c4b52ffa47c8862bb MTthoas <matthias.pecquery@gmail.com> 1645312603 +0100	commit: new
+06b427957c284ace7b0a120c4b52ffa47c8862bb ecb11831e484a0b23a07146fccde720652c3ae9f MTthoas <matthias.pecquery@gmail.com> 1645312630 +0100	checkout: moving from main to Matthias
+ecb11831e484a0b23a07146fccde720652c3ae9f fef2679fef1ac98e9ac906f16acc5c08caae9f81 MTthoas <matthias.pecquery@gmail.com> 1645312641 +0100	checkout: moving from Matthias to Matthias_On_Linux
+fef2679fef1ac98e9ac906f16acc5c08caae9f81 fef2679fef1ac98e9ac906f16acc5c08caae9f81 MTthoas <matthias.pecquery@gmail.com> 1645314569 +0100	checkout: moving from Matthias_On_Linux to Matthias_On_Linux
+fef2679fef1ac98e9ac906f16acc5c08caae9f81 fef2679fef1ac98e9ac906f16acc5c08caae9f81 MTthoas <matthias.pecquery@gmail.com> 1645314993 +0100	checkout: moving from Matthias_On_Linux to Matthias_On_Linux
+fef2679fef1ac98e9ac906f16acc5c08caae9f81 fef2679fef1ac98e9ac906f16acc5c08caae9f81 MTthoas <matthias.pecquery@gmail.com> 1645315237 +0100	reset: moving to HEAD
+fef2679fef1ac98e9ac906f16acc5c08caae9f81 7bdc3521c299592f1c6d0ecace34b528828763ce MTthoas <matthias.pecquery@gmail.com> 1645315257 +0100	pull -f: Fast-forward
+7bdc3521c299592f1c6d0ecace34b528828763ce fcdc9ec4c4c51d944fcb3d91803398fb2f290de4 MTthoas <matthias.pecquery@gmail.com> 1645315692 +0100	checkout: moving from Matthias_On_Linux to Val-linux
+fcdc9ec4c4c51d944fcb3d91803398fb2f290de4 3e7951067c447631035a8a2e1420a5869b9e1fed MTthoas <matthias.pecquery@gmail.com> 1645317509 +0100	commit: gtk data conflicts done
+3e7951067c447631035a8a2e1420a5869b9e1fed 7bdc3521c299592f1c6d0ecace34b528828763ce MTthoas <matthias.pecquery@gmail.com> 1645318332 +0100	checkout: moving from Val-linux to Matthias_On_Linux
+7bdc3521c299592f1c6d0ecace34b528828763ce 077b530af660f910fe66d82b66b40e799e885671 MTthoas <matthias.pecquery@gmail.com> 1645319496 +0100	commit: adding news
+077b530af660f910fe66d82b66b40e799e885671 f007d1d2dab3b7e2d3c78d94874fe6ad924e72d9 MTthoas <matthias.pecquery@gmail.com> 1645473328 +0100	commit: 21/02
+f007d1d2dab3b7e2d3c78d94874fe6ad924e72d9 42e0cad206dc5972e054557b9ef4c3882d21b471 MTthoas <matthias.pecquery@gmail.com> 1645473443 +0100	commit (merge): merging data
+42e0cad206dc5972e054557b9ef4c3882d21b471 42e0cad206dc5972e054557b9ef4c3882d21b471 MTthoas <matthias.pecquery@gmail.com> 1645484199 +0100	checkout: moving from Matthias_On_Linux to Matthias_On_Linux
+42e0cad206dc5972e054557b9ef4c3882d21b471 a20a881e01f148b8a4eac05fc8cc2ea26d962773 MTthoas <matthias.pecquery@gmail.com> 1645484625 +0100	commit: new commit
+a20a881e01f148b8a4eac05fc8cc2ea26d962773 c10900e7f63924f255adbe7959041920bb30f28c MTthoas <matthias.pecquery@gmail.com> 1645552326 +0100	commit: new
+c10900e7f63924f255adbe7959041920bb30f28c 3e7951067c447631035a8a2e1420a5869b9e1fed MTthoas <matthias.pecquery@gmail.com> 1645552335 +0100	checkout: moving from Matthias_On_Linux to Val-linux
+3e7951067c447631035a8a2e1420a5869b9e1fed c10900e7f63924f255adbe7959041920bb30f28c MTthoas <matthias.pecquery@gmail.com> 1645552345 +0100	merge Matthias_On_Linux: Fast-forward
+c10900e7f63924f255adbe7959041920bb30f28c c10900e7f63924f255adbe7959041920bb30f28c MTthoas <matthias.pecquery@gmail.com> 1645552360 +0100	checkout: moving from Val-linux to Matthias_On_Linux
+c10900e7f63924f255adbe7959041920bb30f28c c10900e7f63924f255adbe7959041920bb30f28c MTthoas <matthias.pecquery@gmail.com> 1645552427 +0100	checkout: moving from Matthias_On_Linux to Val-linux
+c10900e7f63924f255adbe7959041920bb30f28c e88a9cc6b2b8e6568b015c5f503616813cd51283 MTthoas <matthias.pecquery@gmail.com> 1645552474 +0100	commit (merge): oui
+e88a9cc6b2b8e6568b015c5f503616813cd51283 c10900e7f63924f255adbe7959041920bb30f28c MTthoas <matthias.pecquery@gmail.com> 1645552545 +0100	checkout: moving from Val-linux to Matthias_On_Linux
+c10900e7f63924f255adbe7959041920bb30f28c bed29c0699887930fc6d1e00734c50eb096a50fa MTthoas <matthias.pecquery@gmail.com> 1645710742 +0100	commit: fetching data
+bed29c0699887930fc6d1e00734c50eb096a50fa f60a12b2591d80a45f6fae8efd6b4c2e8c1d203c MTthoas <matthias.pecquery@gmail.com> 1645710797 +0100	commit (merge): fetching data
+f60a12b2591d80a45f6fae8efd6b4c2e8c1d203c 14e4d39af4d48d7f89497f024685bf3d5fa49d7c MTthoas <matthias.pecquery@gmail.com> 1645718850 +0100	commit: BEAST FETCHING
+14e4d39af4d48d7f89497f024685bf3d5fa49d7c d99ce9ec03dec5dae27073fb4161b1a4c7125bd1 MTthoas <matthias.pecquery@gmail.com> 1645723353 +0100	commit: fetch data
+                                                                                                                                                         
