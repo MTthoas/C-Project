@@ -405,20 +405,22 @@ void start_box(void) {
 
 // Fetching data
 
-//     char **fetch_data_array;
-//     fetch_data_array = (char**)fetch_database_data(1,fetch_id,"NULL");
+    char **fetch_data_array;
+    fetch_data_array = (char**)fetch_database_data(1,fetch_id,"NULL");
 
-//      for (unsigned int i = 0; i < mysql_result_nb; i++)
-//      {
+     for (unsigned int i = 0; i < mysql_result_nb; i++)
+     {
         
-//        puts(fetch_data_array[i]);
-//        free(fetch_data_array[i]);
+       puts(fetch_data_array[i]);
 
-//      }
+       free(fetch_data_array[i]);
 
-//    free(fetch_data_array);
+     }
+
+   free(fetch_data_array);
 
 
+    
 
     
 
@@ -677,7 +679,7 @@ unsigned char * fetch_database_data(int proc,const gchar *user,const gchar *pass
                 mysql_result_nb = mysql_num_fields(result);
 
                 // char *data[20] = malloc(sizeof(char) * 400);
-                char **data = malloc(sizeof(char*) * 10);
+                char **data = malloc(sizeof(char*) * 5);
                 
                 if (data == NULL)
                 {
@@ -687,7 +689,7 @@ unsigned char * fetch_database_data(int proc,const gchar *user,const gchar *pass
 
 
 
-                    for (int c = 0; c < 10; c++ )
+                    for (int c = 0; c < 5; c++ )
                     {
 
                         data[c] = malloc(sizeof(char) * 51 );
