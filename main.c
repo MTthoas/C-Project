@@ -17,6 +17,7 @@
 #include <stddef.h>
 
 #include "curlPages.h"
+#include "pid.h"
 
 
 void * create_main(GtkWidget * stack);
@@ -24,12 +25,15 @@ GtkWidget * Login_page(GtkWidget * stack);
 GtkWidget * Register_page(GtkWidget * stack);
 void create_hubby(GtkWidget * stack);
 GtkWidget * choice_menu(GtkWidget * stack);
-GtkWidget * time_menu(GtkWidget * stack);
+// GtkWidget * time_menu(GtkWidget * stack);
+void quit_time_app(GtkWidget *w);
+void start_link(GtkButton * button);
 
 
 GtkWidget * object;
 
  GtkWidget *window_hubby;
+ GtkWidget *window_app_time;
 GtkWidget *window_enable_data;
 
 char buffer[100];
@@ -51,6 +55,7 @@ void hubby_clbk(GtkButton * button, GtkStack * stack);
 void time_clbk(GtkButton * button, GtkStack * stack);
 void choice_clbk(GtkButton * button, GtkStack * stack);
 void start_box(void);
+void create_time_app();
 
 void clicked_clbk(GtkButton * button, GtkStack * stack);
 void quit_clbk(void);
@@ -95,6 +100,7 @@ int main(void) {
     GtkWidget * time_grid;
 
 
+
     // Initialisation
 
     gtk_init(NULL, NULL);
@@ -134,7 +140,7 @@ int main(void) {
     register_grid = Register_page(stack);
     // hubby_grid    = create_hubby  ( stack );
     choice_grid = choice_menu(stack);
-    time_grid = time_menu(stack);
+    // time_grid = time_menu(stack);
 
     /// **
     gtk_stack_add_named(GTK_STACK(stack), main, "Main");
@@ -252,7 +258,7 @@ GtkWidget * choice_menu(GtkWidget * stack) {
 
     /// ***
     g_signal_connect(hubby_button, "clicked", G_CALLBACK(create_hubby), stack);
-    g_signal_connect(time_apps_button, "clicked", G_CALLBACK(time_clbk), stack);
+    g_signal_connect(time_apps_button, "clicked", G_CALLBACK(create_time_app), NULL);
 
 
 
@@ -271,28 +277,28 @@ GtkWidget * choice_menu(GtkWidget * stack) {
 
 }
 
-GtkWidget * time_menu(GtkWidget * stack) {
+// GtkWidget * time_menu(GtkWidget * stack) {
 
-    GtkWidget * box;
-
-
-    /// *** Create the Box
-    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-
-    GtkWidget * back_button;
+//     GtkWidget * box;
 
 
-    back_button = gtk_button_new_with_label("Retour");
-    gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
+//     /// *** Create the Box
+//     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
-    g_signal_connect(back_button, "clicked", G_CALLBACK(choice_clbk), stack);
-
-
-    return box;
+//     GtkWidget * back_button;
 
 
+//     back_button = gtk_button_new_with_label("Retour");
+//     gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
 
-}
+//     g_signal_connect(back_button, "clicked", G_CALLBACK(choice_clbk), stack);
+
+
+//     return box;
+
+
+
+// }
 
 void create_hubby(GtkWidget * stack) {
 
@@ -304,8 +310,8 @@ void create_hubby(GtkWidget * stack) {
 
 
     GtkWidget * back_button;
-
     GtkWidget * add_button;
+    // GtkWidget * start_link;
 
         char tempo[20];
     GtkWidget * label_id[20];
@@ -313,8 +319,8 @@ void create_hubby(GtkWidget * stack) {
     GtkWidget * label_email[50];
     GtkWidget * label_mdp[50];
     GtkWidget * Separator[50];
-     GtkWidget * label_state[50];
-     GtkWidget * label_title_gchar[50];
+    GtkWidget * label_state[50];
+    GtkWidget * label_title_gchar[50];
 
 
     MYSQL * mysql;
@@ -377,9 +383,8 @@ void create_hubby(GtkWidget * stack) {
 
             Separator[index] = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
 
-
-
-            label_title[index] = gtk_label_new(row[2]);
+            label_title[index] = gtk_button_new_with_label(row[2]);
+            
 
 
       if(i == 1){
@@ -400,34 +405,40 @@ void create_hubby(GtkWidget * stack) {
             label_email[index] = gtk_label_new(row[3]);
             label_mdp[index] = gtk_label_new(row[4]);   
 
+
         }
+
+
+        gtk_box_pack_start(GTK_BOX(box3), Separator[index], TRUE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(box3), label_title[index], TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(box3), label_state[index], TRUE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(box3), label_email[index], TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(box3), label_mdp[index], TRUE, TRUE, 0);
+
+        g_signal_connect(G_OBJECT(label_title[index]), "clicked", G_CALLBACK(start_link), label_title[index]);
+        // g_signal_connect_swapped (G_OBJECT(label_title[index]), "clicked", G_CALLBACK(quit_time_app), window_hubby);
+           
 
         index++;
         printf("J = %d\n", index); 
-    }
 
-     for (int v = 0; v < index; v++) {
 
-        gtk_box_pack_start(GTK_BOX(box3), Separator[v], TRUE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(box3), label_title[v], TRUE, TRUE, 0);
-         gtk_box_pack_start(GTK_BOX(box3), label_state[v], TRUE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(box3), label_email[v], TRUE, TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(box3), label_mdp[v], TRUE, TRUE, 0);
+
+
+    
 
     }
 
+   
 
-
+       
 
     mysql_free_result(result);
     mysql_close(mysql);
 
-
-
     // label_three = gtk_label_new("U.GG");
 
-        gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
-
+    gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
 
     GtkWidget * scrolled_window;
 
@@ -442,8 +453,7 @@ void create_hubby(GtkWidget * stack) {
     add_button = gtk_button_new_with_label("Ajout");
     gtk_box_pack_start(GTK_BOX(box), add_button, TRUE, FALSE, 0);
 
-
-      g_signal_connect_swapped (add_button, "clicked", G_CALLBACK(start_box_clbk), window_hubby);
+    g_signal_connect_swapped (add_button, "clicked", G_CALLBACK(start_box_clbk), window_hubby);
 
     // back_button = gtk_button_new_with_label ( "Retour" );
     // gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
@@ -455,6 +465,77 @@ void create_hubby(GtkWidget * stack) {
 
 
     }
+}
+
+void start_link(GtkButton * button){
+
+     const gchar* text;
+
+     gchar* firefox = "firefox ";
+
+
+     text = gtk_button_get_label(button);
+
+  char* result = (char*) malloc((strlen(text)+ strlen(firefox))*sizeof(char));
+
+  strcpy(result, firefox);
+  strcat(result, text);
+
+    system(result);
+    // system("firefox google.fr");
+
+    // free(result);
+}
+
+void create_time_app(){
+
+    GtkWidget * box;
+    GtkWidget * box2;
+
+    GtkWidget * label_description;
+    GtkWidget * back_button;
+
+    window_app_time = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
+    gtk_window_set_title(GTK_WINDOW(window_app_time), "TIMMY");
+    gtk_window_set_default_size(GTK_WINDOW(window_app_time), 300, 500);
+    gtk_container_set_border_width(GTK_CONTAINER(window_app_time), 30);
+    gtk_window_set_resizable(GTK_WINDOW(window_app_time), FALSE);
+
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+
+
+    gtk_container_add(GTK_CONTAINER(window_app_time), box);
+
+    label_description = gtk_label_new("Temps passé sur les applications");
+    gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
+
+    GtkWidget * scrolled_window;
+
+    scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+    gtk_box_pack_start(GTK_BOX(box), scrolled_window, TRUE, TRUE, 0);
+
+
+    gtk_container_add(GTK_CONTAINER(scrolled_window), box2);
+
+    back_button = gtk_button_new_with_label("Quitter");
+    gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
+
+
+
+    // g_timeout_add(1000, (GSourceFunc) time_handler, (gpointer) window);
+
+
+    gtk_widget_show_all(window_app_time);
+    g_signal_connect_swapped (back_button, "clicked", G_CALLBACK(quit_time_app), window_app_time);
+    
+}
+
+void quit_time_app(GtkWidget *w){
+
+     gtk_widget_destroy(w);
+
 }
 
 void start_box_clbk(GtkWidget *w){
