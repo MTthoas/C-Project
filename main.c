@@ -1203,8 +1203,9 @@ void databaseT(int proc, char *user, char *password)
     char *passwordCrypt[200];
     unsigned int i = 1;
     unsigned int num_champs = 0;
+    unsigned char * fetch_id; 
     
-    
+    fetch_id = fetch_database_data(0,user, password);
     
     mysql = mysql_init(NULL);
     /*Connexion a la base de donnée*/
@@ -1217,12 +1218,14 @@ void databaseT(int proc, char *user, char *password)
             case 0: // Aucune requete
                 printf("Aucune commande a réaliser");
                 break;
+
             case 1: /* Inscription */
                 printf("inscripton");
                 sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');",user,password);
                 mysql_query(mysql, requete);
                 home(user, password);
                 break;
+
             case 2: /*Connexion*/
                 sprintf(requete, "SELECT* FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
                 mysql_query(mysql, requete);
@@ -1245,7 +1248,12 @@ void databaseT(int proc, char *user, char *password)
                     }
                 break;
             case 3: /*List des mot de passe*/
-                sprintf(requete, "SELECT * FROM data_hubby WHERE pseudo = '%s';", user);
+        
+                
+                
+                
+
+                sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s';", fetch_id);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
                 num_champs = mysql_num_fields(result);
@@ -1268,17 +1276,18 @@ void databaseT(int proc, char *user, char *password)
                 
                 break;
             case 4: /* Ajout d'un mot de passe */
+            
                 fflush(stdin);
                 printf("Veuillez renseigner le nom du sites\n");
                 scanf("%s",&title[0]);
                 printf("Veuillez renseigner votre mail\n");
                 scanf("%s",&email[0]);
-                printf("Et votre mot de passe\n");
+                printf("Votre mot de passe\n");
                 scanf("%d",&temp);
                 scanf("%s",&pword[0]);
                                 
                 
-                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');", user, title, email, pword);
+                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');",fetch_id , title, email, pword);
                 mysql_query(mysql, requete);
             
                 home(user, password);
