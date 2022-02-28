@@ -359,8 +359,9 @@ void create_hubby(GtkWidget * stack) {
 
 
     unsigned char * fetch_id;
-    fetch_id = fetch_database_data(0, "matthias", "matthias");
-
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fetch_id = fetch_database_data(0,user , pass);
 
     sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s'", fetch_id);
     mysql_query(mysql, requete);
@@ -515,8 +516,9 @@ void start_box(void) {
 
 
     unsigned char * fetch_id;
-    fetch_id = fetch_database_data(0, "matthias", "matthias");
-
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fetch_id = fetch_database_data(0,user , pass);
 
     // int enter = database(5, fetch_id, title, email, mdp);
 
@@ -558,8 +560,9 @@ void verification_add_data(GtkWidget *w){
 
 
         unsigned char * fetch_id;
-        fetch_id = fetch_database_data(0, "matthias", "matthias");
-
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fetch_id = fetch_database_data(0,user , pass);
         int enter2 = database(5, fetch_id, mdp, email, title);
          
 
@@ -773,7 +776,7 @@ unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar *
                 // ---------- //
                 //  FETCH ID  //
                 // ---------- //
-
+                
                 sprintf(requete, "SELECT id FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
@@ -986,8 +989,6 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                     printf("\n");
                 }
                 mysql_free_result(result);
-                printf("Souhaitez vous choisir un mot de passe ?\n1-Oui\n2-Non");
-                scanf("%d", & chose);
 
                 if (chose == 1) { // Choix du mot de passe a décrypter
                     printf("Quel est le numéro ? ");
