@@ -20,6 +20,9 @@
 #include "pid.h"
 
 
+int ConfigSetup();
+int terminal();
+
 void * create_main(GtkWidget * stack);
 GtkWidget * Login_page(GtkWidget * stack);
 GtkWidget * Register_page(GtkWidget * stack);
@@ -85,10 +88,10 @@ unsigned int mysql_result_nb = 0;
 
 
 
-int main(void) {
+int main() {
 
     // system("firefox http://google.fr");
-
+    int test = ConfigSetup();
     GtkWidget * window;
     GtkWidget * main;
     GtkWidget * login_grid;
@@ -361,10 +364,9 @@ void create_hubby(GtkWidget * stack) {
 
 
     unsigned char * fetch_id;
-    const gchar *label_title_gchar;
-    
-    fetch_id = fetch_database_data(0, "matthias", "matthias");
-
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fetch_id = fetch_database_data(0,user , pass);
 
     sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s'", fetch_id);
     mysql_query(mysql, requete);
@@ -607,8 +609,9 @@ void start_box(void) {
 
 
     unsigned char * fetch_id;
-    fetch_id = fetch_database_data(0, "matthias", "matthias");
-
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fetch_id = fetch_database_data(0,user , pass);
 
     // int enter = database(5, fetch_id, title, email, mdp);
 
@@ -650,8 +653,9 @@ void verification_add_data(GtkWidget *w){
 
 
         unsigned char * fetch_id;
-        fetch_id = fetch_database_data(0, "matthias", "matthias");
-
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fetch_id = fetch_database_data(0,user , pass);
         int enter2 = database(5, fetch_id, mdp, email, title);
          
 
@@ -865,7 +869,7 @@ unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar *
                 // ---------- //
                 //  FETCH ID  //
                 // ---------- //
-
+                
                 sprintf(requete, "SELECT id FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
@@ -1006,6 +1010,8 @@ unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar *
 
 int database(int proc, const gchar * user, const gchar * password, const gchar * email, const gchar * title) {
 
+
+
     MYSQL * mysql;
     MYSQL_RES * result = NULL;
     MYSQL_ROW row;
@@ -1082,8 +1088,6 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                     printf("\n");
                 }
                 mysql_free_result(result);
-                printf("Souhaitez vous choisir un mot de passe ?\n1-Oui\n2-Non");
-                scanf("%d", & chose);
 
                 if (chose == 1) { // Choix du mot de passe a décrypter
                     printf("Quel est le numéro ? ");
@@ -1137,4 +1141,298 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
 
 
     }
+}
+
+int ConfigSetup(){
+
+    FILE * fichier = NULL;
+
+    fichier = fopen("config.txt","r");
+    int tab[3]; 
+    char str1[3]="",str2[3]="";
+    
+    if(fichier != NULL) {
+        fscanf(fichier, "%s %s", str1, str2);
+        tab[1]=atoi(str2);
+        printf("%d", tab[1]);
+        fclose(fichier);
+
+    } else {
+        printf("Impossible de lire le fichier");
+    }
+    
+    if (tab[1] == 1){
+        return 1;
+    } else if(tab[1] == 0){
+        terminal();
+            }
+    // Graphique
+
+    // Crash app
+    // Nom de l'app
+
+}
+
+
+/* Déclaration des function*/
+void databaseT(int proc, char *user, char *password);
+int home(char *user, char *password);
+
+/* ---- Connexion ----*/
+
+
+void connexion (){
+    char user[20];
+    char password[20];
+    int temp;
+    unsigned long longueur_USER = 0;
+    unsigned long longueur_PWD = 0;
+    int i = 0;
+    int c = 0;
+
+
+    printf("--Connexion--\n");
+    
+    /* Vérification que le user / mot de passe est bien renseigner */
+    while(i<1){
+        fflush(stdin);
+        printf("Veuillez renseignez votre utilisateur\n");
+        scanf("%d",&temp);
+        scanf("%[^\n]",user);
+        
+        longueur_USER = strlen(user);
+        if(longueur_USER > 1){
+            i = 1;
+            printf("Votre nom d'utilisateur est %s\n",user);
+        }
+    }
+    
+    while(c<1){
+        fflush(stdin);
+        printf("Veuillez renseignez votre mot de passe\n");
+        scanf("%d", &temp);
+        scanf("%[^\n]",password);
+        // Vérification de la longueur
+        longueur_PWD = strlen(password);
+        if(longueur_PWD > 1){
+            c = 1;
+            printf("Votre mot de passe est %s\n",password);
+        }
+    }
+    /* Cryptage du mot de passe sous format AAA. */
+  //  passwordCryp = crypt(password,"AAA");
+    
+    /* Appel de la base de donnée, avec 3 arguement */
+    databaseT(2, &user[0], &password[0]);
+}
+
+/* Fonction inscription, ressemble a connexion */
+
+
+/* Inscription */
+
+
+void inscription(){
+    char user[20];
+    char password[20];
+    int temp;
+    unsigned long longueur_USER = 0;
+    unsigned long longueur_PWD = 0;
+    int i = 0;
+    int c = 0;
+
+
+    while(i<1){
+        fflush(stdin);
+        printf("Veuillez renseignez votre utilisateur\n");
+        scanf("%d",&temp);
+        scanf("%[^\n]",user);
+        
+        longueur_USER = strlen(user);
+        if(longueur_USER > 1){
+            i = 1;
+            printf("Votre nom d'utilisateur est %s\n",user);
+        }
+    }
+    
+    while(c<1){
+        fflush(stdin);
+        printf("Veuillez renseignez votre mot de passe\n");
+        scanf("%d", &temp);
+        scanf("%[^\n]",password);
+        longueur_PWD = strlen(password);
+        if(longueur_PWD > 1){
+            c = 1;
+            printf("Votre mot de passe est %s\n",password);
+        }
+    }
+    
+  //  passwordCryp = crypt(password,"AAA");
+    databaseT(1, &user[0], &password[0]);
+    
+}
+
+/* Fonction qui permet de lier le programme a la base de donnée. Il y a 3 arguement.
+ "proc" vas permettre de définir quel requete nous allons executer
+ "user / password" Liée a la connexion et a l'inscription de l'utilisateur */
+
+void databaseT(int proc, char *user, char *password)
+{
+    MYSQL *mysql;
+    MYSQL_RES *result = NULL;
+    MYSQL_ROW row;
+    
+    char *Server = "blindly.fr";
+    char *Utilisateur = "matthias"; // yuki
+    char *MotDePasse = "azerty"; // azerty
+    char *BaseDeDonnee = "projet"; // projet
+    char requete[300];
+    int temp;
+    int chose;
+    int *id;
+
+    char title[200];
+    char email[200];
+    char pword[200];
+    char *passwordCrypt[200];
+    unsigned int i = 1;
+    unsigned int num_champs = 0;
+    unsigned char * fetch_id; 
+    
+    fetch_id = fetch_database_data(0,user, password);
+    
+    mysql = mysql_init(NULL);
+    /*Connexion a la base de donnée*/
+    
+    if(!mysql_real_connect(mysql,Server,Utilisateur,MotDePasse,BaseDeDonnee,0,NULL,0)){
+        printf("Connexion error : %s" , mysql_error(mysql));
+    } else{
+        /* Utilisation du proc pour définir quel requete*/
+        switch (proc){
+            case 0: // Aucune requete
+                printf("Aucune commande a réaliser");
+                break;
+
+            case 1: /* Inscription */
+                printf("inscripton");
+                sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');",user,password);
+                mysql_query(mysql, requete);
+                home(user, password);
+                break;
+
+            case 2: /*Connexion*/
+                sprintf(requete, "SELECT* FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
+                mysql_query(mysql, requete);
+                result = mysql_use_result(mysql);
+                num_champs = mysql_num_fields(result);
+                while((row = mysql_fetch_row(result)))
+                {
+                    unsigned long *lengths;
+                    lengths = mysql_fetch_lengths(result);
+                    for(i = 2; i < num_champs; i++)
+                        {
+                            if(row[i] != NULL){
+                                home(user, password);
+                            }
+                        }
+                    
+                    
+                    
+                    
+                    }
+                break;
+            case 3: /*List des mot de passe*/
+        
+                
+                
+                
+
+                sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s';", fetch_id);
+                mysql_query(mysql, requete);
+                result = mysql_use_result(mysql);
+                num_champs = mysql_num_fields(result);
+                while((row = mysql_fetch_row(result)))
+                {
+                    unsigned long *lengths;
+                    lengths = mysql_fetch_lengths(result);
+                    for(i = 0; i < num_champs; i++)
+                        {
+                            if(row[i] != NULL){
+                                printf("[%.*s] ", (int) lengths[i], row[i] ? row[i] : "NULL");
+                                
+                                
+                            }
+                        }
+                    printf("\n");
+                }
+                mysql_free_result(result);
+                home(user, password);
+                
+                break;
+            case 4: /* Ajout d'un mot de passe */
+            
+                fflush(stdin);
+                printf("Veuillez renseigner le nom du sites\n");
+                scanf("%s",&title[0]);
+                printf("Veuillez renseigner votre mail\n");
+                scanf("%s",&email[0]);
+                printf("Votre mot de passe\n");
+                scanf("%d",&temp);
+                scanf("%s",&pword[0]);
+                                
+                
+                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');",fetch_id , title, email, pword);
+                mysql_query(mysql, requete);
+            
+                home(user, password);
+                break;
+            case 99:
+                printf("Connexion réussi");
+                }
+    
+                
+        
+        }
+}
+    
+/* Accueil de l'utilisateur une fois connecter */
+
+int home(char *name, char *password){
+    int val;
+    printf("-- HUBBY --\n");
+    printf("Que souhaitez vous faires ? \n1-Voir vos mot de passe \n2-Ajoutez un mot de passe\n");
+    scanf("%d", &val);
+    switch(val){
+        case 1:
+            printf("Vos mot de passe\n");
+            databaseT(3, name, password);
+            break;
+        case 2:
+            databaseT(4, name, password);
+            break;
+    }
+    return 0;
+}
+
+/* Accueil des utilisateur non connecter*/
+int terminal(){
+    int val;
+    printf("-- Accueil --\n");
+    printf("1- Inscription\n2- Connexion\n3- Ping Database\n");
+    scanf("%d", &val);
+    switch(val){
+        case 1:
+            inscription();
+            break;
+        case 2:
+            connexion();
+            break;
+            
+        case 3:
+           databaseT(1, NULL , NULL);
+            break;
+    return 0;
+}
+
+
 }
