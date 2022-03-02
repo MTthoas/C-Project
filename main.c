@@ -91,7 +91,9 @@ unsigned int mysql_result_nb = 0;
 int main() {
 
     // system("firefox http://google.fr");
-    int test = ConfigSetup();
+    
+   int StartProg = ConfigSetup();
+
     GtkWidget * window;
     GtkWidget * main;
     GtkWidget * login_grid;
@@ -103,7 +105,7 @@ int main() {
     GtkWidget * time_grid;
 
 
-
+    
     // Initialisation
 
     gtk_init(NULL, NULL);
@@ -1154,7 +1156,6 @@ int ConfigSetup(){
     if(fichier != NULL) {
         fscanf(fichier, "%s %s", str1, str2);
         tab[1]=atoi(str2);
-        printf("%d", tab[1]);
         fclose(fichier);
 
     } else {
