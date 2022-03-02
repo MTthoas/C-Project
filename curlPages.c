@@ -3,6 +3,8 @@
 #include <curl/curl.h>
 #include <stdbool.h> 
 
+#include <gtk-3.0/gtk/gtk.h>
+
 #include "curlPages.h"
 
 
@@ -16,15 +18,15 @@ CURLcode response;
     {
         // fprintf(stderr,"[-] Failed Initializing Curl\n");
     }
- 
-    CURLcode res;
+
+    // printf("%s\n",site);
+
+    g_print("%s\n",site);
+   
+
     curl_easy_setopt(curl, CURLOPT_URL, site);
-    res = curl_easy_perform(curl);
-     
-    if (res != CURLE_OK)
-    {
-        // fprintf(stderr,"[-] Could Not Fetch Webpage\n[+] Error : %s\n",curl_easy_strerror(res));
-    }
+    curl_easy_setopt(curl, CURLOPT_NOBODY, 1);
+    response = curl_easy_perform(curl);
  
     curl_easy_cleanup(curl);
 
