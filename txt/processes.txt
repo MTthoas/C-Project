@@ -1,10 +1,10 @@
 matthias   52306  0.0  0.0   2420   580 pts/0    S    21:54   0:00 sh -c firefox Elrondapes.com
-matthias   52307 28.6  4.4 3020916 357252 pts/0  Sl   21:54  18:51 firefox-esr Elrondapes.com
-matthias   52460  0.0  1.1 2424956 94052 pts/0   Sl   21:54   0:01 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 2 -isForBrowser -prefsLen 4978 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 52307 true tab
+matthias   52307 28.6  4.3 3020916 356472 pts/0  Sl   21:54  21:04 firefox-esr Elrondapes.com
+matthias   52460  0.0  1.1 2424956 93988 pts/0   Sl   21:54   0:02 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 2 -isForBrowser -prefsLen 4978 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 52307 true tab
 matthias   52516  0.0  0.4 201608 33756 pts/0    Sl   21:54   0:00 /usr/lib/firefox-esr/firefox-esr -contentproc -parentBuildID 20220105212146 -prefsLen 4978 -prefMapSize 239899 -appdir /usr/lib/firefox-esr/browser 52307 true rdd
-matthias   52545  0.0  1.4 2439516 121324 pts/0  Sl   21:54   0:00 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 3 -isForBrowser -prefsLen 5702 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 52307 true tab
-matthias   52601  133  3.4 2754096 278000 pts/0  Sl   21:54  87:30 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 5 -isForBrowser -prefsLen 5768 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 52307 true tab
+matthias   52545  0.0  1.4 2439516 121424 pts/0  Sl   21:54   0:00 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 3 -isForBrowser -prefsLen 5702 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 52307 true tab
+matthias   52601  133  2.1 2726448 177092 pts/0  Sl   21:54  98:18 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 5 -isForBrowser -prefsLen 5768 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 52307 true tab
 matthias   52879  0.1  1.8 2656676 150820 pts/0  Sl   21:55   0:04 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 7 -isForBrowser -prefsLen 5815 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 52307 true tab
 matthias   53126  0.0  0.8 2393624 68264 pts/0   Sl   21:55   0:00 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 11 -isForBrowser -prefsLen 5815 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 52307 true tab
-matthias   60479  0.0  0.0   2420   576 pts/2    S+   23:00   0:00 sh -c ps aux | grep firefox | tee ./txt/processes.txt
-matthias   60481  0.0  0.0   6328   712 pts/2    S+   23:00   0:00 grep firefox
+matthias   61995  0.0  0.0   2420   572 pts/2    S+   23:08   0:00 sh -c ps aux | grep firefox | tee ./txt/processes.txt
+matthias   61997  0.0  0.0   6328   656 pts/2    S+   23:08   0:00 grep firefox
