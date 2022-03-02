@@ -63,6 +63,10 @@ void time_clbk(GtkButton * button, GtkStack * stack);
 void choice_clbk(GtkButton * button, GtkStack * stack);
 void start_box(void);
 void create_time_app();
+void del_sys();
+
+void start_box_del();
+void start_box_dellete();
 
 void clicked_clbk(GtkButton * button, GtkStack * stack);
 void quit_clbk(void);
@@ -78,6 +82,7 @@ GtkWidget * entry_password2;
     GtkWidget * entry_title;
     GtkWidget * entry_email;
     GtkWidget * entry_mdp;
+    GtkWidget * del_entry_title;
 
 
 void verification_login(GtkButton * button, GtkStack * stack, gpointer data);
@@ -354,6 +359,7 @@ void create_hubby(GtkWidget * stack) {
 
     GtkWidget * back_button;
     GtkWidget * add_button;
+    GtkWidget * delete_button;
     // GtkWidget * start_link;
 
         char tempo[20];
@@ -495,7 +501,11 @@ void create_hubby(GtkWidget * stack) {
     add_button = gtk_button_new_with_label("Ajout");
     gtk_box_pack_start(GTK_BOX(box), add_button, TRUE, FALSE, 0);
 
+    delete_button = gtk_button_new_with_label("Supprimer");
+    gtk_box_pack_start(GTK_BOX(box),delete_button, TRUE, FALSE, 0);
+
     g_signal_connect_swapped (add_button, "clicked", G_CALLBACK(start_box_clbk), window_hubby);
+    g_signal_connect_swapped (delete_button, "clicked", G_CALLBACK(start_box_del), window_hubby);
 
     // back_button = gtk_button_new_with_label ( "Retour" );
     // gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
@@ -592,15 +602,73 @@ void start_box_clbk(GtkWidget *w){
 
     gtk_widget_destroy(w);
     start_box();
+}
+
+void start_box_del(GtkWidget *w){
+
+    gtk_widget_destroy(w);
+    start_box_dellete();
+}
+
+void start_box_dellete(){
+
+    GtkWidget * box;
+    
+
+    window_enable_data = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    // TITRE DE LA FENETRE
+
+    gtk_window_set_title(GTK_WINDOW(window_enable_data), "HUBBY");
+
+    // PARAMETRES DE LA FENETRE 
+
+    gtk_window_set_default_size(GTK_WINDOW(window_enable_data), 400, 200);
+    gtk_container_set_border_width(GTK_CONTAINER(window_enable_data), 30);
+    gtk_window_set_resizable(GTK_WINDOW(window_enable_data), FALSE);
 
 
+    GtkWidget * del_button;
+    GtkWidget * label_title;
 
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+
+gtk_container_add(GTK_CONTAINER(window_enable_data), box);
+
+    label_title = gtk_label_new("Titre :");
+    gtk_box_pack_start(GTK_BOX(box), label_title, TRUE, FALSE, 0);
+
+    del_entry_title = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), del_entry_title, TRUE, FALSE, 0);
+
+
+    del_button = gtk_button_new_with_label("Supprimer");
+    gtk_box_pack_start(GTK_BOX(box), del_button, TRUE, FALSE, 0);
+
+    
+    
+    unsigned char * fetch_id;
+
+
+    g_signal_connect_swapped (del_button, "clicked", G_CALLBACK(del_sys), window_enable_data);
+    gtk_widget_show_all(window_enable_data);
+}
+void del_sys(){
+    unsigned char * fetch_id;
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    const gchar * title =  gtk_entry_get_text(GTK_ENTRY(del_entry_title ));
+    fetch_id = fetch_database_data(0,user , pass);
+    int verif = database(6, fetch_id, NULL, NULL, title);
+    if(verif == 1 ){
+        g_print("Bien supprimer");
+    }
 }
 
 void start_box(void) {
 
 
     GtkWidget * box;
+    
 
     window_enable_data = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
@@ -1181,6 +1249,14 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                 return good;
 
                 break;
+            case 6:
+            g_print("its good");
+            g_print("%s %s", user, title);
+            sprintf(requete, "DELETE FROM `data_huuby_v2` WHERE `id` = %c AND `title` = '%s'", user, title);
+            mysql_query(mysql, requete);
+            mysql_close(mysql);
+            return 1;
+            break;
 
             case 99:
                 printf("Connexion réussi");
