@@ -50,10 +50,6 @@ GtkWidget * window_enable_data;
 void verification_add_data(GtkWidget * w);
 void start_box(void);
 void create_time_app();
-void del_sys();
-
-void start_box_del();
-void start_box_dellete();
 
 int terminal();
 
@@ -63,19 +59,12 @@ GtkWidget * entry_password;
 GtkWidget * entry_username2;
 GtkWidget * entry_password2;
 
-<<<<<<< HEAD
 GtkWidget * entry_title;
 GtkWidget * entry_email;
 GtkWidget * entry_mdp;
 
 static gboolean continue_timer = FALSE;
 static gboolean start_timer = FALSE;
-=======
-    GtkWidget * entry_title;
-    GtkWidget * entry_email;
-    GtkWidget * entry_mdp;
-    GtkWidget * del_entry_title;
->>>>>>> Val-linux
 
 
 void verification_login(GtkButton * button, GtkStack * stack, gpointer data);
@@ -349,12 +338,7 @@ void create_hubby(GtkWidget * stack) {
 
     GtkWidget * back_button;
     GtkWidget * add_button;
-<<<<<<< HEAD
     // GtkWidget * start_link_transition;
-=======
-    GtkWidget * delete_button;
-    // GtkWidget * start_link;
->>>>>>> Val-linux
 
     char tempo[20];
     GtkWidget * label_id[20];
@@ -388,74 +372,11 @@ void create_hubby(GtkWidget * stack) {
         g_print("Connexion error : %s", mysql_error(mysql));
     } else {
 
-<<<<<<< HEAD
         window_hubby = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_window_set_title(GTK_WINDOW(window_hubby), "HUBBY");
         gtk_window_set_default_size(GTK_WINDOW(window_hubby), 300, 800);
         gtk_container_set_border_width(GTK_CONTAINER(window_hubby), 30);
         gtk_window_set_resizable(GTK_WINDOW(window_hubby), FALSE);
-=======
-    window_hubby = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window_hubby), "HUBBY");
-    gtk_window_set_default_size(GTK_WINDOW(window_hubby), 300, 500);
-    gtk_container_set_border_width(GTK_CONTAINER(window_hubby), 30);
-    gtk_window_set_resizable(GTK_WINDOW(window_hubby), FALSE);
-
-
-    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-
-    gtk_container_add(GTK_CONTAINER(window_hubby), box);
-
-    label_description = gtk_label_new("GESTIONNAIRE DE MOT DE PASSE");
-
-
-
-    unsigned char * fetch_id;
-    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
-    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
-    fetch_id = fetch_database_data(0,user , pass);
-
-    sprintf(requete, "select Id,UserID,title,email, AES_DECRYPT(mdp, 'clefsecrete') as `mdp` from data_huuby_v2 WHERE UserID = '%s'", fetch_id);
-    mysql_query(mysql, requete);
-    result = mysql_use_result(mysql);
-
-    mysql_result_nb = mysql_num_fields(result);
-
-    while ((row = mysql_fetch_row(result))) {
-
-        unsigned long * lengths;
-
-        lengths = mysql_fetch_lengths(result);
-
-
-        for (int i = 0; i < mysql_result_nb; i++) {
-
-            Separator[index] = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
-
-            label_title[index] = gtk_button_new_with_label(row[2]);
-            
-
-
-      if(i == 1){
-
-            int checking_curl = fonction_curl(row[2]);
-
-            if(checking_curl == 1)
-            {
-                label_state[index] = gtk_label_new("Site ON");
-
-            }else{
-
-                label_state[index] = gtk_label_new("Site OFF");
-            }
-
-    }
-
-            label_email[index] = gtk_label_new(row[3]);
-            label_mdp[index] = gtk_label_new(row[4]);   
->>>>>>> Val-linux
 
 
         box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
@@ -501,15 +422,7 @@ void create_hubby(GtkWidget * stack) {
                     if (checking_curl == 1) {
                         label_state[index] = gtk_label_new("Site ON");
 
-<<<<<<< HEAD
                     } else {
-=======
-    delete_button = gtk_button_new_with_label("Supprimer");
-    gtk_box_pack_start(GTK_BOX(box),delete_button, TRUE, FALSE, 0);
-
-    g_signal_connect_swapped (add_button, "clicked", G_CALLBACK(start_box_clbk), window_hubby);
-    g_signal_connect_swapped (delete_button, "clicked", G_CALLBACK(start_box_del), window_hubby);
->>>>>>> Val-linux
 
                         label_state[index] = gtk_label_new("Site OFF");
                     }
@@ -554,16 +467,7 @@ void create_hubby(GtkWidget * stack) {
 
         gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
 
-<<<<<<< HEAD
         GtkWidget * scrolled_window;
-=======
-    label_description = gtk_label_new("Temps passé sur les applications");
-    gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
-    
-   // Zone de texte.
-    
-    Firefox = gtk_label_new("Firefox");
->>>>>>> Val-linux
 
         scrolled_window = gtk_scrolled_window_new(NULL, NULL);
         gtk_box_pack_start(GTK_BOX(box), scrolled_window, TRUE, TRUE, 0);
@@ -594,131 +498,10 @@ void create_hubby(GtkWidget * stack) {
 void quit_time_app_transition(GtkWidget * w) {
 
     gtk_widget_destroy(w);
-<<<<<<< HEAD
     puts("HAS LEAVE");
     continue_timer = FALSE;
 }
 
-=======
-    start_box();
-}
-
-void start_box_del(GtkWidget *w){
-
-    gtk_widget_destroy(w);
-    start_box_dellete();
-}
-
-void start_box_dellete(){
-
-    GtkWidget * box;
-    
-
-    window_enable_data = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    // TITRE DE LA FENETRE
-
-    gtk_window_set_title(GTK_WINDOW(window_enable_data), "HUBBY");
-
-    // PARAMETRES DE LA FENETRE 
-
-    gtk_window_set_default_size(GTK_WINDOW(window_enable_data), 400, 200);
-    gtk_container_set_border_width(GTK_CONTAINER(window_enable_data), 30);
-    gtk_window_set_resizable(GTK_WINDOW(window_enable_data), FALSE);
-
-
-    GtkWidget * del_button;
-    GtkWidget * label_title;
-
-    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-
-gtk_container_add(GTK_CONTAINER(window_enable_data), box);
-
-    label_title = gtk_label_new("Titre :");
-    gtk_box_pack_start(GTK_BOX(box), label_title, TRUE, FALSE, 0);
-
-    del_entry_title = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(box), del_entry_title, TRUE, FALSE, 0);
-
-
-    del_button = gtk_button_new_with_label("Supprimer");
-    gtk_box_pack_start(GTK_BOX(box), del_button, TRUE, FALSE, 0);
-
-    
-    
-    unsigned char * fetch_id;
-
-
-    g_signal_connect_swapped (del_button, "clicked", G_CALLBACK(del_sys), window_enable_data);
-    gtk_widget_show_all(window_enable_data);
-}
-void del_sys(){
-    unsigned char * fetch_id;
-    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
-    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
-    const gchar * title =  gtk_entry_get_text(GTK_ENTRY(del_entry_title ));
-    fetch_id = fetch_database_data(0,user , pass);
-    int verif = database(6, fetch_id, NULL, NULL, title);
-    if(verif == 1 ){
-        g_print("Bien supprimer");
-    }
-}
-
-void start_box(void) {
-
-
-    GtkWidget * box;
-    
-
-    window_enable_data = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-
-    // TITRE DE LA FENETRE
-
-    gtk_window_set_title(GTK_WINDOW(window_enable_data), "HUBBY");
-
-    // PARAMETRES DE LA FENETRE 
-
-    gtk_window_set_default_size(GTK_WINDOW(window_enable_data), 400, 200);
-    gtk_container_set_border_width(GTK_CONTAINER(window_enable_data), 30);
-    gtk_window_set_resizable(GTK_WINDOW(window_enable_data), FALSE);
-
-
-
-    GtkWidget * add_button;
-    GtkWidget * back_button;
-
-    GtkWidget * label_title;
-    GtkWidget * label_email;
-    GtkWidget * label_mdp;
-
-    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-
-     gtk_container_add(GTK_CONTAINER(window_enable_data), box);
-
-
-    label_title = gtk_label_new("Titre :");
-    gtk_box_pack_start(GTK_BOX(box), label_title, TRUE, FALSE, 0);
-    entry_title = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(box), entry_title, TRUE, FALSE, 0);
-
-
-    label_email = gtk_label_new("Email / Username :");
-    gtk_box_pack_start(GTK_BOX(box), label_email, TRUE, FALSE, 0);
-
-    entry_email = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(box), entry_email, TRUE, FALSE, 0);
-
-    
-    label_mdp = gtk_label_new("Mot de passe :");
-    gtk_box_pack_start(GTK_BOX(box), label_mdp, TRUE, FALSE, 0);
-
-
-    entry_mdp = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(box), entry_mdp, TRUE, FALSE, 0);
-
-
-    add_button = gtk_button_new_with_label("Valider");
-    gtk_box_pack_start(GTK_BOX(box), add_button, TRUE, FALSE, 0);
->>>>>>> Val-linux
 
 static gboolean label_update(gpointer data) {
 
@@ -940,17 +723,7 @@ static gboolean label_update(gpointer data) {
 
 
 
-<<<<<<< HEAD
         // void time_application_quit(){
-=======
-                // ---------- //
-                //  FETCH ID  //
-                // ---------- //
-                
-                sprintf(requete, "select id,pseudo, AES_DECRYPT(password,'clefsecrete') as `password` from User_v2 where pseudo = '%s' AND password = AES_ENCRYPT('%s','clefsecrete');", user, password);
-                mysql_query(mysql, requete);
-                result = mysql_use_result(mysql);
->>>>>>> Val-linux
 
         //       gtk_widget_destroy(w);
         //          puts("HAS LEAVE");
@@ -977,12 +750,6 @@ static gboolean label_update(gpointer data) {
             gtk_window_set_resizable(GTK_WINDOW(window_enable_data), FALSE);
 
 
-<<<<<<< HEAD
-=======
-                sprintf(requete, "SELECT Id,UserID,email,AES_DECRYPT(mdp, 'clefsecrete') as `mdp` FROM data_huuby_v2 WHERE UserID = '%s'", user);
-                mysql_query(mysql, requete);
-                result = mysql_use_result(mysql);
->>>>>>> Val-linux
 
             GtkWidget * add_button;
             GtkWidget * back_button;
@@ -1116,49 +883,7 @@ static gboolean label_update(gpointer data) {
             box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
 
-<<<<<<< HEAD
             // FOR USERNAME 
-=======
-    mysql = mysql_init(NULL);
-    /*Connexion a la base de donnée*/
-
-    if (!mysql_real_connect(mysql, Server, Utilisateur, MotDePasse, BaseDeDonnee, 0, NULL, 0)) {
-        g_print("Connexion error : %s", mysql_error(mysql));
-    } else {
-        /* Utilisation du proc pour définir quel requete*/
-        switch (proc) {
-
-            case 0: // Aucune requete
-                printf("Ping");
-                break;
-            case 1:
-                /* Inscription */
-                printf("inscription");
-                if (strlen(user) > 5 && strlen(password) > 5) {
-                    sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');", user, password);
-                    mysql_query(mysql, requete);
-                    return good;
-                } else {
-                    return error;
-                }
-                break;
-
-            case 2:
-                /*Connexion*/
-                sprintf(requete, "select id,pseudo, AES_DECRYPT(password,'clefsecrete') as `password` from User_v2 where pseudo = '%s' AND password = AES_ENCRYPT('%s','clefsecrete');", user, password);
-                mysql_query(mysql, requete);
-                result = mysql_use_result(mysql);
-                num_champs = mysql_num_fields(result);
-                while ((row = mysql_fetch_row(result))) {
-                    unsigned long * lengths;
-                    lengths = mysql_fetch_lengths(result);
-                    for (i = 2; i < num_champs; i++) {
-                        if (row[i] != NULL) {
-                            printf("It's good\n");
-                            return good;
-                        } else {}
-                    }
->>>>>>> Val-linux
 
 
             label_username2 = gtk_label_new("Username:");
@@ -1179,12 +904,7 @@ static gboolean label_update(gpointer data) {
             entry_password2 = gtk_entry_new();
             gtk_box_pack_start(GTK_BOX(box), entry_password2, TRUE, FALSE, 0);
 
-<<<<<<< HEAD
             // FOR REGISTER
-=======
-                sprintf(requete, "INSERT INTO data_huuby_v2(UserID,title,email,mdp)VALUES('%s','%s','%s',AES_ENCRYPT('%s', 'clefsecrete'));", user, website, mail, passwordCrypt[0]);
-                mysql_query(mysql, requete);
->>>>>>> Val-linux
 
             register_button = gtk_button_new_with_label("S'inscrire");
             gtk_box_pack_start(GTK_BOX(box), register_button, TRUE, FALSE, 0);
@@ -1196,31 +916,11 @@ static gboolean label_update(gpointer data) {
 
             /// ***
 
-<<<<<<< HEAD
             g_signal_connect(G_OBJECT(register_button), "clicked", G_CALLBACK(verification_register), stack);
             g_signal_connect(back_button, "clicked", G_CALLBACK(main_transition), stack);
 
             /// ***
             return box;
-=======
-                sprintf(requete, "INSERT INTO data_huuby_v2(UserID,title,email,mdp)VALUES('%s','%s','%s',AES_ENCRYPT('%s', 'clefsecrete'));", user, title, email, password);
-                mysql_query(mysql, requete);
-                mysql_close(mysql);
-                return good;
-
-                break;
-            case 6:
-            g_print("its good");
-            g_print("%s %s", user, title);
-            sprintf(requete, "DELETE FROM `data_huuby_v2` WHERE `id` = %c AND `title` = '%s'", user, title);
-            mysql_query(mysql, requete);
-            mysql_close(mysql);
-            return 1;
-            break;
-
-            case 99:
-                printf("Connexion réussi");
->>>>>>> Val-linux
         }
 
         void verification_register(GtkButton * button, GtkStack * stack, gpointer data) {
@@ -1266,125 +966,6 @@ static gboolean label_update(gpointer data) {
             }
 
 
-<<<<<<< HEAD
-=======
-void databaseT(int proc, char *user, char *password)
-{
-    MYSQL *mysql;
-    MYSQL_RES *result = NULL;
-    MYSQL_ROW row;
-    
-    char *Server = "blindly.fr";
-    char *Utilisateur = "matthias"; // yuki
-    char *MotDePasse = "azerty"; // azerty
-    char *BaseDeDonnee = "projet"; // projet
-    char requete[300];
-    int temp;
-    int chose;
-    int *id;
-
-    char title[200];
-    char email[200];
-    char pword[200];
-    char *passwordCrypt[200];
-    unsigned int i = 1;
-    unsigned int num_champs = 0;
-    unsigned char * fetch_id; 
-    
-    fetch_id = fetch_database_data(0,user, password);
-    
-    mysql = mysql_init(NULL);
-    /*Connexion a la base de donnée*/
-    
-    if(!mysql_real_connect(mysql,Server,Utilisateur,MotDePasse,BaseDeDonnee,0,NULL,0)){
-        printf("Connexion error : %s" , mysql_error(mysql));
-    } else{
-        /* Utilisation du proc pour définir quel requete*/
-        switch (proc){
-            case 0: // Aucune requete
-                printf("Aucune commande a réaliser");
-                break;
-
-            case 1: /* Inscription */
-                printf("inscripton");
-                sprintf(requete, "insert into User_v2(pseudo, password) Values('%s', AES_ENCRYPT('%s','clefsecrete'))",user,password);
-                mysql_query(mysql, requete);
-                home(user, password);
-                break;
-
-            case 2: /*Connexion*/
-                sprintf(requete, "select id,pseudo, AES_DECRYPT(password,'clefsecrete') as `password` from User_v2 where pseudo = '%s' AND password = AES_ENCRYPT('%s','clefsecrete');",user, password);
-                mysql_query(mysql, requete);
-                result = mysql_use_result(mysql);
-                num_champs = mysql_num_fields(result);
-                while((row = mysql_fetch_row(result)))
-                {
-                    unsigned long *lengths;
-                    lengths = mysql_fetch_lengths(result);
-                    for(i = 2; i < num_champs; i++)
-                        {
-                            if(row[i] != NULL){
-                                home(user, password);
-                            }
-                        }
-                    
-                    
-                    
-                    
-                    }
-                break;
-            case 3: /*List des mot de passe*/
-        
-                
-                
-                
-
-                sprintf(requete, "SELECT Id,UserID,email,AES_DECRYPT(mdp, 'clefsecrete') as `mdp` FROM data_huuby_v2 WHERE UserID = '%s';", fetch_id);
-                mysql_query(mysql, requete);
-                result = mysql_use_result(mysql);
-                num_champs = mysql_num_fields(result);
-                while((row = mysql_fetch_row(result)))
-                {
-                    unsigned long *lengths;
-                    lengths = mysql_fetch_lengths(result);
-                    for(i = 0; i < num_champs; i++)
-                        {
-                            if(row[i] != NULL){
-                                printf("[%.*s] ", (int) lengths[i], row[i] ? row[i] : "NULL");
-                                
-                                
-                            }
-                        }
-                    printf("\n");
-                }
-                mysql_free_result(result);
-                home(user, password);
-                
-                break;
-            case 4: /* Ajout d'un mot de passe */
-            
-                fflush(stdin);
-                printf("Veuillez renseigner le nom du sites\n");
-                scanf("%s",&title[0]);
-                printf("Veuillez renseigner votre mail\n");
-                scanf("%s",&email[0]);
-                printf("Votre mot de passe\n");
-                scanf("%d",&temp);
-                scanf("%s",&pword[0]);
-                                
-                
-                sprintf(requete, "INSERT INTO data_huuby_v2(UserID,title,email,mdp)VALUES('%s','%s','%s',AES_ENCRYPT('%s', 'clefsecrete'))",fetch_id , title, email, pword);
-                mysql_query(mysql, requete);
-            
-                home(user, password);
-                break;
-            case 99:
-                printf("Connexion réussi");
-                }
-    
-                
-        
->>>>>>> Val-linux
         }
 
 
