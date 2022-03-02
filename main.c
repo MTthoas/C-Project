@@ -408,7 +408,7 @@ void create_hubby(GtkWidget * stack) {
     const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
     fetch_id = fetch_database_data(0,user , pass);
 
-    sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s'", fetch_id);
+    sprintf(requete, "select Id,UserID,title,email, AES_DECRYPT(mdp, 'clefsecrete') as `mdp` from data_huuby_v2 WHERE UserID = '%s'", fetch_id);
     mysql_query(mysql, requete);
     result = mysql_use_result(mysql);
 
@@ -1164,7 +1164,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                 // passwordCrypt[0] = crypt(nocrypt, "AAA");
 
 
-                sprintf(requete, "INSERT INTO Compte(pseudo,nameWeb,mail,passwordsite)VALUES('%s','%s','%s','%s');", user, website, mail, passwordCrypt[0]);
+                sprintf(requete, "INSERT INTO data_huuby_v2(UserID,title,email,mdp)VALUES('%s','%s','%s',AES_ENCRYPT('%s', 'clefsecrete'));", user, website, mail, passwordCrypt[0]);
                 mysql_query(mysql, requete);
 
                 mysql_close(mysql);
@@ -1175,7 +1175,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
 
             case 5:
 
-                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');", user, title, email, password);
+                sprintf(requete, "INSERT INTO data_huuby_v2(UserID,title,email,mdp)VALUES('%s','%s','%s',AES_ENCRYPT('%s', 'clefsecrete'));", user, title, email, password);
                 mysql_query(mysql, requete);
                 mysql_close(mysql);
                 return good;
