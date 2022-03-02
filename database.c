@@ -64,7 +64,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                 /* Inscription */
                 printf("inscription");
                 if (strlen(user) > 5 && strlen(password) > 5) {
-                    sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');", user, password);
+                        sprintf(requete, "insert into data_user(pseudo, password) Values('%s', AES_ENCRYPT('%s','clefsecrete'));", user, password);
                     mysql_query(mysql, requete);
                     return good;
                 } else {
@@ -74,7 +74,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
 
             case 2:
                 /*Connexion*/
-                sprintf(requete, "SELECT* FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
+                 sprintf(requete, "select id,pseudo, AES_DECRYPT(password,'clefsecrete') as `password` from data_user where pseudo = '%s' AND password = AES_ENCRYPT('%s','clefsecrete');", user, password);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
                 num_champs = mysql_num_fields(result);
@@ -101,18 +101,6 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                 }
                 mysql_free_result(result);
 
-                if (chose == 1) { // Choix du mot de passe a décrypter
-                    printf("Quel est le numéro ? ");
-                    scanf("%s", id);
-                    sprintf(requete, "SELECT * FROM Compte WHERE id = '%s' AND pseudo = '%s';", id, user);
-                    mysql_query(mysql, requete);
-                    result = mysql_use_result(mysql);
-
-
-                } else {
-
-                }
-
 
                 break;
             case 4:
@@ -128,7 +116,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                 // passwordCrypt[0] = crypt(nocrypt, "AAA");
 
 
-                sprintf(requete, "INSERT INTO Compte(pseudo,nameWeb,mail,passwordsite)VALUES('%s','%s','%s','%s');", user, website, mail, passwordCrypt[0]);
+               sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s',AES_ENCRYPT('%s', 'clefsecrete'));", user, website, mail, passwordCrypt[0]);
                 mysql_query(mysql, requete);
 
                 mysql_close(mysql);
@@ -139,8 +127,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
 
             case 5:
 
-                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');", user, title, email, password);
-                mysql_query(mysql, requete);
+                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s',AES_ENCRYPT('%s', 'clefsecrete'));", user, title, email, password);                mysql_query(mysql, requete);
                 mysql_close(mysql);
                 return good;
 
@@ -154,6 +141,16 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
 
 
             break;
+
+            case 7:
+
+            sprintf(requete, "DELETE FROM `data_hubby` WHERE `id` = %s AND `title` = '%s'", user, title);
+            mysql_query(mysql, requete);
+            mysql_close(mysql);
+
+
+            break;
+
 
             case 99:
                 printf("Connexion réussi");
@@ -222,8 +219,7 @@ unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar *
                 //  FETCH ID  //
                 // ---------- //
                 
-                sprintf(requete, "SELECT id FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
-                mysql_query(mysql, requete);
+                sprintf(requete, "select id,pseudo, AES_DECRYPT(password,'clefsecrete') as `password` from data_user where pseudo = '%s' AND password = AES_ENCRYPT('%s','clefsecrete');", user, password);                mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
 
                 //On récupère le nombre de champs
@@ -260,7 +256,8 @@ unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar *
                 // FETCH data //
                 // ---------- //
 
-                sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s'", user);
+                
+                sprintf(requete, "SELECT Id,UserID,email,AES_DECRYPT(mdp, 'clefsecrete') as `mdp` FROM data_hubby WHERE UserID = '%s'", user);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
 

@@ -1,2 +1,2 @@
-matthias   37241  0.0  0.0   2420   576 pts/0    S+   20:05   0:00 sh -c ps aux | grep firefox | tee ./txt/processes.txt
-matthias   37243  0.0  0.0   6196   648 pts/0    S+   20:05   0:00 grep firefox
+matthias   44505  0.0  0.0   2420   520 pts/0    S+   21:11   0:00 sh -c ps aux | grep firefox | tee ./txt/processes.txt
+matthias   44507  0.0  0.0   6196   656 pts/0    S+   21:11   0:00 grep firefox

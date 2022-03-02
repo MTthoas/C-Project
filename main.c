@@ -36,10 +36,14 @@ void start_box_transition(GtkWidget * w);
 static gboolean label_update(gpointer data);
 void time_application_quit();
 void quit_time_app_transition(GtkWidget * w);
+void start_box_del(GtkWidget *w);
+void start_box_delete();
+void del_sys();
+
 
 
 int block_variable = 0;
-int sec_expired = 0;
+static int sec_expired = 0;
 
 GtkWidget * object;
 
@@ -62,6 +66,8 @@ GtkWidget * entry_password2;
 GtkWidget * entry_title;
 GtkWidget * entry_email;
 GtkWidget * entry_mdp;
+
+  GtkWidget * del_entry_title;
 
 static gboolean continue_timer = FALSE;
 static gboolean start_timer = FALSE;
@@ -338,6 +344,7 @@ void create_hubby(GtkWidget * stack) {
 
     GtkWidget * back_button;
     GtkWidget * add_button;
+    GtkWidget * delete_button;
     // GtkWidget * start_link_transition;
 
     char tempo[20];
@@ -348,6 +355,7 @@ void create_hubby(GtkWidget * stack) {
     GtkWidget * Separator[50];
     GtkWidget * label_state[50];
     GtkWidget * label_title_gchar[50];
+    
 
     unsigned int mysql_result_nb = 0;
 
@@ -379,8 +387,8 @@ void create_hubby(GtkWidget * stack) {
         gtk_window_set_resizable(GTK_WINDOW(window_hubby), FALSE);
 
 
-        box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-        box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+        box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+        box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
         box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
         gtk_container_add(GTK_CONTAINER(window_hubby), box);
@@ -394,7 +402,7 @@ void create_hubby(GtkWidget * stack) {
         const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
         fetch_id = fetch_database_data(0, user, pass);
 
-        sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s'", fetch_id);
+       sprintf(requete, "select Id,UserID,title,email, AES_DECRYPT(mdp, 'clefsecrete') as `mdp` from data_hubby WHERE UserID = '%s'", fetch_id);
         mysql_query(mysql, requete);
         result = mysql_use_result(mysql);
 
@@ -480,7 +488,11 @@ void create_hubby(GtkWidget * stack) {
         add_button = gtk_button_new_with_label("Ajout");
         gtk_box_pack_start(GTK_BOX(box), add_button, TRUE, FALSE, 0);
 
+        delete_button = gtk_button_new_with_label("Supprimer");
+        gtk_box_pack_start(GTK_BOX(box),delete_button, TRUE, FALSE, 0);
+
         g_signal_connect_swapped(add_button, "clicked", G_CALLBACK(start_box_transition), window_hubby);
+        g_signal_connect_swapped (delete_button, "clicked", G_CALLBACK(start_box_del), window_hubby);
 
         // back_button = gtk_button_new_with_label ( "Retour" );
         // gtk_box_pack_start(GTK_BOX(box),  back_button , TRUE, FALSE, 0);
@@ -507,8 +519,8 @@ static gboolean label_update(gpointer data) {
 
 
     unsigned char * fetch_id;
-    char *qq;
-    FILE *p;  
+    char * qq;
+    FILE * p;
     char ligne[1024];
     char data_index[1024];
     double time_diff_mozilla;
@@ -519,8 +531,8 @@ static gboolean label_update(gpointer data) {
     bool block = false;
     bool block_time = false;
     int index_time = 0;
-    char *MYIDTXT = "./txt/3100.txt";
-    char *Environnement;
+    char * MYIDTXT = "./txt/3100.txt";
+    char * Environnement;
     void * needed = "/usr/lib/firefox-esr/firefox-esr";
 
     bool app_detected;
@@ -536,573 +548,625 @@ static gboolean label_update(gpointer data) {
     time_t debut;
     time_t end;
 
-        GtkLabel *label = (GtkLabel*)data;
-        char buf[256];
-        memset(&buf, 0x0, 256);
-        snprintf(buf, 255, "Mozilla: %d secs", ++sec_expired);
-        gtk_label_set_label(label, buf);
+    GtkLabel * label = (GtkLabel * ) data;
+    char buf[256];
+    memset( & buf, 0x0, 256);
+    snprintf(buf, 255, "Mozilla: %d seconde(s)", ++sec_expired);
+    gtk_label_set_label(label, buf);
 
 
-        if (block_variable == 0) {
+    if (block_variable == 0) {
 
-            unsigned char * fetch_id;
-            const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
-            const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
-            fetch_id = fetch_database_data(0, user, pass);
+        unsigned char * fetch_id;
+        const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+        const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+        fetch_id = fetch_database_data(0, user, pass);
 
-            const char* q1 = "./txt/";
-            const char* q3 = ".txt";
+        const char * q1 = "./txt/";
+        const char * q3 = ".txt";
 
-            char * MYIDTXT = (char*) malloc((strlen(q1) + strlen(fetch_id) + strlen(q3))*sizeof(char));
-            strcpy(MYIDTXT,q1);
-            strcpy(MYIDTXT,fetch_id);
-            strcat(MYIDTXT,q3);
+        char * MYIDTXT = (char * ) malloc((strlen(q1) + strlen(fetch_id) + strlen(q3)) * sizeof(char));
+        strcpy(MYIDTXT, q1);
+        strcpy(MYIDTXT, fetch_id);
+        strcat(MYIDTXT, q3);
 
-            printf("%s\n",qq);
+        printf("%s\n", qq);
 
 
-            if( access (MYIDTXT, F_OK) != -1){
+        if (access(MYIDTXT, F_OK) != -1) {
 
-            }else{
+        } else {
 
-                p = fopen(MYIDTXT, "w");
-                                
-                fprintf(p,"MOZILLA : Durée = 0\n");
+            p = fopen(MYIDTXT, "w");
 
-                fclose(p);
+            fprintf(p, "MOZILLA : Durée = 0\n");
 
-            }
+            fclose(p);
 
         }
 
-        block_variable++;
+    }
 
-               p = popen("ps aux | grep firefox | tee ./txt/processes.txt", "r");
+    block_variable++;
 
-                if (!p) {
-                exit(-1);
-                }
+    p = popen("ps aux | grep firefox | tee ./txt/processes.txt", "r");
 
-           fgets(ligne, sizeof(ligne), p);
+    if (!p) {
+        exit(-1);
+    }
 
-                index++;
+    fgets(ligne, sizeof(ligne), p);
 
-                    printf("%s",ligne);
-            
+    index++;
 
-                 if (strstr(ligne, needed) != NULL) {
-
-                     // L'application a été detecte
-
-                    // On démarre le chronomètre une seule fois et on informe au système que l'app a été detecté
-
-                    if(start_chrono == true){
-
-                         debut = time(NULL);
-                         printf("yes\n");
-                         app_detected = true;
-
-                    }
-
-                    start_chrono = false;
-          
-
-                 }else{
-
-                    // On sait que l'appli a été fermé et que l'app a été detecté
-                    // Donc on affiche le temps d'utilisation
+    printf("%s", ligne);
 
 
-                     if(app_detected == true){
+    if (strstr(ligne, needed) != NULL) {
 
-                         end = time(NULL);
+        // L'application a été detecte
 
-                        time_diff = difftime(end, debut);
+        // On démarre le chronomètre une seule fois et on informe au système que l'app a été detecté
 
-                        // Récupération d'anciennes données
+        if (start_chrono == true) {
 
-                          p = fopen(MYIDTXT, "r");
+            debut = time(NULL);
+            printf("yes\n");
+            app_detected = true;
 
-                            fgets(data_index, sizeof data_index, p);
+        }
 
-                                sscanf(data_index, "MOZILLA : Durée = %lf\n", &data_from_mozilla);
-
-
-                            fclose(p);
-
-                            p = fopen(MYIDTXT, "w");
-
-                            if(Environnement == "Mozilla"){
-
-                                  double time_calculate = time_diff + data_from_mozilla;
-                                  fprintf(p,"Mozilla : Durée = %lf \n", time_calculate);
-
-                                gchar *display;
-
-                                display = g_strdup_printf("%lf", time_calculate);    
-                                gtk_label_set_text (label, display); 
-                                g_free(display); 
-
-                            }
-                            
+        start_chrono = false;
 
 
-                            fclose(p);
-                            printf("\n");
+    } else {
+
+        // On sait que l'appli a été fermé et que l'app a été detecté
+        // Donc on affiche le temps d'utilisation
 
 
-                        app_detected = false;
+        if (app_detected == true) {
+
+            end = time(NULL);
+
+            time_diff = difftime(end, debut);
+
+            // Récupération d'anciennes données
+
+            p = fopen(MYIDTXT, "r");
+
+            fgets(data_index, sizeof data_index, p);
+
+            sscanf(data_index, "MOZILLA : Durée = %lf\n", & data_from_mozilla);
 
 
-                     }
-                 
+            fclose(p);
 
-        };
+            p = fopen(MYIDTXT, "w");
+
+            if (Environnement == "Mozilla") {
+
+                double time_calculate = time_diff + data_from_mozilla;
+                fprintf(p, "Mozilla : Durée = %lf \n", time_calculate);
+
+                gchar * display;
+
+                display = g_strdup_printf("%lf", time_calculate);
+                gtk_label_set_text(label, display);
+                g_free(display);
+
+            }
+
+
+
+            fclose(p);
+            printf("\n");
+
+
+            app_detected = false;
+
+
+        }
+
+
+    };
 
 }
 
-        void create_time_app() {
+void start_box_del(GtkWidget *w){
 
-            GtkWidget * box;
-            GtkWidget * box2;
+    gtk_widget_destroy(w);
+    start_box_delete();
+}
 
-            GtkWidget * label_description;
-            GtkWidget * Firefox;
-            GtkWidget * back_button;
-            GtkWidget * label;
+void start_box_delete(){
 
-            window_app_time = gtk_window_new(GTK_WINDOW_TOPLEVEL);;
+    GtkWidget * box;
+    
 
+    window_enable_data = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    // TITRE DE LA FENETRE
 
-            gtk_window_set_title(GTK_WINDOW(window_app_time), "TIMMY");
-            gtk_window_set_default_size(GTK_WINDOW(window_app_time), 300, 500);
-            gtk_container_set_border_width(GTK_CONTAINER(window_app_time), 30);
-            gtk_window_set_resizable(GTK_WINDOW(window_app_time), FALSE);
+    gtk_window_set_title(GTK_WINDOW(window_enable_data), "HUBBY");
 
-            box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-            box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    // PARAMETRES DE LA FENETRE 
 
+    gtk_window_set_default_size(GTK_WINDOW(window_enable_data), 400, 200);
+    gtk_container_set_border_width(GTK_CONTAINER(window_enable_data), 30);
+    gtk_window_set_resizable(GTK_WINDOW(window_enable_data), FALSE);
 
-            gtk_container_add(GTK_CONTAINER(window_app_time), box);
 
-            label_description = gtk_label_new("Temps passé sur les applications");
-            gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
+    GtkWidget * del_button;
+    GtkWidget * label_title;
 
-            // Zone de texte.
-            label = gtk_label_new("Mozilla :");
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 
+gtk_container_add(GTK_CONTAINER(window_enable_data), box);
 
-            gtk_box_pack_start(GTK_BOX(box), label, TRUE, TRUE, 0);
+    label_title = gtk_label_new("Titre :");
+    gtk_box_pack_start(GTK_BOX(box), label_title, TRUE, FALSE, 0);
 
+    del_entry_title = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), del_entry_title, TRUE, FALSE, 0);
 
 
-            GtkWidget * scrolled_window;
+    del_button = gtk_button_new_with_label("Supprimer");
+    gtk_box_pack_start(GTK_BOX(box), del_button, TRUE, FALSE, 0);
 
-            scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-            gtk_box_pack_start(GTK_BOX(box), scrolled_window, TRUE, TRUE, 0);
+    
+    
+    unsigned char * fetch_id;
 
 
-            gtk_container_add(GTK_CONTAINER(scrolled_window), box2);
+    g_signal_connect_swapped (del_button, "clicked", G_CALLBACK(del_sys), window_enable_data);
+    gtk_widget_show_all(window_enable_data);
+}
 
-            back_button = gtk_button_new_with_label("Quitter");
-            gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
+void del_sys(){
+    unsigned char * fetch_id;
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    const gchar * title =  gtk_entry_get_text(GTK_ENTRY(del_entry_title ));
+    fetch_id = fetch_database_data(0,user , pass);
+    int verif = database(6, fetch_id, NULL, NULL, title);
+    if(verif == 1 ){
+        g_print("Bien supprimer");
+    }
+}
 
-            // g_timeout_add(1000, (GSourceFunc) time_handler, (gpointer) window);
+void create_time_app() {
 
-            gtk_widget_show_all(window_app_time);
-            g_signal_connect_swapped(back_button, "clicked", G_CALLBACK(quit_time_app_transition), window_app_time);
-            g_signal_connect(window_app_time, "destroy", G_CALLBACK(quit_time_app_transition), window_app_time);
+    GtkWidget * box;
+    GtkWidget * box2;
 
+    GtkWidget * label_description;
+    GtkWidget * Firefox;
+    GtkWidget * back_button;
+    GtkWidget * label;
 
-            g_timeout_add_seconds(1, label_update, label);
-            start_timer = TRUE;
-            continue_timer = TRUE;
+    window_app_time = gtk_window_new(GTK_WINDOW_TOPLEVEL);;
 
-        }
 
+    gtk_window_set_title(GTK_WINDOW(window_app_time), "TIMMY");
+    gtk_window_set_default_size(GTK_WINDOW(window_app_time), 300, 500);
+    gtk_container_set_border_width(GTK_CONTAINER(window_app_time), 30);
+    gtk_window_set_resizable(GTK_WINDOW(window_app_time), FALSE);
 
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
 
-        // void time_application_quit(){
+    gtk_container_add(GTK_CONTAINER(window_app_time), box);
 
-        //       gtk_widget_destroy(w);
-        //          puts("HAS LEAVE");
-        //     continue_timer = FALSE;
-        //     start_timer = FALSE;
+    label_description = gtk_label_new("Temps passé sur les applications");
+    gtk_box_pack_start(GTK_BOX(box), label_description, TRUE, TRUE, 0);
 
-        // }
+    // Zone de texte.
+    label = gtk_label_new("Mozilla :");
 
-        void start_box(void) {
 
+    gtk_box_pack_start(GTK_BOX(box), label, TRUE, TRUE, 0);
 
-            GtkWidget * box;
 
-            window_enable_data = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-            // TITRE DE LA FENETRE
+    GtkWidget * scrolled_window;
 
-            gtk_window_set_title(GTK_WINDOW(window_enable_data), "HUBBY");
+    scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+    gtk_box_pack_start(GTK_BOX(box), scrolled_window, TRUE, TRUE, 0);
 
-            // PARAMETRES DE LA FENETRE 
 
-            gtk_window_set_default_size(GTK_WINDOW(window_enable_data), 400, 200);
-            gtk_container_set_border_width(GTK_CONTAINER(window_enable_data), 30);
-            gtk_window_set_resizable(GTK_WINDOW(window_enable_data), FALSE);
+    gtk_container_add(GTK_CONTAINER(scrolled_window), box2);
 
+    back_button = gtk_button_new_with_label("Quitter");
+    gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
 
+    // g_timeout_add(1000, (GSourceFunc) time_handler, (gpointer) window);
 
-            GtkWidget * add_button;
-            GtkWidget * back_button;
+    gtk_widget_show_all(window_app_time);
+    g_signal_connect_swapped(back_button, "clicked", G_CALLBACK(quit_time_app_transition), window_app_time);
+    g_signal_connect(window_app_time, "destroy", G_CALLBACK(quit_time_app_transition), window_app_time);
 
-            GtkWidget * label_title;
-            GtkWidget * label_email;
-            GtkWidget * label_mdp;
 
-            box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    g_timeout_add_seconds(1, label_update, label);
+    start_timer = TRUE;
+    continue_timer = TRUE;
 
-            gtk_container_add(GTK_CONTAINER(window_enable_data), box);
+}
 
 
-            label_title = gtk_label_new("Titre :");
-            gtk_box_pack_start(GTK_BOX(box), label_title, TRUE, FALSE, 0);
-            entry_title = gtk_entry_new();
-            gtk_box_pack_start(GTK_BOX(box), entry_title, TRUE, FALSE, 0);
 
+void start_box(void) {
 
-            label_email = gtk_label_new("Email / Username :");
-            gtk_box_pack_start(GTK_BOX(box), label_email, TRUE, FALSE, 0);
 
-            entry_email = gtk_entry_new();
-            gtk_box_pack_start(GTK_BOX(box), entry_email, TRUE, FALSE, 0);
+    GtkWidget * box;
 
+    window_enable_data = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-            label_mdp = gtk_label_new("Mot de passe :");
-            gtk_box_pack_start(GTK_BOX(box), label_mdp, TRUE, FALSE, 0);
+    // TITRE DE LA FENETRE
 
+    gtk_window_set_title(GTK_WINDOW(window_enable_data), "HUBBY");
 
-            entry_mdp = gtk_entry_new();
-            gtk_box_pack_start(GTK_BOX(box), entry_mdp, TRUE, FALSE, 0);
+    // PARAMETRES DE LA FENETRE 
 
+    gtk_window_set_default_size(GTK_WINDOW(window_enable_data), 400, 200);
+    gtk_container_set_border_width(GTK_CONTAINER(window_enable_data), 30);
+    gtk_window_set_resizable(GTK_WINDOW(window_enable_data), FALSE);
 
-            add_button = gtk_button_new_with_label("Valider");
-            gtk_box_pack_start(GTK_BOX(box), add_button, TRUE, FALSE, 0);
 
-            back_button = gtk_button_new_with_label("Retour");
-            gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
 
+    GtkWidget * add_button;
+    GtkWidget * back_button;
 
-            unsigned char * fetch_id;
-            const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
-            const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
-            fetch_id = fetch_database_data(0, user, pass);
+    GtkWidget * label_title;
+    GtkWidget * label_email;
+    GtkWidget * label_mdp;
 
-            // int enter = database(5, fetch_id, title, email, mdp);
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 
+    gtk_container_add(GTK_CONTAINER(window_enable_data), box);
 
-            int verif_index = 0;
 
+    label_title = gtk_label_new("Titre :");
+    gtk_box_pack_start(GTK_BOX(box), label_title, TRUE, FALSE, 0);
+    entry_title = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), entry_title, TRUE, FALSE, 0);
 
-            g_signal_connect_swapped(add_button, "clicked", G_CALLBACK(verification_add_data), window_enable_data);
 
-            printf("%d", verif_index);
+    label_email = gtk_label_new("Email / Username :");
+    gtk_box_pack_start(GTK_BOX(box), label_email, TRUE, FALSE, 0);
 
-            // g_signal_connect(back_button, "clicked", G_CALLBACK(main_transition), stack);
+    entry_email = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), entry_email, TRUE, FALSE, 0);
 
-            /// ***
-            // return box;
 
-            gtk_widget_show_all(window_enable_data);
+    label_mdp = gtk_label_new("Mot de passe :");
+    gtk_box_pack_start(GTK_BOX(box), label_mdp, TRUE, FALSE, 0);
 
-        }
 
-        void start_box_transition(GtkWidget * w) {
+    entry_mdp = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), entry_mdp, TRUE, FALSE, 0);
 
-            gtk_widget_destroy(w);
-            start_box();
-        }
 
+    add_button = gtk_button_new_with_label("Valider");
+    gtk_box_pack_start(GTK_BOX(box), add_button, TRUE, FALSE, 0);
 
-        void verification_add_data(GtkWidget * w) {
+    back_button = gtk_button_new_with_label("Retour");
+    gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
 
-            const gchar * title = gtk_entry_get_text(GTK_ENTRY(entry_title));
-            const gchar * email = gtk_entry_get_text(GTK_ENTRY(entry_email));
-            const gchar * mdp = gtk_entry_get_text(GTK_ENTRY(entry_mdp));
 
-            fflush(stdin);
+    unsigned char * fetch_id;
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fetch_id = fetch_database_data(0, user, pass);
 
+    // int enter = database(5, fetch_id, title, email, mdp);
 
-            int length_email = strlen(email);
-            int length_mdp = strlen(mdp);
 
+    int verif_index = 0;
 
-            if (title[0] != '\0' && email[0] != '\0' && mdp[0] != '\0') {
 
-                if (title[0] != ' ' && email[0] != ' ' && mdp[0] != ' ') {
+    g_signal_connect_swapped(add_button, "clicked", G_CALLBACK(verification_add_data), window_enable_data);
 
-                    if (length_email > 5 && length_mdp > 5) {
+    printf("%d", verif_index);
 
+    // g_signal_connect(back_button, "clicked", G_CALLBACK(main_transition), stack);
 
-                        unsigned char * fetch_id;
-                        const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
-                        const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
-                        fetch_id = fetch_database_data(0, user, pass);
-                        int enter2 = database(5, fetch_id, mdp, email, title);
+    /// ***
+    // return box;
 
+    gtk_widget_show_all(window_enable_data);
 
-                        gtk_widget_destroy(w);
-                        create_hubby(NULL);
+}
 
-                    }
+void start_box_transition(GtkWidget * w) {
 
+    gtk_widget_destroy(w);
+    start_box();
+}
 
-                }
 
-            } else {
-                puts("Error on insertion, + de 6 insertions pour email & mdp");
-            }
+void verification_add_data(GtkWidget * w) {
 
+    const gchar * title = gtk_entry_get_text(GTK_ENTRY(entry_title));
+    const gchar * email = gtk_entry_get_text(GTK_ENTRY(entry_email));
+    const gchar * mdp = gtk_entry_get_text(GTK_ENTRY(entry_mdp));
 
+    fflush(stdin);
 
-        }
 
-        GtkWidget * Register_page(GtkWidget * stack) {
-            GtkWidget * box;
+    int length_email = strlen(email);
+    int length_mdp = strlen(mdp);
 
-            GtkWidget * label_username2;
 
-            GtkWidget * label_password2;
+    if (title[0] != '\0' && email[0] != '\0' && mdp[0] != '\0') {
 
-            GtkWidget * register_button;
-            GtkWidget * back_button;
+        if (title[0] != ' ' && email[0] != ' ' && mdp[0] != ' ') {
 
-            GtkWidget * label_email2;
-            GtkWidget * entry_email2;
+            if (length_email > 5 && length_mdp > 5) {
 
 
-            /// *** Create the BOX
-            box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+                unsigned char * fetch_id;
+                const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+                const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+                fetch_id = fetch_database_data(0, user, pass);
+                int enter2 = database(5, fetch_id, mdp, email, title);
 
 
-            // FOR USERNAME 
+                gtk_widget_destroy(w);
+                create_hubby(NULL);
 
-
-            label_username2 = gtk_label_new("Username:");
-            gtk_box_pack_start(GTK_BOX(box), label_username2, TRUE, FALSE, 0);
-
-            entry_username2 = gtk_entry_new();
-            gtk_box_pack_start(GTK_BOX(box), entry_username2, TRUE, FALSE, 0);
-
-
-
-
-
-            // FOR PASSWORD
-
-            label_password2 = gtk_label_new("Password:");
-            gtk_box_pack_start(GTK_BOX(box), label_password2, TRUE, FALSE, 0);
-
-            entry_password2 = gtk_entry_new();
-            gtk_box_pack_start(GTK_BOX(box), entry_password2, TRUE, FALSE, 0);
-
-            // FOR REGISTER
-
-            register_button = gtk_button_new_with_label("S'inscrire");
-            gtk_box_pack_start(GTK_BOX(box), register_button, TRUE, FALSE, 0);
-
-            // FOR RETOUR
-
-            back_button = gtk_button_new_with_label("Retour");
-            gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
-
-            /// ***
-
-            g_signal_connect(G_OBJECT(register_button), "clicked", G_CALLBACK(verification_register), stack);
-            g_signal_connect(back_button, "clicked", G_CALLBACK(main_transition), stack);
-
-            /// ***
-            return box;
-        }
-
-        void verification_register(GtkButton * button, GtkStack * stack, gpointer data) {
-
-            int enter;
-            const gchar * userR = gtk_entry_get_text(GTK_ENTRY(entry_username2));
-            const gchar * passR = gtk_entry_get_text(GTK_ENTRY(entry_password2));
-
-            enter = database(1, userR, passR, "NULL", "NULL");
-
-            fflush(stdin);
-
-
-            if (enter == 1) {
-                gtk_stack_set_visible_child_full(stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN);
-            } else if (enter == 0) {
-                printf("Champ vide ou pas assez long");
-
-            } else if (enter == 3) {
-                //Entrer invalide
-                printf("Mot de passe incorrecte");
-
-            }
-        }
-
-        void verification_login(GtkButton * button, GtkStack * stack, gpointer data) {
-
-
-            int enter2;
-
-            const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
-            const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
-            fflush(stdin);
-            enter2 = database(2, user, pass, "NULL", "NULL");
-            g_print("%d \n", enter2);
-            g_print("user : %s \n", user);
-            g_print("password :%s \n", pass);
-
-            if (enter2 == 1) {
-                gtk_stack_set_visible_child_full(stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN);
-            } else if (enter2 == 0) {
-                printf("User/Mot de passe incorrecte");
             }
 
 
         }
 
-
-        void connexion() {
-            char user[20];
-            char password[20];
-            int temp;
-            unsigned long longueur_USER = 0;
-            unsigned long longueur_PWD = 0;
-            int i = 0;
-            int c = 0;
+    } else {
+        puts("Error on insertion, + de 6 insertions pour email & mdp");
+    }
 
 
-            printf("--Connexion--\n");
 
-            /* Vérification que le user / mot de passe est bien renseigner */
-            while (i < 1) {
-                fflush(stdin);
-                printf("Veuillez renseignez votre utilisateur\n");
-                scanf("%d", & temp);
-                scanf("%[^\n]", user);
+}
 
-                longueur_USER = strlen(user);
-                if (longueur_USER > 1) {
-                    i = 1;
-                    printf("Votre nom d'utilisateur est %s\n", user);
-                }
-            }
+GtkWidget * Register_page(GtkWidget * stack) {
+    GtkWidget * box;
 
-            while (c < 1) {
-                fflush(stdin);
-                printf("Veuillez renseignez votre mot de passe\n");
-                scanf("%d", & temp);
-                scanf("%[^\n]", password);
-                // Vérification de la longueur
-                longueur_PWD = strlen(password);
-                if (longueur_PWD > 1) {
-                    c = 1;
-                    printf("Votre mot de passe est %s\n", password);
-                }
-            }
-            /* Cryptage du mot de passe sous format AAA. */
-            //  passwordCryp = crypt(password,"AAA");
+    GtkWidget * label_username2;
 
-            /* Appel de la base de donnée, avec 3 arguement */
-            databaseT(2, & user[0], & password[0]);
+    GtkWidget * label_password2;
+
+    GtkWidget * register_button;
+    GtkWidget * back_button;
+
+    GtkWidget * label_email2;
+    GtkWidget * entry_email2;
+
+
+    /// *** Create the BOX
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+
+
+    // FOR USERNAME 
+
+
+    label_username2 = gtk_label_new("Username:");
+    gtk_box_pack_start(GTK_BOX(box), label_username2, TRUE, FALSE, 0);
+
+    entry_username2 = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), entry_username2, TRUE, FALSE, 0);
+
+
+
+
+
+    // FOR PASSWORD
+
+    label_password2 = gtk_label_new("Password:");
+    gtk_box_pack_start(GTK_BOX(box), label_password2, TRUE, FALSE, 0);
+
+    entry_password2 = gtk_entry_new();
+    gtk_box_pack_start(GTK_BOX(box), entry_password2, TRUE, FALSE, 0);
+
+    // FOR REGISTER
+
+    register_button = gtk_button_new_with_label("S'inscrire");
+    gtk_box_pack_start(GTK_BOX(box), register_button, TRUE, FALSE, 0);
+
+    // FOR RETOUR
+
+    back_button = gtk_button_new_with_label("Retour");
+    gtk_box_pack_start(GTK_BOX(box), back_button, TRUE, FALSE, 0);
+
+    /// ***
+
+    g_signal_connect(G_OBJECT(register_button), "clicked", G_CALLBACK(verification_register), stack);
+    g_signal_connect(back_button, "clicked", G_CALLBACK(main_transition), stack);
+
+    /// ***
+    return box;
+}
+
+void verification_register(GtkButton * button, GtkStack * stack, gpointer data) {
+
+    int enter;
+    const gchar * userR = gtk_entry_get_text(GTK_ENTRY(entry_username2));
+    const gchar * passR = gtk_entry_get_text(GTK_ENTRY(entry_password2));
+
+    enter = database(1, userR, passR, "NULL", "NULL");
+
+    fflush(stdin);
+
+
+    if (enter == 1) {
+        gtk_stack_set_visible_child_full(stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN);
+    } else if (enter == 0) {
+        printf("Champ vide ou pas assez long");
+
+    } else if (enter == 3) {
+        //Entrer invalide
+        printf("Mot de passe incorrecte");
+
+    }
+}
+
+void verification_login(GtkButton * button, GtkStack * stack, gpointer data) {
+
+
+    int enter2;
+
+    const gchar * user = gtk_entry_get_text(GTK_ENTRY(entry_username));
+    const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
+    fflush(stdin);
+    enter2 = database(2, user, pass, "NULL", "NULL");
+    g_print("%d \n", enter2);
+    g_print("user : %s \n", user);
+    g_print("password :%s \n", pass);
+
+    if (enter2 == 1) {
+        gtk_stack_set_visible_child_full(stack, "CHOICE", GTK_STACK_TRANSITION_TYPE_SLIDE_UP_DOWN);
+    } else if (enter2 == 0) {
+        printf("User/Mot de passe incorrecte");
+    }
+
+
+}
+
+
+void connexion() {
+
+    char user[20];
+    char password[20];
+    int temp;
+    unsigned long longueur_USER = 0;
+    unsigned long longueur_PWD = 0;
+    int i = 0;
+    int c = 0;
+
+
+    printf("--Connexion--\n");
+
+    /* Vérification que le user / mot de passe est bien renseigner */
+    while (i < 1) {
+        fflush(stdin);
+        printf("Veuillez renseignez votre utilisateur\n");
+        scanf("%d", & temp);
+        scanf("%[^\n]", user);
+
+        longueur_USER = strlen(user);
+        if (longueur_USER > 1) {
+            i = 1;
+            printf("Votre nom d'utilisateur est %s\n", user);
         }
+    }
 
-        /* Fonction inscription, ressemble a connexion */
-
-
-        /* Inscription */
-
-
-        void inscription() {
-            char user[20];
-            char password[20];
-            int temp;
-            unsigned long longueur_USER = 0;
-            unsigned long longueur_PWD = 0;
-            int i = 0;
-            int c = 0;
-
-
-            while (i < 1) {
-                fflush(stdin);
-                printf("Veuillez renseignez votre utilisateur\n");
-                scanf("%d", & temp);
-                scanf("%[^\n]", user);
-
-                longueur_USER = strlen(user);
-                if (longueur_USER > 1) {
-                    i = 1;
-                    printf("Votre nom d'utilisateur est %s\n", user);
-                }
-            }
-
-            while (c < 1) {
-                fflush(stdin);
-                printf("Veuillez renseignez votre mot de passe\n");
-                scanf("%d", & temp);
-                scanf("%[^\n]", password);
-                longueur_PWD = strlen(password);
-                if (longueur_PWD > 1) {
-                    c = 1;
-                    printf("Votre mot de passe est %s\n", password);
-                }
-            }
-
-            //  passwordCryp = crypt(password,"AAA");
-            databaseT(1, & user[0], & password[0]);
-
+    while (c < 1) {
+        fflush(stdin);
+        printf("Veuillez renseignez votre mot de passe\n");
+        scanf("%d", & temp);
+        scanf("%[^\n]", password);
+        // Vérification de la longueur
+        longueur_PWD = strlen(password);
+        if (longueur_PWD > 1) {
+            c = 1;
+            printf("Votre mot de passe est %s\n", password);
         }
+    }
+    /* Cryptage du mot de passe sous format AAA. */
+    //  passwordCryp = crypt(password,"AAA");
 
-        /* Fonction qui permet de lier le programme a la base de donnée. Il y a 3 arguement.
-         "proc" vas permettre de définir quel requete nous allons executer
-         "user / password" Liée a la connexion et a l'inscription de l'utilisateur */
+    /* Appel de la base de donnée, avec 3 arguement */
+    databaseT(2, & user[0], & password[0]);
+}
 
-        /* Accueil de l'utilisateur une fois connecter */
+/* Fonction inscription, ressemble a connexion */
 
-        int home(char * name, char * password) {
-            int val;
-            printf("-- HUBBY --\n");
-            printf("Que souhaitez vous faires ? \n1-Voir vos mot de passe \n2-Ajoutez un mot de passe\n");
-            scanf("%d", & val);
-            switch (val) {
-                case 1:
-                    printf("Vos mot de passe\n");
-                    databaseT(3, name, password);
-                    break;
-                case 2:
-                    databaseT(4, name, password);
-                    break;
-            }
+
+/* Inscription */
+
+
+void inscription() {
+    char user[20];
+    char password[20];
+    int temp;
+    unsigned long longueur_USER = 0;
+    unsigned long longueur_PWD = 0;
+    int i = 0;
+    int c = 0;
+
+
+    while (i < 1) {
+        fflush(stdin);
+        printf("Veuillez renseignez votre utilisateur\n");
+        scanf("%d", & temp);
+        scanf("%[^\n]", user);
+
+        longueur_USER = strlen(user);
+        if (longueur_USER > 1) {
+            i = 1;
+            printf("Votre nom d'utilisateur est %s\n", user);
+        }
+    }
+
+    while (c < 1) {
+        fflush(stdin);
+        printf("Veuillez renseignez votre mot de passe\n");
+        scanf("%d", & temp);
+        scanf("%[^\n]", password);
+        longueur_PWD = strlen(password);
+        if (longueur_PWD > 1) {
+            c = 1;
+            printf("Votre mot de passe est %s\n", password);
+        }
+    }
+
+    //  passwordCryp = crypt(password,"AAA");
+    databaseT(1, & user[0], & password[0]);
+
+}
+
+/* Fonction qui permet de lier le programme a la base de donnée. Il y a 3 arguement.
+ "proc" vas permettre de définir quel requete nous allons executer
+ "user / password" Liée a la connexion et a l'inscription de l'utilisateur */
+
+/* Accueil de l'utilisateur une fois connecter */
+
+int home(char * name, char * password) {
+    int val;
+    printf("-- HUBBY --\n");
+    printf("Que souhaitez vous faires ? \n1-Voir vos mot de passe \n2-Ajoutez un mot de passe\n");
+    scanf("%d", & val);
+    switch (val) {
+        case 1:
+            printf("Vos mot de passe\n");
+            databaseT(3, name, password);
+            break;
+        case 2:
+            databaseT(4, name, password);
+            break;
+    }
+    return 0;
+}
+
+/* Accueil des utilisateur non connecter*/
+int terminal() {
+    int val;
+    printf("-- Accueil --\n");
+    printf("1- Inscription\n2- Connexion\n3- Ping Database\n");
+    scanf("%d", & val);
+    switch (val) {
+        case 1:
+            inscription();
+            break;
+        case 2:
+            connexion();
+            break;
+
+        case 3:
+            databaseT(1, NULL, NULL);
+            break;
             return 0;
-        }
-
-        /* Accueil des utilisateur non connecter*/
-        int terminal() {
-            int val;
-            printf("-- Accueil --\n");
-            printf("1- Inscription\n2- Connexion\n3- Ping Database\n");
-            scanf("%d", & val);
-            switch (val) {
-                case 1:
-                    inscription();
-                    break;
-                case 2:
-                    connexion();
-                    break;
-
-                case 3:
-                    databaseT(1, NULL, NULL);
-                    break;
-                    return 0;
-            }
+    }
 
 
 
-        }
+}
