@@ -41,11 +41,8 @@ void start_link_transition(GtkButton * button){
     // free(result);
 }
 
-void quit_time_app_transition(GtkWidget *w){
 
-     gtk_widget_destroy(w);
 
-}
 
 void hubby_transition(GtkButton * button, GtkStack * stack) {
 

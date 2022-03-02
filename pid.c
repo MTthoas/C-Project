@@ -171,10 +171,10 @@ int threadMain(void * needed) {
                      }
                  }
     
-            }
+                }
 
     
-        }
+            }
 
             
         index = 0;
@@ -187,7 +187,7 @@ int threadMain(void * needed) {
 }
 
 
-int CalculTime(){
+int main(){
 
     ExistingFile();
     // On crée un premier thread.

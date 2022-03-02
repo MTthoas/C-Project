@@ -2,7 +2,7 @@
 #define H_TRANSITION
 
 void start_link_transition(GtkButton * button);
-void quit_time_app_transition(GtkWidget *w);
+// void quit_time_app_transition(GtkWidget *w);
 void start_box_transition(GtkWidget *w);
 void hubby_transition(GtkButton * button, GtkStack * stack);
 void main_transition(GtkButton * button, GtkStack * stack);

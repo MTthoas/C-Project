@@ -1,0 +1,2 @@
+MOZILLA : Durée = 0
+2048 : Durée = 0

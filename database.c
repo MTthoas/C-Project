@@ -44,6 +44,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
     char * passwordCrypt[200];
     unsigned int i = 1;
     unsigned int num_champs = 0;
+     int valeur;
 
     char resultat_table[20][20];
 
@@ -143,7 +144,16 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                 mysql_close(mysql);
                 return good;
 
-                break;
+            break;
+
+            case 6:
+
+                sprintf(requete, "INSERT INTO data_time(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');", user, title, email, password);
+                mysql_query(mysql, requete);
+                mysql_close(mysql);
+
+
+            break;
 
             case 99:
                 printf("Connexion réussi");
@@ -341,10 +351,6 @@ unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar *
 
                 break;
 
-
-
-
-
         }
 
     }
@@ -372,6 +378,7 @@ void databaseT(int proc, char *user, char *password)
     unsigned int i = 1;
     unsigned int num_champs = 0;
     unsigned char * fetch_id; 
+   
     
     fetch_id = fetch_database_data(0,user, password);
     
