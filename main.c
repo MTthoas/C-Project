@@ -1168,7 +1168,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                 /* Inscription */
                 printf("inscription");
                 if (strlen(user) > 5 && strlen(password) > 5) {
-                    sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');", user, password);
+                    sprintf(requete, "insert into User_v2(pseudo, password) Values('%s', AES_ENCRYPT('%s','clefsecrete'));", user, password);
                     mysql_query(mysql, requete);
                     return good;
                 } else {
