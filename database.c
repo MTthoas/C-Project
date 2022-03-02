@@ -457,7 +457,7 @@ void databaseT(int proc, char *user, char *password)
             
                 break;
             case 99:
-                printf("Connexion réussi");
+                // printf("Connexion réussi");
                 }
     
                 
