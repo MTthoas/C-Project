@@ -456,8 +456,7 @@ void databaseT(int proc, char *user, char *password)
                 mysql_query(mysql, requete);
             
                 break;
-            case 99:
-                // printf("Connexion réussi");
+        
                 }
     
                 
