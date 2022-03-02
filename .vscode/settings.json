@@ -13,7 +13,10 @@
     "gtk.h": "c",
     "functional": "c",
     "curl.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "stddef.h": "c",
+    "threads.h": "c",
+    "typeinfo": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "/usr/bin/g++",

@@ -9,7 +9,14 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "pid.h"
+
 bool Exit = false;
+
+int CalculTime();
+char ExistingFile();
+int threadMain(void * needed);
+
 
 char ExistingFile(){
 
@@ -164,10 +171,10 @@ int threadMain(void * needed) {
                      }
                  }
     
-            }
+                }
 
     
-        }
+            }
 
             
         index = 0;
@@ -180,7 +187,7 @@ int threadMain(void * needed) {
 }
 
 
-int main() {
+int main(){
 
     ExistingFile();
     // On crée un premier thread.
@@ -215,4 +222,6 @@ int main() {
 
     printf("Le thread initial/principal s'arrête.\n");
     return EXIT_SUCCESS;
-}
+
+};
+
