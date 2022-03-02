@@ -1,2 +1,6 @@
-matthias   44505  0.0  0.0   2420   520 pts/0    S+   21:11   0:00 sh -c ps aux | grep firefox | tee ./txt/processes.txt
-matthias   44507  0.0  0.0   6196   656 pts/0    S+   21:11   0:00 grep firefox
+matthias   47098 10.9  4.0 2932012 325860 ?      Sl   21:31   0:07 /usr/lib/firefox-esr/firefox-esr
+matthias   47201  0.7  1.4 2439584 118352 ?      Sl   21:31   0:00 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 1 -isForBrowser -prefsLen 1 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 47098 true tab
+matthias   47266  0.5  1.1 2427164 94412 ?       Sl   21:31   0:00 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 2 -isForBrowser -prefsLen 4978 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 47098 true tab
+matthias   47323  0.1  0.8 2395316 67168 ?       Sl   21:31   0:00 /usr/lib/firefox-esr/firefox-esr -contentproc -childID 3 -isForBrowser -prefsLen 5702 -prefMapSize 239899 -jsInit 285716 -parentBuildID 20220105212146 -appdir /usr/lib/firefox-esr/browser 47098 true tab
+matthias   47955  0.0  0.0   2420   516 pts/0    S+   21:32   0:00 sh -c ps aux | grep firefox | tee ./txt/processes.txt
+matthias   47957  0.0  0.0   6196   660 pts/0    S+   21:32   0:00 grep firefox

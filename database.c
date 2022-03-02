@@ -144,7 +144,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
 
             case 7:
 
-            sprintf(requete, "DELETE FROM `data_hubby` WHERE `id` = %s AND `title` = '%s'", user, title);
+            sprintf(requete, "DELETE FROM data_hubby WHERE UserID= '%s' AND title= '%s';" , user, title);
             mysql_query(mysql, requete);
             mysql_close(mysql);
 
@@ -398,7 +398,7 @@ void databaseT(int proc, char *user, char *password)
                 break;
 
             case 2: /*Connexion*/
-                sprintf(requete, "SELECT* FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
+                 sprintf(requete, "select id,pseudo, AES_DECRYPT(password,'clefsecrete') as `password` from data_user where pseudo = '%s' AND password = AES_ENCRYPT('%s','clefsecrete');",user, password);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
                 num_champs = mysql_num_fields(result);
@@ -418,12 +418,8 @@ void databaseT(int proc, char *user, char *password)
                     }
                 break;
             case 3: /*List des mot de passe*/
-        
-                
-                
-                
 
-                sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s';", fetch_id);
+                 sprintf(requete, "SELECT Id,UserID,email,AES_DECRYPT(mdp, 'clefsecrete') as `mdp` FROM data_hubby WHERE UserID = '%s';", fetch_id);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
                 num_champs = mysql_num_fields(result);
@@ -456,7 +452,7 @@ void databaseT(int proc, char *user, char *password)
                 scanf("%s",&pword[0]);
                                 
                 
-                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');",fetch_id , title, email, pword);
+                 sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s',AES_ENCRYPT('%s', 'clefsecrete'))",fetch_id , title, email, pword);
                 mysql_query(mysql, requete);
             
                 break;

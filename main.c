@@ -297,9 +297,6 @@ GtkWidget * choice_menu(GtkWidget * stack) {
 
     g_signal_connect(back_button, "clicked", G_CALLBACK(main_transition), stack);
 
-
-    gtk_widget_set_size_request(back_button, 10, 4);
-
     /// *** Return the Box
     return box;
 
@@ -340,6 +337,7 @@ void create_hubby(GtkWidget * stack) {
     GtkWidget * box;
     GtkWidget * box2;
     GtkWidget * box3;
+     GtkWidget * box4;
 
 
     GtkWidget * back_button;
@@ -387,9 +385,10 @@ void create_hubby(GtkWidget * stack) {
         gtk_window_set_resizable(GTK_WINDOW(window_hubby), FALSE);
 
 
-        box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-        box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-        box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+        box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
+        box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
+        box3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
+        box4 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 20);
 
         gtk_container_add(GTK_CONTAINER(window_hubby), box);
 
@@ -454,6 +453,9 @@ void create_hubby(GtkWidget * stack) {
             // g_signal_connect_swapped (G_OBJECT(label_title[index]), "clicked", G_CALLBACK(quit_time_app_transition), window_hubby);
 
 
+
+
+
             index++;
             printf("J = %d\n", index);
 
@@ -485,11 +487,14 @@ void create_hubby(GtkWidget * stack) {
 
         gtk_box_pack_start(GTK_BOX(box2), box3, TRUE, TRUE, 0);
 
+        gtk_box_pack_start(GTK_BOX(box),box4, TRUE, TRUE, 0);
+
         add_button = gtk_button_new_with_label("Ajout");
-        gtk_box_pack_start(GTK_BOX(box), add_button, TRUE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(box4), add_button, TRUE, FALSE, 0);
 
         delete_button = gtk_button_new_with_label("Supprimer");
-        gtk_box_pack_start(GTK_BOX(box),delete_button, TRUE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(box4),delete_button, TRUE, FALSE, 0);
+
 
         g_signal_connect_swapped(add_button, "clicked", G_CALLBACK(start_box_transition), window_hubby);
         g_signal_connect_swapped (delete_button, "clicked", G_CALLBACK(start_box_del), window_hubby);
@@ -499,6 +504,8 @@ void create_hubby(GtkWidget * stack) {
 
         // g_signal_connect ( back_button, "clicked", G_CALLBACK ( choice_transition ), stack );
 
+    gtk_widget_set_size_request(delete_button, 10, 4);
+    gtk_widget_set_size_request(add_button, 10, 4);
 
         gtk_widget_show_all(window_hubby);
 
@@ -649,11 +656,11 @@ static gboolean label_update(gpointer data) {
                 double time_calculate = time_diff + data_from_mozilla;
                 fprintf(p, "Mozilla : Durée = %lf \n", time_calculate);
 
-                gchar * display;
+                // gchar * display;
 
-                display = g_strdup_printf("%lf", time_calculate);
-                gtk_label_set_text(label, display);
-                g_free(display);
+                // display = g_strdup_printf("%lf", time_calculate);
+                // gtk_label_set_text(label, display);
+                // g_free(display);
 
             }
 
@@ -670,6 +677,8 @@ static gboolean label_update(gpointer data) {
 
 
     };
+
+    return continue_timer;
 
 }
 
@@ -728,7 +737,7 @@ void del_sys(){
     const gchar * pass = gtk_entry_get_text(GTK_ENTRY(entry_password));
     const gchar * title =  gtk_entry_get_text(GTK_ENTRY(del_entry_title ));
     fetch_id = fetch_database_data(0,user , pass);
-    int verif = database(6, fetch_id, NULL, NULL, title);
+    int verif = database(7, fetch_id, NULL, NULL, title);
     if(verif == 1 ){
         g_print("Bien supprimer");
     }
