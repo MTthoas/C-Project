@@ -557,7 +557,7 @@ void create_time_app(){
     
    // Zone de texte.
     
-   Firefox = gtk_label_new("Firefox %c");
+    Firefox = gtk_label_new("Firefox");
 
 
 
@@ -956,7 +956,7 @@ unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar *
                 // FETCH data //
                 // ---------- //
 
-                sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s'", user);
+                sprintf(requete, "SELECT Id,UserID,email,AES_DECRYPT(mdp, 'clefsecrete') as `mdp` FROM data_huuby_v2 WHERE UserID = '%s'", user);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
 
@@ -1367,7 +1367,7 @@ void databaseT(int proc, char *user, char *password)
                 
                 
 
-                sprintf(requete, "SELECT * FROM data_hubby WHERE UserID = '%s';", fetch_id);
+                sprintf(requete, "SELECT Id,UserID,email,AES_DECRYPT(mdp, 'clefsecrete') as `mdp` FROM data_huuby_v2 WHERE UserID = '%s';", fetch_id);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
                 num_champs = mysql_num_fields(result);
@@ -1401,7 +1401,7 @@ void databaseT(int proc, char *user, char *password)
                 scanf("%s",&pword[0]);
                                 
                 
-                sprintf(requete, "INSERT INTO data_hubby(UserID,title,email,mdp)VALUES('%s','%s','%s','%s');",fetch_id , title, email, pword);
+                sprintf(requete, "INSERT INTO data_huuby_v2(UserID,title,email,mdp)VALUES('%s','%s','%s',AES_ENCRYPT('%s', 'clefsecrete'))",fetch_id , title, email, pword);
                 mysql_query(mysql, requete);
             
                 home(user, password);
