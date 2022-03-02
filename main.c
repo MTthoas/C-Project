@@ -918,7 +918,7 @@ unsigned char * fetch_database_data(int proc, const gchar * user,  const gchar *
                 //  FETCH ID  //
                 // ---------- //
                 
-                sprintf(requete, "SELECT id FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
+                sprintf(requete, "select id,pseudo, AES_DECRYPT(password,'clefsecrete') as `password` from User_v2 where pseudo = '%s' AND password = AES_ENCRYPT('%s','clefsecrete');", user, password);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
 
@@ -1110,7 +1110,7 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
 
             case 2:
                 /*Connexion*/
-                sprintf(requete, "SELECT* FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
+                sprintf(requete, "select id,pseudo, AES_DECRYPT(password,'clefsecrete') as `password` from User_v2 where pseudo = '%s' AND password = AES_ENCRYPT('%s','clefsecrete');", user, password);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
                 num_champs = mysql_num_fields(result);
@@ -1335,13 +1335,13 @@ void databaseT(int proc, char *user, char *password)
 
             case 1: /* Inscription */
                 printf("inscripton");
-                sprintf(requete, "INSERT INTO User(pseudo,password)VALUES('%s','%s');",user,password);
+                sprintf(requete, "insert into User_v2(pseudo, password) Values('%s', AES_ENCRYPT('%s','clefsecrete'))",user,password);
                 mysql_query(mysql, requete);
                 home(user, password);
                 break;
 
             case 2: /*Connexion*/
-                sprintf(requete, "SELECT* FROM User WHERE pseudo = '%s' AND password = '%s';", user, password);
+                sprintf(requete, "select id,pseudo, AES_DECRYPT(password,'clefsecrete') as `password` from User_v2 where pseudo = '%s' AND password = AES_ENCRYPT('%s','clefsecrete');",user, password);
                 mysql_query(mysql, requete);
                 result = mysql_use_result(mysql);
                 num_champs = mysql_num_fields(result);
