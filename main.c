@@ -1251,8 +1251,8 @@ int database(int proc, const gchar * user, const gchar * password, const gchar *
                 break;
             case 6:
             g_print("its good");
-            g_print("%s %s", user, title);
-            sprintf(requete, "DELETE FROM `data_huuby_v2` WHERE `id` = %c AND `title` = '%s'", user, title);
+            g_print("\n%s \n%s", user, title);
+            sprintf(requete, "DELETE FROM `data_huuby_v2` WHERE `id` = %s AND `title` = '%s'", user, title);
             mysql_query(mysql, requete);
             mysql_close(mysql);
             return 1;
